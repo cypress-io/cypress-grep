@@ -53,6 +53,34 @@ $ npx cypress run --env grep=hello
 cypress-grep: only running tests with "hello" in their names
 ```
 
+## Filter by grep
+
+You can use any way to modify the environment value `grep` except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the `cypress.json` file to run only tests with the substring `@smoke` in their names
+
+```json
+{
+  "env": {
+    "grep": "@smoke"
+  }
+}
+```
+
+You can also set the `env.grep` object in the plugin file, but remember to return the changed config object:
+
+```js
+// cypress/plugin/index.js
+module.exports = (on, config) => {
+  config.env.grep = '@smoke'
+  return config
+}
+```
+
+Most likely you will pass the grep string via CLI when launching Cypress
+
+```shell
+$ npx cypress run --env grep=@smoke
+```
+
 ## See also
 
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
