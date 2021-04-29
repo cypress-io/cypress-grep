@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out code 🛎
-        uses: actions/checkout@2
+        uses: actions/checkout@v2
       - name: Install dependencies 📦
         uses: cypress-io/github-action@v2
         with:
