@@ -43,6 +43,12 @@ jobs:
             --env grep=does-not-exist-tag \
             --expect ./expects/all-pending.json
 
+      - name: Run tests with "@tag1 AND @tag2" 🧪
+        run: |
+          npx cypress-expect \
+            --env grep=@tag1+@tag2 \
+            --expect ./expects/tag1-and-tag2.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:
