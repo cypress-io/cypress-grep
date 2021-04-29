@@ -17,6 +17,42 @@ npx cypress run --env grep=hello
 
 All other tests will be marked pending, see [Cypress test statuses](https://on.cypress.io/writing-and-organizing-tests#Test-statuses)
 
+## Install and use
+
+Assuming you have Cypress installed, add this module as a dev dependency
+
+```shell
+# using NPM
+npm i -D cypress-grep
+# using Yarn
+yarn add -D cypress-grep
+```
+
+**required:** load this module from the [support file](https://on.cypress.io/writing-and-organizing-tests#Support-file) or at the top of the spec file if not using the support file.
+
+```js
+// cypress/support/index.js
+// load and register the grep feature
+require('cypress-grep')()
+```
+
+**optional:** load and register this module from the [plugin file](https://on.cypress.io/writing-and-organizing-tests#Plugins-file)
+
+```js
+// cypress/plugins/index.js
+module.exports = (on, config) => {
+  // optional: register cypress-grep plugin code
+  require('../../src/plugin')(config)
+}
+```
+
+The plugin code will print a little message on load, for example
+
+```shell
+$ npx cypress run --env grep=hello
+cypress-grep: only running tests with "hello" in their names
+```
+
 ## See also
 
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
