@@ -1,4 +1,4 @@
-# cypress-grep
+# cypress-grep [![ci status][ci image]][ci url]
 > Filter tests using substring
 
 ```shell
@@ -15,3 +15,6 @@ npx cypress run --env grep=hello
 ```
 
 All other tests will be marked pending, see [Cypress test statuses](https://on.cypress.io/writing-and-organizing-tests#Test-statuses)
+
+[ci image]: https://github.com/bahmutov/cypress-grep/workflows/ci/badge.svg?branch=main
+[ci url]: https://github.com/bahmutov/cypress-grep/actions
