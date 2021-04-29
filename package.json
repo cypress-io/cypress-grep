@@ -1,13 +1,13 @@
 {
-  "name": "cypress-test-tags",
+  "name": "cypress-grep",
   "version": "1.0.0",
-  "description": "",
+  "description": "Filter tests using substring",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "cypress": "7.2.0",

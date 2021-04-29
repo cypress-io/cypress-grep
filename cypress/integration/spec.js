@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+it('hello world', () => {})
+
 it('works', () => {})
 
 it('works 2 @tag1', () => {})
