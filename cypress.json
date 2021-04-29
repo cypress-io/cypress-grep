@@ -1,0 +1,7 @@
+{
+  "fixturesFolder": false,
+  "pluginsFile": false,
+  "env": {
+    "grep": "@tag1"
+  }
+}
