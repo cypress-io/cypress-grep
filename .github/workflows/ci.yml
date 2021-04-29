@@ -34,8 +34,14 @@ jobs:
       - name: Run tests with "@tag2" 🧪
         run: |
           npx cypress-expect \
-            --passing 1 --pending 3 \
-            --env grep=@tag2
+            --env grep=@tag2 \
+            --expect ./expects/tag2.json
+
+      - name: Run tests with "does-not-exist-tag" 🧪
+        run: |
+          npx cypress-expect \
+            --env grep=does-not-exist-tag \
+            --expect ./expects/all-pending.json
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
