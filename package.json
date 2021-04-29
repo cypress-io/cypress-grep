@@ -1,10 +1,11 @@
 {
   "name": "cypress-grep",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Filter tests using substring",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "semantic-release": "semantic-release"
   },
   "keywords": [],
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
@@ -12,6 +13,11 @@
   "devDependencies": {
     "cypress": "7.2.0",
     "cypress-expect": "2.2.1",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "semantic-release": "^17.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahmutov/cypress-grep.git"
   }
 }
