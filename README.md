@@ -83,6 +83,10 @@ Most likely you will pass the grep string via CLI when launching Cypress
 $ npx cypress run --env grep=@smoke
 ```
 
+## Examples
+
+- [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
+
 ## See also
 
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
