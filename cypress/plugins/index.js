@@ -9,5 +9,6 @@ module.exports = (on, config) => {
   // `config` is the resolved Cypress config
 
   // optional: register cypress-grep plugin code
+  // https://github.com/bahmutov/cypress-grep
   require('../../src/plugin')(config)
 }

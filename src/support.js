@@ -4,7 +4,8 @@
 const _it = it
 
 /**
- * Wraps the "it" function with a new function
+ * Wraps the "it" function with a new function.
+ * @see https://github.com/bahmutov/cypress-grep
  */
 function cypressGrep() {
   const grep = Cypress.env('grep')

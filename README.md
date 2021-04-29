@@ -33,6 +33,7 @@ yarn add -D cypress-grep
 ```js
 // cypress/support/index.js
 // load and register the grep feature
+// https://github.com/bahmutov/cypress-grep
 require('cypress-grep')()
 ```
 
@@ -42,7 +43,8 @@ require('cypress-grep')()
 // cypress/plugins/index.js
 module.exports = (on, config) => {
   // optional: register cypress-grep plugin code
-  require('../../src/plugin')(config)
+  // https://github.com/bahmutov/cypress-grep
+  require('cypress-grep/src/plugin')(config)
 }
 ```
 
