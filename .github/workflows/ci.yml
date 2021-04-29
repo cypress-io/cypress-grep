@@ -21,9 +21,9 @@ jobs:
       # and 3 other tests that will be pending
       - name: Run tests with "hello" 🧪
         run: |
-          npx cypress-expect \
-            --passing 1 --pending 3 \
-            --env grep=hello
+          npx cypress-expect run \
+            --env grep=hello \
+            --expect ./expects/hello.json
 
       - name: Run tests with "@tag1" 🧪
         run: |
