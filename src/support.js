@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { parseGrep, shouldTestRun } from './utils'
+
 // preserve the real "it" function
 const _it = it
 
@@ -15,6 +17,8 @@ function cypressGrep() {
     return
   }
 
+  const parsedGrep = parseGrep(grep)
+
   // TODO: handle (name, options, callback) form
   it = (name, callback) => {
     if (!callback) {
@@ -22,7 +26,9 @@ function cypressGrep() {
       return _it(name)
     }
 
-    if (name.includes(grep)) {
+    const shouldRun = shouldTestRun(parsedGrep, name)
+
+    if (shouldRun) {
       return _it(name, callback)
     }
 
