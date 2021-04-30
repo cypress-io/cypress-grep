@@ -125,6 +125,17 @@ it('works as a string', { tags: 'config' }, () => {
 
 You can run both of these tests using `--env grep=config` string.
 
+### TypeScript users
+
+Because the Cypress test config object type definition does not have the `tags` property we are using above, the TypeScript linter will show an error. Just add an ignore comment above the test:
+
+```js
+// @ts-ignore
+it('runs on deploy', { tags: 'smoke' }, () => {
+  ...
+})
+```
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
