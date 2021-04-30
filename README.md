@@ -136,6 +136,39 @@ it('runs on deploy', { tags: 'smoke' }, () => {
 })
 ```
 
+## Test suites
+
+The tags are also applied to the "describe" blocks with some limitations:
+
+- you can only use the config object tags
+
+```js
+describe('block with config tag', { tags: '@smoke' }, () => {
+})
+```
+
+- currently only the invert tag to skip the blog has meaningful effect. For example you can skip the above suite of tests by using `--env grep=-@smoke` value. Keep an eye on issue [#22](https://github.com/bahmutov/cypress-grep/issues/22) for the full support implementation.
+
+See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
+
+## General advice
+
+- do not use spaces in the tags themselves, as `--env grep=...` string separates the grep string into OR tags using the space ` ` separator.
+- I like using `@` as tag prefix to make the tags searchable
+- I like using the test or suite configuration object to explicitly list the tags
+
+```js
+// ✅ good practice
+describe('auth', { tags: '@critical' }, () => ...)
+it('works', { tags: '@smoke' }, () => ...)
+it('works', { tags: ['@smoke', '@fast'] }, () => ...)
+
+// 🚨 NOT GOING TO WORK
+// ERROR: treated as a single tag,
+// probably want an array instead
+it('works', { tags: '@smoke @fast' }, () => ...)
+```
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)

@@ -1,0 +1,13 @@
+{
+  "block with tag @smoke": {
+    "inside describe 1": "pass",
+    "inside describe 2": "pass"
+  },
+  "block with config tag": {
+    "inside describe 3": "pending",
+    "inside describe 4": "pending"
+  },
+  "block without any tags": {
+    "still runs": "pending"
+  }
+}

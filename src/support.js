@@ -4,9 +4,10 @@ const { parseGrep, shouldTestRun } = require('./utils')
 
 // preserve the real "it" function
 const _it = it
+const _describe = describe
 
 /**
- * Wraps the "it" function with a new function.
+ * Wraps the "it" and "describe" functions that support tags.
  * @see https://github.com/bahmutov/cypress-grep
  */
 function cypressGrep() {
@@ -45,8 +46,45 @@ function cypressGrep() {
     return _it.skip(name, options, callback)
   }
 
+  describe = function (name, options, callback) {
+    if (typeof options === 'function') {
+      // the block has format describe('...', cb)
+      callback = options
+      options = {}
+    }
+
+    if (!callback) {
+      // the pending suite by itself
+      return _describe(name, options)
+    }
+
+    let configTags = options && options.tags
+    if (typeof configTags === 'string') {
+      configTags = [configTags]
+    }
+
+    if (!configTags || !configTags.length) {
+      // if the describe suite does not have explicit tags
+      // move on, since the tests inside can have their own tags
+      return _describe(name, options, callback)
+    }
+
+    // when looking at the suite of the tests, I found
+    // that using the name is quickly becoming very confusing
+    // and thus we need to use the explicit tags
+    const shouldRun = shouldTestRun(parsedGrep, configTags)
+
+    if (shouldRun) {
+      return _describe(name, options, callback)
+    }
+
+    // skip tests without grep string in their names
+    return _describe.skip(name, options, callback)
+  }
+
   // keep the "it.skip" the same as before
   it.skip = _it.skip
+  describe.skip = _describe.skip
 }
 
 module.exports = cypressGrep
