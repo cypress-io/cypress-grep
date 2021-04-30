@@ -24,7 +24,7 @@ jobs:
       - name: Run e2e skip tests without grep 🧪
         run: |
           npx cypress-expect \
-            --min-passing 2 --pending 1 \
+            --passing 1 --pending 2 \
             --spec cypress/integration/skip-spec.js \
             --config testFiles="skip-spec.js"
 
