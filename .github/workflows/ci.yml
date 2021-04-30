@@ -14,7 +14,7 @@ jobs:
 
       - name: Run unit tests 🧪
         run: |
-          npx cypress run --config testFiles="**/*.js"
+          npx cypress run --config testFiles="**/unit.js"
 
       - name: Run e2e tests 🧪
         run: |
