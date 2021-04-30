@@ -24,6 +24,12 @@ function parseGrep(s) {
 
 // note: tags take precedence over the test name
 function shouldTestRun(parsedGrep, testName, tags = []) {
+  if (Array.isArray(testName)) {
+    // the caller passed tags only, no test name
+    tags = testName
+    testName = undefined
+  }
+
   // top levels are OR
   return parsedGrep.some((orPart) => {
     return orPart.every((p) => {
@@ -32,13 +38,24 @@ function shouldTestRun(parsedGrep, testName, tags = []) {
           return !tags.includes(p.tag)
         }
 
-        return !testName.includes(p.tag)
+        if (testName) {
+          return !testName.includes(p.tag)
+        }
+
+        // no tags, no test name
+        return true
       }
 
       if (tags.length) {
         return tags.includes(p.tag)
       }
-      return testName.includes(p.tag)
+
+      if (testName) {
+        return testName.includes(p.tag)
+      }
+
+      // no tags, no test name
+      return true
     })
   })
 }

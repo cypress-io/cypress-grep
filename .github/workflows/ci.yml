@@ -107,7 +107,7 @@ jobs:
             --spec cypress/integration/describe-tags-spec.js \
             --config testFiles="describe-tags-spec.js" \
             --env grep=-@smoke \
-            --expect expects/describe-tags-spec.json
+            --expect expects/describe-tags-invert-spec.json
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2

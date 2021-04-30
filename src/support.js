@@ -62,7 +62,17 @@ function cypressGrep() {
     if (typeof configTags === 'string') {
       configTags = [configTags]
     }
-    const shouldRun = shouldTestRun(parsedGrep, name, configTags)
+
+    if (!configTags || !configTags.length) {
+      // if the describe suite does not have explicit tags
+      // move on, since the tests inside can have their own tags
+      return _describe(name, options, callback)
+    }
+
+    // when looking at the suite of the tests, I found
+    // that using the name is quickly becoming very confusing
+    // and thus we need to use the explicit tags
+    const shouldRun = shouldTestRun(parsedGrep, configTags)
 
     if (shouldRun) {
       return _describe(name, options, callback)
