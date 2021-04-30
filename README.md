@@ -91,6 +91,15 @@ Use `+` to require both tags to be present
 --env grep=@smoke+@fast
 ```
 
+### Invert tag
+
+You can skip running the tests with specific tag using the invert option: prefix the tag with the character `-`.
+
+```
+# do not run any tests with tag "@slow"
+--env grep=-@slow
+```
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
