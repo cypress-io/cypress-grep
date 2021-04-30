@@ -23,7 +23,7 @@ function cypressGrep() {
     if (typeof options === 'function') {
       // the test has format it('...', cb)
       callback = options
-      options = undefined
+      options = {}
     }
 
     if (!callback) {
