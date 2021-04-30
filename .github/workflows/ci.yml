@@ -12,7 +12,11 @@ jobs:
           # just perform install
           runTests: false
 
-      - name: Run all tests 🧪
+      - name: Run unit tests 🧪
+        run: |
+          npx cypress run --config testFiles="**/*.js"
+
+      - name: Run e2e tests 🧪
         run: |
           npx cypress-expect \
             --min-passing 5 --pending 0
