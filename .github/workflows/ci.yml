@@ -76,6 +76,12 @@ jobs:
             --env grep=-@tag1 \
             --expect ./expects/invert-tag1.json
 
+      - name: Run tests with hello OR @tag1 🧪
+        run: |
+          npx cypress-expect \
+            --env grep='hello @tag1' \
+            --expect ./expects/hello-or-tag1.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:

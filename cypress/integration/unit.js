@@ -11,9 +11,13 @@ describe('utils', () => {
     it('creates objects from the grep string', () => {
       const parsed = parseGrep('@tag1+@tag2+@tag3')
       expect(parsed).to.deep.equal([
-        { tag: '@tag1', invert: false },
-        { tag: '@tag2', invert: false },
-        { tag: '@tag3', invert: false },
+        // single OR part
+        [
+          // with 3 AND parts
+          { tag: '@tag1', invert: false },
+          { tag: '@tag2', invert: false },
+          { tag: '@tag3', invert: false },
+        ],
       ])
     })
   })
@@ -51,6 +55,23 @@ describe('utils', () => {
       expect(t('has only @tag1 in the name')).to.be.false
       expect(t('has only @tag2 in the name')).to.be.false
       expect(t('has @tag1 and @tag2 in the name')).to.be.true
+    })
+
+    it('with OR option', () => {
+      const t = checkName('@tag1 @tag2')
+      expect(t('no tag1 here')).to.be.false
+      expect(t('has only @tag1 in the name')).to.be.true
+      expect(t('has only @tag2 in the name')).to.be.true
+      expect(t('has @tag1 and @tag2 in the name')).to.be.true
+    })
+
+    it('OR with AND option', () => {
+      const t = checkName('@tag1 @tag2+@tag3')
+      expect(t('no tag1 here')).to.be.false
+      expect(t('has only @tag1 in the name')).to.be.true
+      expect(t('has only @tag2 in the name')).to.be.false
+      expect(t('has only @tag2 in the name and also @tag3')).to.be.true
+      expect(t('has @tag1 and @tag2 and @tag3 in the name')).to.be.true
     })
   })
 })

@@ -100,6 +100,15 @@ You can skip running the tests with specific tag using the invert option: prefix
 --env grep=-@slow
 ```
 
+### OR tags
+
+You can run tests that match one tag or another using spaces. Make sure to quote the grep string!
+
+```
+# run tests with tags "@slow" or "@critical" in their names
+--env grep='@slow @critical'
+```
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
