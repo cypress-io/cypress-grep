@@ -12,10 +12,14 @@ jobs:
           # just perform install
           runTests: false
 
-      - name: Run all tests 🧪
+      - name: Run unit tests 🧪
+        run: |
+          npx cypress run --config testFiles="**/*.js"
+
+      - name: Run e2e tests 🧪
         run: |
           npx cypress-expect \
-            --passing 5 --pending 0
+            --min-passing 5 --pending 0
 
       # there should be 1 test with "hello" substring
       # and 3 other tests that will be pending
@@ -48,6 +52,12 @@ jobs:
           npx cypress-expect \
             --env grep=@tag1+@tag2 \
             --expect ./expects/tag1-and-tag2.json
+
+      - name: Run tests without @tag1 🧪
+        run: |
+          npx cypress-expect \
+            --env grep=-@tag1 \
+            --expect ./expects/invert-tag1.json
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2

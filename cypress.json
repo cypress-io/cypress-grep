@@ -1,4 +1,5 @@
 {
   "fixturesFolder": false,
-  "video": false
+  "video": false,
+  "testFiles": "**/spec.js"
 }

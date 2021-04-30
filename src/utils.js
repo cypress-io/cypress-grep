@@ -1,11 +1,29 @@
 function parseGrep(s) {
-  const ands = s.split('+')
+  const parsed = s.split('+').map((tag) => {
+    if (tag.startsWith('-')) {
+      return {
+        tag: tag.slice(1),
+        invert: true,
+      }
+    }
 
-  return ands
+    return {
+      tag,
+      invert: false,
+    }
+  })
+
+  return parsed
 }
 
 function shouldTestRun(parsedGrep, testName) {
-  return parsedGrep.every((tag) => testName.includes(tag))
+  return parsedGrep.every((p) => {
+    if (p.invert) {
+      return !testName.includes(p.tag)
+    }
+
+    return testName.includes(p.tag)
+  })
 }
 
 module.exports = { parseGrep, shouldTestRun }
