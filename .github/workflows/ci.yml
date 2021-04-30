@@ -21,6 +21,13 @@ jobs:
           npx cypress-expect \
             --min-passing 5 --pending 0
 
+      - name: Run e2e skip tests 🧪
+        run: |
+          npx cypress-expect \
+            --min-passing 2 --pending 1 \
+            --spec cypress/integration/skip-spec.js \
+            --config testFiles="skip-spec.js"
+
       # there should be 1 test with "hello" substring
       # and 3 other tests that will be pending
       - name: Run tests with "hello" 🧪
