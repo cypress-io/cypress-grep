@@ -138,18 +138,18 @@ it('runs on deploy', { tags: 'smoke' }, () => {
 
 ## Test suites
 
-The tags are also applied to the "describe" blocks, both as a substring and as config object tags. See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
+The tags are also applied to the "describe" blocks with some limitations:
+
+- you can only use the config object tags
 
 ```js
-describe('block with tag @smoke', () => {
-  ...
-})
-
-// ALTERNATIVE: specify tags as the config property
-describe('block with config tag',
-  { tags: '@smoke' }, () => {
+describe('block with config tag', { tags: '@smoke' }, () => {
 })
 ```
+
+- currently only the invert tag to skip the blog has meaningful effect. For example you can skip the above suite of tests by using `--env grep=-@smoke` value. Keep an eye on issue [#22](https://github.com/bahmutov/cypress-grep/issues/22) for the full support implementation.
+
+See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
 
 ## General advice
 
