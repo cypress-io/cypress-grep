@@ -1,0 +1,10 @@
+{
+  "block with tag @smoke": {
+    "inside describe 1": "pending",
+    "inside describe 2": "pending"
+  },
+  "block with config tag": {
+    "inside describe 3": "pending",
+    "inside describe 4": "pending"
+  }
+}

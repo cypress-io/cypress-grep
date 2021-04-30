@@ -136,6 +136,39 @@ it('runs on deploy', { tags: 'smoke' }, () => {
 })
 ```
 
+## Test suites
+
+The tags are also applied to the "describe" blocks, both as a substring and as config object tags. See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
+
+```js
+describe('block with tag @smoke', () => {
+  ...
+})
+
+// ALTERNATIVE: specify tags as the config property
+describe('block with config tag',
+  { tags: '@smoke' }, () => {
+})
+```
+
+## General advice
+
+- do not use spaces in the tags themselves, as `--env grep=...` string separates the grep string into OR tags using the space ` ` separator.
+- I like using `@` as tag prefix to make the tags searchable
+- I like using the test or suite configuration object to explicitly list the tags
+
+```js
+// ✅ good practice
+describe('auth', { tags: '@critical' }, () => ...)
+it('works', { tags: '@smoke' }, () => ...)
+it('works', { tags: ['@smoke', '@fast'] }, () => ...)
+
+// 🚨 NOT GOING TO WORK
+// ERROR: treated as a single tag,
+// probably want an array instead
+it('works', { tags: '@smoke @fast' }, () => ...)
+```
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
