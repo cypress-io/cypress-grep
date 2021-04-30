@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { parseGrep, shouldTestRun } from './utils'
+const { parseGrep, shouldTestRun } = require('./utils')
 
 // preserve the real "it" function
 const _it = it
