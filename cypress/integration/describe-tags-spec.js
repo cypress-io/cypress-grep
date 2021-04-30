@@ -1,13 +1,16 @@
 /// <reference types="cypress" />
 
-// IGNORED: specify tag as substring
+// NOTE, IGNORED: specify tag as substring has no effect
 describe('block with tag @smoke', () => {
   it('inside describe 1', () => {})
 
   it('inside describe 2', () => {})
 })
 
-// WORKING: specify tag inside the config object
+// WORKING: ignore the entire suite using invert option
+//  --env grep=-@smoke
+// NOT WORKING: run all the tests in this suite only
+//  --env grep=@smoke
 describe('block with config tag', { tags: '@smoke' }, () => {
   it('inside describe 3', () => {})
 

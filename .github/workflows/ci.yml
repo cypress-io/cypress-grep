@@ -101,13 +101,23 @@ jobs:
             --expect expects/config-tags-spec.json
 
       # skip tests by using describe tags
-      - name: Run e2e tests with tags on the describe 🧪
+      - name: Run e2e tests with tags on the describe invert 🧪
         run: |
           npx cypress-expect \
             --spec cypress/integration/describe-tags-spec.js \
             --config testFiles="describe-tags-spec.js" \
             --env grep=-@smoke \
             --expect expects/describe-tags-invert-spec.json
+
+      # enable suite of tests using a tag
+      # DOES NOT WORK YET
+      - name: Enable suite of tests with a tag 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/describe-tags-spec.js \
+            --config testFiles="describe-tags-spec.js" \
+            --env grep=@smoke \
+            --expect expects/describe-tags-spec.json
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
