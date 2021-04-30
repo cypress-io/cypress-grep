@@ -19,21 +19,26 @@ function cypressGrep() {
 
   const parsedGrep = parseGrep(grep)
 
-  // TODO: handle (name, options, callback) form
-  it = (name, callback) => {
+  it = (name, options, callback) => {
+    if (typeof options === 'function') {
+      // the test has format it('...', cb)
+      callback = options
+      options = undefined
+    }
+
     if (!callback) {
       // the pending test by itself
-      return _it(name)
+      return _it(name, options)
     }
 
     const shouldRun = shouldTestRun(parsedGrep, name)
 
     if (shouldRun) {
-      return _it(name, callback)
+      return _it(name, options, callback)
     }
 
     // skip tests without grep string in their names
-    return _it.skip(name, callback)
+    return _it.skip(name, options, callback)
   }
 
   // keep the "it.skip" the same as before
