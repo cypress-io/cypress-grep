@@ -15,7 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "cypress": "7.2.0",
-    "cypress-expect": "2.3.0",
+    "cypress-expect": "2.3.1",
     "prettier": "2.2.1",
     "semantic-release": "^17.4.2"
   },
