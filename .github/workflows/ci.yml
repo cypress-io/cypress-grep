@@ -38,6 +38,15 @@ jobs:
             --env grep=pending \
             --expect expects/pending.json
 
+      # tests can use custom config object argument
+      - name: Run e2e tests with config object with grep 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/config-spec.js \
+            --config testFiles="config-spec.js" \
+            --env grep=@config \
+            --expect expects/config-spec.json
+
       # there should be 1 test with "hello" substring
       # and 3 other tests that will be pending
       - name: Run tests with "hello" 🧪
