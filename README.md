@@ -109,6 +109,22 @@ You can run tests that match one tag or another using spaces. Make sure to quote
 --env grep='@slow @critical'
 ```
 
+## Tags in the test config object
+
+Cypress tests can have their own [test config object](https://on.cypress.io/configuration#Test-Configuration), and when using this plugin you can put the test tags there, either as a single tag string or as an array of tags.
+
+```js
+it('works as an array', { tags: ['config', 'some-other-tag'] }, () => {
+  expect(true).to.be.true
+})
+
+it('works as a string', { tags: 'config' }, () => {
+  expect(true).to.be.true
+})
+```
+
+You can run both of these tests using `--env grep=config` string.
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
