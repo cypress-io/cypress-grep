@@ -35,6 +35,9 @@ function cypressGrep() {
     // skip tests without grep string in their names
     return _it.skip(name, callback)
   }
+
+  // keep the "it.skip" the same as before
+  it.skip = _it.skip
 }
 
 module.exports = cypressGrep
