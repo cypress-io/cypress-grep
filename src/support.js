@@ -19,7 +19,7 @@ function cypressGrep() {
 
   const parsedGrep = parseGrep(grep)
 
-  it = (name, options, callback) => {
+  it = function (name, options, callback) {
     if (typeof options === 'function') {
       // the test has format it('...', cb)
       callback = options
@@ -31,7 +31,11 @@ function cypressGrep() {
       return _it(name, options)
     }
 
-    const shouldRun = shouldTestRun(parsedGrep, name)
+    let configTags = options && options.tags
+    if (typeof configTags === 'string') {
+      configTags = [configTags]
+    }
+    const shouldRun = shouldTestRun(parsedGrep, name, configTags)
 
     if (shouldRun) {
       return _it(name, options, callback)

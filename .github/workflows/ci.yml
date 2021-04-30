@@ -14,7 +14,7 @@ jobs:
 
       - name: Run unit tests 🧪
         run: |
-          npx cypress run --config testFiles="**/*.js"
+          npx cypress run --config testFiles="**/unit.js"
 
       - name: Run e2e tests 🧪
         run: |
@@ -38,7 +38,7 @@ jobs:
             --env grep=pending \
             --expect expects/pending.json
 
-      # tests can use custom config object argument
+      # tests do not break the custom test config object as argument
       - name: Run e2e tests with config object with grep 🧪
         run: |
           npx cypress-expect \
@@ -90,6 +90,15 @@ jobs:
           npx cypress-expect \
             --env grep='hello @tag1' \
             --expect ./expects/hello-or-tag1.json
+
+      # you can pass test tags in the config object
+      - name: Run e2e tests with tags in the config 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/config-tags-spec.js \
+            --config testFiles="config-tags-spec.js" \
+            --env grep=config \
+            --expect expects/config-tags-spec.json
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
