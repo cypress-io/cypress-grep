@@ -20,14 +20,19 @@ describe('utils', () => {
         ],
       ])
     })
+
+    it('assumes env grep array is a single string', () => {
+      const parsed = parseGrep(['hello world'])
+      expect(parsed, 'does not split an array').to.deep.equal([
+        [{ tag: 'hello world', invert: false }],
+      ])
+    })
   })
 
   context('shouldTestRun', () => {
     // a little utility function to parse the given grep string
     // and apply the first argument in shouldTestRun
     const checkName = (grep) => {
-      expect(grep, 'grep string').to.be.a('string')
-
       const parsed = parseGrep(grep)
       expect(parsed).to.be.an('array')
 
@@ -72,6 +77,12 @@ describe('utils', () => {
       expect(t('has only @tag2 in the name')).to.be.false
       expect(t('has only @tag2 in the name and also @tag3')).to.be.true
       expect(t('has @tag1 and @tag2 and @tag3 in the name')).to.be.true
+    })
+
+    it('parsed [string] as a single tag', () => {
+      const t = checkName(['hello world!'])
+      expect(t('hello')).to.be.false
+      expect(t('has hello world! in the title')).to.be.true
     })
   })
 })
