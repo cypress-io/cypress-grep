@@ -13,8 +13,7 @@ jobs:
           runTests: false
 
       - name: Run unit tests 🧪
-        run: |
-          npx cypress run --config testFiles="**/unit.js"
+        run: npm test
 
       - name: Run e2e tests 🧪
         run: |
