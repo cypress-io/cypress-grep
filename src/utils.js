@@ -22,14 +22,22 @@ function parseGrep(s) {
   return ORS
 }
 
-function shouldTestRun(parsedGrep, testName) {
+// note: tags take precedence over the test name
+function shouldTestRun(parsedGrep, testName, tags = []) {
   // top levels are OR
   return parsedGrep.some((orPart) => {
     return orPart.every((p) => {
       if (p.invert) {
+        if (tags.length) {
+          return !tags.includes(p.tag)
+        }
+
         return !testName.includes(p.tag)
       }
 
+      if (tags.length) {
+        return tags.includes(p.tag)
+      }
       return testName.includes(p.tag)
     })
   })
