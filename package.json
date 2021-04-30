@@ -7,7 +7,8 @@
     "src"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cypress run --config testFiles='**/unit.js'",
+    "open:unit": "cypress open --config testFiles='**/unit.js'",
     "semantic-release": "semantic-release"
   },
   "keywords": [],

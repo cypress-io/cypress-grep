@@ -169,6 +169,21 @@ it('works', { tags: ['@smoke', '@fast'] }, () => ...)
 it('works', { tags: '@smoke @fast' }, () => ...)
 ```
 
+## DevTools console
+
+🎉 Or how to run one or some tests without editing the source files!
+
+- from the browser, open the DevTools console
+- if you want to run tests with specific tag or tag expression, enter the command to set the grep value like `Cypress.env('grep', '@tag1')` for example and then click the reload button or press "r" key. The tests should re-run and the grep value should be applied.
+
+![Run-time grep from DevTools console](./images/grep-tag.gif)
+
+- if you want to run just a test with a title, copy the test title and use an array with just the test title `Cypress.env('grep', ['test title here'])` and re-run the test
+
+![Run a single test by title from the DevTools console](./images/test-title-grep.gif)
+
+- to remove the grep string, enter `Cypress.env('grep', null)`
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)

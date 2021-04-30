@@ -1,4 +1,19 @@
 function parseGrep(s) {
+  if (Array.isArray(s)) {
+    if (s.length !== 1) {
+      throw new Error('Assumed grep [...] would have a single string in it')
+    }
+
+    return [
+      [
+        {
+          tag: s[0],
+          invert: false,
+        },
+      ],
+    ]
+  }
+
   // top level split - using space, each part is OR
   const ORS = s.split(' ').map((part) => {
     // now every part is an AND
