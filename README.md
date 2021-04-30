@@ -171,7 +171,7 @@ it('works', { tags: '@smoke @fast' }, () => ...)
 
 ## DevTools console
 
-🎉 Or how to run one or some tests without editing the source files!
+🎉 Or how to run one or some tests without editing the source files! Watch [this video 📺](https://youtu.be/Sp1NfcLPpwg) to see it in action.
 
 - from the browser, open the DevTools console
 - if you want to run tests with specific tag or tag expression, enter the command to set the grep value like `Cypress.env('grep', '@tag1')` for example and then click the reload button or press "r" key. The tests should re-run and the grep value should be applied.
