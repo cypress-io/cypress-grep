@@ -173,18 +173,17 @@ it('works', { tags: '@smoke @fast' }, () => ...)
 
 ## DevTools console
 
-Watch [this video](https://youtu.be/Sp1NfcLPpwg) to see how to run only one or some tagged tests without editing the spec source files!
+You can set the grep string from the DevTools Console. This plugin adds method `Cypress.grep` to set the grep string and restart the tests
 
-- from the browser, open the DevTools console
-- if you want to run tests with specific tag or tag expression, enter the command to set the grep value like `Cypress.env('grep', '@tag1')` for example and then click the reload button or press "r" key. The tests should re-run and the grep value should be applied.
+```js
+// use grep "@tag1"
+Cypress.grep('@tag1')
+// run the test with substring "hello world"
+// without parsing separate words as tags
+Cypress.grep(['hello world'])
+```
 
-![Run-time grep from DevTools console](./images/grep-tag.gif)
-
-- if you want to run just a test with a title, copy the test title and use an array with just the test title `Cypress.env('grep', ['test title here'])` and re-run the test
-
-![Run a single test by title from the DevTools console](./images/test-title-grep.gif)
-
-- to remove the grep string, enter `Cypress.env('grep', null)`
+- to remove the grep string, enter `Cypress.grep()`
 
 ## Debugging
 

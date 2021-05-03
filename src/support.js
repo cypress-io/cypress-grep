@@ -92,4 +92,15 @@ function cypressGrep() {
   describe.skip = _describe.skip
 }
 
+if (!Cypress.grep) {
+  // expose a utility method to set the grep and run the tests
+  Cypress.grep = function grep(s) {
+    Cypress.env('grep', s)
+    debug('set new grep to "%s", restarting', s)
+    setTimeout(() => {
+      window.top.document.querySelector('.reporter .restart').click()
+    }, 0)
+  }
+}
+
 module.exports = cypressGrep
