@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 
 const { parseGrep, shouldTestRun } = require('./utils')
+const debug = require('debug')('cypress-grep')
+debug.log = console.info.bind(console)
 
 // preserve the real "it" function
 const _it = it
@@ -15,10 +17,13 @@ function cypressGrep() {
 
   if (!grep) {
     // nothing to do, the user has no specified the "grep" string
+    debug('Nothing to grep')
     return
   }
 
+  debug('parsing grep string "%s"', grep)
   const parsedGrep = parseGrep(grep)
+  debug('parsed grep %o', parsedGrep)
 
   it = function (name, options, callback) {
     if (typeof options === 'function') {

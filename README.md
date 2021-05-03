@@ -184,6 +184,12 @@ Watch [this video](https://youtu.be/Sp1NfcLPpwg) to see how to run only one or s
 
 - to remove the grep string, enter `Cypress.env('grep', null)`
 
+## Debugging
+
+This module uses [debug](https://github.com/visionmedia/debug#readme) to log verbose messages. To enable debug console messages, from the DevTools console set `localStorage.debug='cypress-grep'` and run the tests again.
+
+![Debug messages](./images/debug.png)
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
