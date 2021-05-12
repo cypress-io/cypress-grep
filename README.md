@@ -207,9 +207,11 @@ You can set the grep string from the DevTools Console. This plugin adds method `
 Cypress.grep('hello world')
 // filter tests by tag string
 // in this case will run tests with tag @smoke OR @fast
-Cypress.grepTags('@smoke @fast')
+Cypress.grep(null, '@smoke @fast')
 // run tests tagged @smoke AND @fast
-Cypress.grepTags('@smoke+@fast')
+Cypress.grep(null, '@smoke+@fast')
+// run tests with title containing "hello" and tag @smoke
+Cypress.grep('hello', '@smoke')
 ```
 
 - to remove the grep strings enter `Cypress.grep()`

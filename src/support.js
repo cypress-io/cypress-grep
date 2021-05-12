@@ -103,17 +103,11 @@ function restartTests() {
 
 if (!Cypress.grep) {
   // expose a utility method to set the grep and run the tests
-  Cypress.grep = function grep(s) {
+  Cypress.grep = function grep(s, tags) {
     Cypress.env('grep', s)
-    debug('set new grep to "%s", restarting tests', s)
-    restartTests()
-  }
-}
+    Cypress.env('grepTags', tags)
 
-if (!Cypress.grepTags) {
-  Cypress.grepTags = function grepTags(s) {
-    Cypress.env('grepTags', s)
-    debug('set new grep tags to "%s", restarting tests', s)
+    debug('set new grep to "%s", tags to "%s", restarting tests', s, tags)
     restartTests()
   }
 }
