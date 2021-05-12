@@ -13,15 +13,18 @@ const _describe = describe
  * @see https://github.com/bahmutov/cypress-grep
  */
 function cypressGrep() {
+  /** @type {string} Part of the test title go grep */
   const grep = Cypress.env('grep')
+  /** @type {string} Raw tags to grep string */
+  const grepTags = Cypress.env('grepTags') || Cypress.env('grep-tags')
 
-  if (!grep) {
+  if (!grep && !grepTags) {
     // nothing to do, the user has no specified the "grep" string
     debug('Nothing to grep')
     return
   }
 
-  debug('parsing grep string "%s"', grep)
+  debug('grep %o', { grep, grepTags })
   const parsedGrep = parseGrep(grep)
   debug('parsed grep %o', parsedGrep)
 
@@ -92,14 +95,26 @@ function cypressGrep() {
   describe.skip = _describe.skip
 }
 
+function restartTests() {
+  setTimeout(() => {
+    window.top.document.querySelector('.reporter .restart').click()
+  }, 0)
+}
+
 if (!Cypress.grep) {
   // expose a utility method to set the grep and run the tests
   Cypress.grep = function grep(s) {
     Cypress.env('grep', s)
-    debug('set new grep to "%s", restarting', s)
-    setTimeout(() => {
-      window.top.document.querySelector('.reporter .restart').click()
-    }, 0)
+    debug('set new grep to "%s", restarting tests', s)
+    restartTests()
+  }
+}
+
+if (!Cypress.grepTags) {
+  Cypress.grepTags = function grepTags(s) {
+    Cypress.env('grepTags', s)
+    debug('set new grep tags to "%s", restarting tests', s)
+    restartTests()
   }
 }
 
