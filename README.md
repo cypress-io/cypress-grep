@@ -41,6 +41,16 @@ yarn add -D cypress-grep
 require('cypress-grep')()
 ```
 
+Start grepping by title and tags:
+
+```shell
+# run only the tests tagged "smoke"
+# that have "login" in their titles
+$ npx cypress run --env grep=login,grepTags=smoke
+```
+
+### Plugin file
+
 **optional:** load and register this module from the [plugin file](https://on.cypress.io/writing-and-organizing-tests#Plugins-file)
 
 ```js
@@ -52,7 +62,7 @@ module.exports = (on, config) => {
 }
 ```
 
-The plugin code will print a little message on load, for example
+By loading this module from the plugin file, it allows the `cypress-grep` to print a little message on load, for example
 
 ```shell
 $ npx cypress run --env grep=hello
