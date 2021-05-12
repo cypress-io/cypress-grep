@@ -10,7 +10,7 @@ describe('block with no tags', () => {
 //  --env grepTags=-@smoke
 // NOT WORKING: run all the tests in this suite only
 //  --env grepTags=@smoke
-describe('block with config tag', { tags: '@smoke' }, () => {
+describe('block with tag smoke', { tags: '@smoke' }, () => {
   it('inside describe 3', () => {})
 
   it('inside describe 4', () => {})
@@ -19,5 +19,5 @@ describe('block with config tag', { tags: '@smoke' }, () => {
 describe('block without any tags', () => {
   // note the parent suite has no tags
   // so this test should run when using --eng grepTags=@smoke
-  it('still runs', { tags: '@smoke' }, () => {})
+  it('test with tag smoke', { tags: '@smoke' }, () => {})
 })
