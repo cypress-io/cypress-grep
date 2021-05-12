@@ -6,6 +6,7 @@
   "files": [
     "src"
   ],
+  "types": "src/index.d.ts",
   "scripts": {
     "test": "cypress run --config testFiles='**/unit.js'",
     "open:unit": "cypress open --config testFiles='**/unit.js'",

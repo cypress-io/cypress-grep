@@ -140,6 +140,13 @@ it('runs on deploy', { tags: 'smoke' }, () => {
 })
 ```
 
+This package comes with [src/index.d.ts](./src/index.d.ts) definition file that adds the property `tags` to the Cypress test overrides interface. Include this file in your specs or TS config settings. For example, you can load it using a reference comment
+
+```js
+// cypress/integration/my-spec.js
+/// <reference types="cypress-grep" />
+```
+
 ## Test suites
 
 The tags are also applied to the "describe" blocks with some limitations:
