@@ -102,6 +102,17 @@ $ npx cypress run --env grep="-hello world"
 
 ## Filter with tags
 
+You can select tests to run or skip using tags by passing `--env grepTags=...` value.
+
+```
+# enable the tests with tag "one" or "two"
+--env grepTags="one two"
+# enable the tests with both tags "one" and "two"
+--env grepTags="one+two"
+# enable the tests with "hello" in the title and tag "smoke"
+--env grep=hello,grepTags=smoke
+```
+
 ### Tags in the test config object
 
 Cypress tests can have their own [test config object](https://on.cypress.io/configuration#Test-Configuration), and when using this plugin you can put the test tags there, either as a single tag string or as an array of tags.
