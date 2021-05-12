@@ -19,6 +19,8 @@ All other tests will be marked pending, see why in the [Cypress test statuses](h
 
 If you have multiple spec files, all specs will be loaded, and every test will be filtered the same way, since the grep is run-time operation and cannot eliminate the spec files without loading them. If you want to run only specific tests, use the built-in [--spec](https://on.cypress.io/command-line#cypress-run-spec-lt-spec-gt) CLI argument.
 
+Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=HS-Px-Sghd8)
+
 ## Install and use
 
 Assuming you have Cypress installed, add this module as a dev dependency
