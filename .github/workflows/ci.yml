@@ -54,6 +54,13 @@ jobs:
             --env grep=hello \
             --expect ./expects/hello.json
 
+      # check space character
+      - name: Run tests with "works 2" 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep="works 2" \
+            --expect ./expects/works-2.json
+
       - name: Run tests with "@tag1" 🧪
         run: |
           npx cypress-expect run \
@@ -75,20 +82,20 @@ jobs:
       - name: Run tests with "@tag1 AND @tag2" 🧪
         run: |
           npx cypress-expect \
-            --env grep=@tag1+@tag2 \
+            --env grepTags=@tag1+@tag2 \
             --expect ./expects/tag1-and-tag2.json
 
       - name: Run tests without @tag1 🧪
         run: |
           npx cypress-expect \
-            --env grep=-@tag1 \
+            --env grepTags=-@tag1 \
             --expect ./expects/invert-tag1.json
 
-      - name: Run tests with hello OR @tag1 🧪
+      - name: Run tests with title and tag 🧪
         run: |
           npx cypress-expect \
-            --env grep='hello @tag1' \
-            --expect ./expects/hello-or-tag1.json
+            --env grep=works,grepTags=@tag1 \
+            --expect ./expects/works-and-tag1.json
 
       # you can pass test tags in the config object
       - name: Run e2e tests with tags in the config 🧪
@@ -96,16 +103,16 @@ jobs:
           npx cypress-expect \
             --spec cypress/integration/config-tags-spec.js \
             --config testFiles="config-tags-spec.js" \
-            --env grep=config \
+            --env grepTags=config \
             --expect expects/config-tags-spec.json
 
-      # skip tests by using describe tags
+      # skip tests by using the describe tags
       - name: Run e2e tests with tags on the describe invert 🧪
         run: |
           npx cypress-expect \
             --spec cypress/integration/describe-tags-spec.js \
             --config testFiles="describe-tags-spec.js" \
-            --env grep=-@smoke \
+            --env grepTags=-@smoke \
             --expect expects/describe-tags-invert-spec.json
 
       # enable suite of tests using a tag
@@ -115,7 +122,7 @@ jobs:
           npx cypress-expect \
             --spec cypress/integration/describe-tags-spec.js \
             --config testFiles="describe-tags-spec.js" \
-            --env grep=@smoke \
+            --env grepTags=@smoke \
             --expect expects/describe-tags-spec.json
 
       - name: Semantic Release 🚀

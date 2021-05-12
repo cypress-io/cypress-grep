@@ -1,17 +1,34 @@
-function parseGrep(s) {
-  if (Array.isArray(s)) {
-    if (s.length !== 1) {
-      throw new Error('Assumed grep [...] would have a single string in it')
-    }
+// @ts-check
 
-    return [
-      [
-        {
-          tag: s[0],
-          invert: false,
-        },
-      ],
-    ]
+/**
+ * Parses test title grep string.
+ * The string can have "-" in front of it to invert the match.
+ * @param {string} s Input substring of the test title
+ */
+function parseTitleGrep(s) {
+  if (!s || typeof s !== 'string') {
+    return null
+  }
+
+  if (s.startsWith('-')) {
+    return {
+      title: s.substr(1),
+      invert: true,
+    }
+  }
+  return {
+    title: s,
+    invert: false,
+  }
+}
+
+/**
+ * Parses tags to grep for.
+ * @param {string} s Tags string like "@tag1+@tag2"
+ */
+function parseTagsGrep(s) {
+  if (!s) {
+    return []
   }
 
   // top level split - using space, each part is OR
@@ -37,6 +54,48 @@ function parseGrep(s) {
   return ORS
 }
 
+function shouldTestRunTags(parsedGrepTags, tags = []) {
+  if (!parsedGrepTags.length) {
+    // there are no parsed tags to search for, the test should run
+    return true
+  }
+
+  // now the test has tags and the parsed tags are present
+
+  // top levels are OR
+  const onePartMatched = parsedGrepTags.some((orPart) => {
+    const everyAndPartMatched = orPart.every((p) => {
+      if (p.invert) {
+        return !tags.includes(p.tag)
+      }
+
+      return tags.includes(p.tag)
+    })
+    // console.log('every part matched %o?', orPart, everyAndPartMatched)
+
+    return everyAndPartMatched
+  })
+
+  // console.log('onePartMatched', onePartMatched)
+  return onePartMatched
+}
+
+function shouldTestRunTitle(parsedGrep, testName) {
+  if (!testName) {
+    // if there is no title, let it run
+    return true
+  }
+  if (!parsedGrep) {
+    return true
+  }
+
+  if (parsedGrep.invert) {
+    return !testName.includes(parsedGrep.title)
+  }
+
+  return testName.includes(parsedGrep.title)
+}
+
 // note: tags take precedence over the test name
 function shouldTestRun(parsedGrep, testName, tags = []) {
   if (Array.isArray(testName)) {
@@ -45,34 +104,24 @@ function shouldTestRun(parsedGrep, testName, tags = []) {
     testName = undefined
   }
 
-  // top levels are OR
-  return parsedGrep.some((orPart) => {
-    return orPart.every((p) => {
-      if (p.invert) {
-        if (tags.length) {
-          return !tags.includes(p.tag)
-        }
-
-        if (testName) {
-          return !testName.includes(p.tag)
-        }
-
-        // no tags, no test name
-        return true
-      }
-
-      if (tags.length) {
-        return tags.includes(p.tag)
-      }
-
-      if (testName) {
-        return testName.includes(p.tag)
-      }
-
-      // no tags, no test name
-      return true
-    })
-  })
+  return (
+    shouldTestRunTitle(parsedGrep.title, testName) &&
+    shouldTestRunTags(parsedGrep.tags, tags)
+  )
 }
 
-module.exports = { parseGrep, shouldTestRun }
+function parseGrep(titlePart, tags) {
+  return {
+    title: parseTitleGrep(titlePart),
+    tags: parseTagsGrep(tags),
+  }
+}
+
+module.exports = {
+  parseGrep,
+  parseTitleGrep,
+  parseTagsGrep,
+  shouldTestRun,
+  shouldTestRunTags,
+  shouldTestRunTitle,
+}

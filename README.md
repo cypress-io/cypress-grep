@@ -17,7 +17,7 @@ npx cypress run --env grep=hello
 
 All other tests will be marked pending, see why in the [Cypress test statuses](https://on.cypress.io/writing-and-organizing-tests#Test-statuses) blog post.
 
-If you have multiple spec files, all specs will be loaded, and every test will be filtered the same way, since the grep is run-time operation and cannot eliminate the spec files without loading them.
+If you have multiple spec files, all specs will be loaded, and every test will be filtered the same way, since the grep is run-time operation and cannot eliminate the spec files without loading them. If you want to run only specific tests, use the built-in [--spec](https://on.cypress.io/command-line#cypress-run-spec-lt-spec-gt) CLI argument.
 
 ## Install and use
 
@@ -54,17 +54,25 @@ The plugin code will print a little message on load, for example
 
 ```shell
 $ npx cypress run --env grep=hello
-cypress-grep: only running tests with "hello" in their names
+cypress-grep: tests with "hello" in their names
 ```
 
-## Filter by grep
+## Filter
 
-You can use any way to modify the environment value `grep` except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the `cypress.json` file to run only tests with the substring `@smoke` in their names
+You can filter tests to run using part of their title via `grep`, and via explicit tags via `grepTags` Cypress environment variables.
+
+Most likely you will pass these environment variables from the command line. For example, to only run tests with "login" in their title and tagged "smoke", you would run:
+
+```shell
+$ npx cypress run --env grep=login,grepTags=smoke
+```
+
+You can use any way to modify the environment values `grep` and `grepTags`, except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the `cypress.json` file to run only tests with the substring `viewport` in their names
 
 ```json
 {
   "env": {
-    "grep": "@smoke"
+    "grep": "viewport"
   }
 }
 ```
@@ -74,44 +82,27 @@ You can also set the `env.grep` object in the plugin file, but remember to retur
 ```js
 // cypress/plugin/index.js
 module.exports = (on, config) => {
-  config.env.grep = '@smoke'
+  config.env.grep = 'viewport'
   return config
 }
 ```
 
-Most likely you will pass the grep string via CLI when launching Cypress
+You can also set the grep and grepTags from the DevTools console while running Cypress in the interactive mode `cypress open`, see [DevTools Console section](#devtools-console).
+
+### grep by test title
 
 ```shell
-$ npx cypress run --env grep=@smoke
+# run all tests with "hello" in their title
+$ npx cypress run --env grep=hello
+# run all tests with "hello world" in their title
+$ npx cypress run --env grep="hello world"
+# run all tests WITHOUT "hello world" in their title
+$ npx cypress run --env grep="-hello world"
 ```
 
-### AND tags
+## Filter with tags
 
-Use `+` to require both tags to be present
-
-```
---env grep=@smoke+@fast
-```
-
-### Invert tag
-
-You can skip running the tests with specific tag using the invert option: prefix the tag with the character `-`.
-
-```
-# do not run any tests with tag "@slow"
---env grep=-@slow
-```
-
-### OR tags
-
-You can run tests that match one tag or another using spaces. Make sure to quote the grep string!
-
-```
-# run tests with tags "@slow" or "@critical" in their names
---env grep='@slow @critical'
-```
-
-## Tags in the test config object
+### Tags in the test config object
 
 Cypress tests can have their own [test config object](https://on.cypress.io/configuration#Test-Configuration), and when using this plugin you can put the test tags there, either as a single tag string or as an array of tags.
 
@@ -125,7 +116,7 @@ it('works as a string', { tags: 'config' }, () => {
 })
 ```
 
-You can run both of these tests using `--env grep=config` string.
+You can run both of these tests using `--env grepTags=config` string.
 
 ### TypeScript users
 
@@ -149,21 +140,46 @@ describe('block with config tag', { tags: '@smoke' }, () => {
 })
 ```
 
-- currently only the invert tag to skip the blog has meaningful effect. For example you can skip the above suite of tests by using `--env grep=-@smoke` value. Keep an eye on issue [#22](https://github.com/bahmutov/cypress-grep/issues/22) for the full support implementation.
+- currently only the invert tag to skip the blog has meaningful effect. For example you can skip the above suite of tests by using `--env grepTags=-@smoke` value. Keep an eye on issue [#22](https://github.com/bahmutov/cypress-grep/issues/22) for the full support implementation.
 
 See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
 
+### AND tags
+
+Use `+` to require both tags to be present
+
+```
+--env grepTags=@smoke+@fast
+```
+
+### Invert tag
+
+You can skip running the tests with specific tag using the invert option: prefix the tag with the character `-`.
+
+```
+# do not run any tests with tag "@slow"
+--env grepTags=-@slow
+```
+
+### OR tags
+
+You can run tests that match one tag or another using spaces. Make sure to quote the grep string!
+
+```
+# run tests with tags "@slow" or "@critical" in their names
+--env grepTags='@slow @critical'
+```
+
 ## General advice
 
-- do not use spaces in the tags themselves, as `--env grep=...` string separates the grep string into OR tags using the space ` ` separator.
+- keep it simple.
 - I like using `@` as tag prefix to make the tags searchable
-- I like using the test or suite configuration object to explicitly list the tags
 
 ```js
 // ✅ good practice
 describe('auth', { tags: '@critical' }, () => ...)
 it('works', { tags: '@smoke' }, () => ...)
-it('works', { tags: ['@smoke', '@fast'] }, () => ...)
+it('works quickly', { tags: ['@smoke', '@fast'] }, () => ...)
 
 // 🚨 NOT GOING TO WORK
 // ERROR: treated as a single tag,
@@ -171,19 +187,34 @@ it('works', { tags: ['@smoke', '@fast'] }, () => ...)
 it('works', { tags: '@smoke @fast' }, () => ...)
 ```
 
-## DevTools console
+Grepping the tests
 
-You can set the grep string from the DevTools Console. This plugin adds method `Cypress.grep` to set the grep string and restart the tests
-
-```js
-// use grep "@tag1"
-Cypress.grep('@tag1')
-// run the test with substring "hello world"
-// without parsing separate words as tags
-Cypress.grep(['hello world'])
+```shell
+# run the tests by title
+$ npx cypress run --env grep="works quickly"
+# run all tests tagged @smoke
+$ npx cypress run --env grepTags=@smoke
+# run all tests except tagged @smoke
+$ npx cypress run --env grepTags=-@smoke
 ```
 
-- to remove the grep string, enter `Cypress.grep()`
+## DevTools console
+
+You can set the grep string from the DevTools Console. This plugin adds method `Cypress.grep` and `Cypress.grepTags` to set the grep strings and restart the tests
+
+```js
+// filter tests by title substring
+Cypress.grep('hello world')
+// filter tests by tag string
+// in this case will run tests with tag @smoke OR @fast
+Cypress.grep(null, '@smoke @fast')
+// run tests tagged @smoke AND @fast
+Cypress.grep(null, '@smoke+@fast')
+// run tests with title containing "hello" and tag @smoke
+Cypress.grep('hello', '@smoke')
+```
+
+- to remove the grep strings enter `Cypress.grep()`
 
 ## Debugging
 
@@ -199,6 +230,33 @@ This module uses [debug](https://github.com/visionmedia/debug#readme) to log ver
 
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
 - [cypress-skip-test](https://github.com/cypress-io/cypress-skip-test)
+
+## Migration guide
+
+### from v1 to v2
+
+In v2 we have separated grepping by part of the title string from tags.
+
+**v1**
+
+```
+--env grep="one two"
+```
+
+The above scenario was confusing - did you want to find all tests with title containing "one two" or did you want to run tests tagged `one` or `two`?
+
+**v2**
+
+```
+# enable the tests with string "one two" in their titles
+--env grep="one two"
+# enable the tests with tag "one" or "two"
+--env grepTags="one two"
+# enable the tests with both tags "one" and "two"
+--env grepTags="one+two"
+# enable the tests with "hello" in the title and tag "smoke"
+--env grep=hello,grepTags=smoke
+```
 
 ## Small print
 
