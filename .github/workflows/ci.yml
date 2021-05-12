@@ -84,11 +84,11 @@ jobs:
             --env grepTags=-@tag1 \
             --expect ./expects/invert-tag1.json
 
-      - name: Run tests with hello and @tag1 🧪
+      - name: Run tests with title and tag 🧪
         run: |
           npx cypress-expect \
-            --env grep=hello,grepTags=@tag1 \
-            --expect ./expects/hello-and-tag1.json
+            --env grep=works,grepTags=@tag1 \
+            --expect ./expects/works-and-tag1.json
 
       # you can pass test tags in the config object
       - name: Run e2e tests with tags in the config 🧪

@@ -200,6 +200,33 @@ This module uses [debug](https://github.com/visionmedia/debug#readme) to log ver
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
 - [cypress-skip-test](https://github.com/cypress-io/cypress-skip-test)
 
+## Migration guide
+
+### from v1 to v2
+
+In v2 we have separated grepping by part of the title string from tags.
+
+**v1**
+
+```
+--env grep="one two"
+```
+
+The above scenario was confusing - did you want to find all tests with title containing "one two" or did you want to run tests tagged `one` or `two`?
+
+**v2**
+
+```
+# enable the tests with string "one two" in their titles
+--env grep="one two"
+# enable the tests with tag "one" or "two"
+--env grepTags="one two"
+# enable the tests with both tags "one" and "two"
+--env grepTags="one+two"
+# enable the tests with "hello" in the title and tag "smoke"
+--env grep=hello,grepTags=smoke
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2021
