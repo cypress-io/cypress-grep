@@ -105,7 +105,7 @@ jobs:
           npx cypress-expect \
             --spec cypress/integration/describe-tags-spec.js \
             --config testFiles="describe-tags-spec.js" \
-            --env grep=-@smoke \
+            --env grepTags=-@smoke \
             --expect expects/describe-tags-invert-spec.json
 
       # enable suite of tests using a tag
@@ -115,7 +115,7 @@ jobs:
           npx cypress-expect \
             --spec cypress/integration/describe-tags-spec.js \
             --config testFiles="describe-tags-spec.js" \
-            --env grep=@smoke \
+            --env grepTags=@smoke \
             --expect expects/describe-tags-spec.json
 
       - name: Semantic Release 🚀
