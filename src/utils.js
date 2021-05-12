@@ -81,7 +81,7 @@ function shouldTestRunTags(parsedGrepTags, tags = []) {
     return everyAndPartMatched
   })
 
-  console.log('onePartMatched', onePartMatched)
+  // console.log('onePartMatched', onePartMatched)
   return onePartMatched
 }
 

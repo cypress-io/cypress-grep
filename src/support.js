@@ -25,7 +25,7 @@ function cypressGrep() {
   }
 
   debug('grep %o', { grep, grepTags })
-  const parsedGrep = parseGrep(grep)
+  const parsedGrep = parseGrep(grep, grepTags)
   debug('parsed grep %o', parsedGrep)
 
   it = function (name, options, callback) {
