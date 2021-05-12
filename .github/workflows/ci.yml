@@ -99,7 +99,7 @@ jobs:
             --env grepTags=config \
             --expect expects/config-tags-spec.json
 
-      # skip tests by using describe tags
+      # skip tests by using the describe tags
       - name: Run e2e tests with tags on the describe invert 🧪
         run: |
           npx cypress-expect \
