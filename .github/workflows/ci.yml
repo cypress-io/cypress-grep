@@ -81,7 +81,7 @@ jobs:
       - name: Run tests without @tag1 🧪
         run: |
           npx cypress-expect \
-            --env grep=-@tag1 \
+            --env grepTags=-@tag1 \
             --expect ./expects/invert-tag1.json
 
       - name: Run tests with hello OR @tag1 🧪

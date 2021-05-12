@@ -58,6 +58,11 @@ describe('utils', () => {
       ])
     })
 
+    it('parses inverted tag', () => {
+      const parsed = parseTagsGrep('-@tag1')
+      expect(parsed).to.deep.equal([[{ tag: '@tag1', invert: true }]])
+    })
+
     it('parses tag1 but not tag2 with space', () => {
       const parsed = parseTagsGrep('@tag1 -@tag2')
       expect(parsed).to.deep.equal([
@@ -185,6 +190,8 @@ describe('utils', () => {
       shouldIt('smoke -slow', ['smoke', 'fast'], true)
       shouldIt('-slow', ['smoke', 'slow'], false)
       shouldIt('-slow', ['smoke'], true)
+      // no tags in the test
+      shouldIt('-slow', [], true)
     })
   })
 
@@ -208,10 +215,17 @@ describe('utils', () => {
       expect(shouldTestRun(parsed, 'has @tag1 in the name')).to.be.true
     })
 
+    it('with invert title', () => {
+      const t = checkName('-hello')
+      expect(t('no greetings')).to.be.true
+      expect(t('has hello world')).to.be.false
+    })
+
     it('with invert option', () => {
-      const t = checkName('-@tag1')
-      expect(t('no tag1 here')).to.be.true
-      expect(t('has @tag1 in the name')).to.be.false
+      const t = checkName(null, '-@tag1')
+      expect(t('no tags here')).to.be.true
+      expect(t('has tag1', ['@tag1'])).to.be.false
+      expect(t('has other tags', ['@tag2'])).to.be.true
     })
 
     it('with AND option', () => {

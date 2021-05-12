@@ -60,11 +60,6 @@ function shouldTestRunTags(parsedGrepTags, tags = []) {
     return true
   }
 
-  if (!tags.length) {
-    // the test has no tags, it should not run
-    return false
-  }
-
   // now the test has tags and the parsed tags are present
 
   // top levels are OR
