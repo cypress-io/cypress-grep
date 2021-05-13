@@ -41,14 +41,6 @@ yarn add -D cypress-grep
 require('cypress-grep')()
 ```
 
-Start grepping by title and tags:
-
-```shell
-# run only the tests tagged "smoke"
-# that have "login" in their titles
-$ npx cypress run --env grep=login,grepTags=smoke
-```
-
 ### Plugin file
 
 **optional:** load and register this module from the [plugin file](https://on.cypress.io/writing-and-organizing-tests#Plugins-file)
@@ -69,7 +61,27 @@ $ npx cypress run --env grep=hello
 cypress-grep: tests with "hello" in their names
 ```
 
-## Filter
+## Use
+
+Start grepping by title and tags:
+
+```shell
+# run only the tests with "auth user" in the title
+$ npx cypress run --env grep="auth user"
+# run tests tagged @fast
+$ npx cypress run --env grepTags=@fast
+# run only the tests tagged "smoke"
+# that have "login" in their titles
+$ npx cypress run --env grep=login,grepTags=smoke
+```
+
+## Videos
+
+Watch the video [intro to cypress-grep](https://www.youtube.com/watch?v=HS-Px-Sghd8) which shows how this repository tags tests, uses [cypress-grep](https://github.com/bahmutov/cypress-grep) plugin, and sets up the TypeScript intelligent code completion.
+
+You can also watch [How I organize pull request workflows](https://youtu.be/SFW7Ecj5TNE) where I show how the GitHub workflows in [.github/workflows](./.github/workflows) are organized to run the smoke tests first on pull request.
+
+## Filters
 
 You can filter tests to run using part of their title via `grep`, and via explicit tags via `grepTags` Cypress environment variables.
 
