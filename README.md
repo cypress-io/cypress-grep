@@ -212,6 +212,16 @@ You can run tests that match one tag or another using spaces. Make sure to quote
 --env grepTags='@slow @critical'
 ```
 
+## Burn
+
+You can repeat (burn) the filtered tests to make sure they are flake-free
+
+```
+npx cypress run --env grep="hello world",burn=5
+```
+
+You can pass the number of times to run the tests via environment name `burn` or `grepBurn` or `grep-burn`. Note, if a lot of tests match the grep and grep tags, a lot of tests will be burnt!
+
 ## General advice
 
 - keep it simple.

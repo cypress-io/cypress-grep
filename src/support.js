@@ -24,7 +24,15 @@ function cypressGrep() {
     return
   }
 
-  debug('grep %o', { grep, grepTags })
+  /** @type {number} Number of times to repeat each running test */
+  const grepBurn =
+    Cypress.env('grepBurn') ||
+    Cypress.env('grep-burn') ||
+    Cypress.env('burn') ||
+    1
+
+  debug('grep %o', { grep, grepTags, grepBurn })
+  // TODO validate grepBurn value
   const parsedGrep = parseGrep(grep, grepTags)
   debug('parsed grep %o', parsedGrep)
 
@@ -47,6 +55,13 @@ function cypressGrep() {
     const shouldRun = shouldTestRun(parsedGrep, name, configTags)
 
     if (shouldRun) {
+      if (grepBurn > 1) {
+        // repeat the same test to make sure it is solid
+        return Cypress._.times(grepBurn, (k) => {
+          const fullName = `${name}: burning ${k + 1} of ${grepBurn}`
+          _it(fullName, options, callback)
+        })
+      }
       return _it(name, options, callback)
     }
 
