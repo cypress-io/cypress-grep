@@ -125,6 +125,13 @@ jobs:
             --env grepTags=@smoke \
             --expect expects/describe-tags-spec.json
 
+      # repeat the selected test 3 times
+      - name: Burn grepped test 🧪
+        run: |
+          npx cypress-expect \
+            --env grep="hello w",burn=3 \
+            --expect expects/hello-burn.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:
