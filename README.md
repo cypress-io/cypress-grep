@@ -257,6 +257,8 @@ You can set the grep string from the DevTools Console. This plugin adds method `
 ```js
 // filter tests by title substring
 Cypress.grep('hello world')
+// run filtered tests 100 times
+Cypress.grep('hello world', null, 100)
 // filter tests by tag string
 // in this case will run tests with tag @smoke OR @fast
 Cypress.grep(null, '@smoke @fast')
@@ -264,6 +266,8 @@ Cypress.grep(null, '@smoke @fast')
 Cypress.grep(null, '@smoke+@fast')
 // run tests with title containing "hello" and tag @smoke
 Cypress.grep('hello', '@smoke')
+// run tests with title containing "hello" and tag @smoke 10 times
+Cypress.grep('hello', '@smoke', 10)
 ```
 
 - to remove the grep strings enter `Cypress.grep()`
