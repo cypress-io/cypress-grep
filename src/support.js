@@ -117,12 +117,31 @@ function restartTests() {
 }
 
 if (!Cypress.grep) {
-  // expose a utility method to set the grep and run the tests
-  Cypress.grep = function grep(s, tags) {
-    Cypress.env('grep', s)
+  /**
+   * A utility method to set the grep and run the tests from
+   * the DevTools console. Restarts the test runner
+   * @example
+   *  // run only the tests with "hello w" in the title
+   *  Cypress.grep('hello w')
+   *  // runs only tests tagged both "@smoke" and "@fast"
+   *  Cypress.grep(null, '@smoke+@fast')
+   *  // runs the grepped tests 100 times
+   *  Cypress.grep('add items', null, 100)
+   *  // remove all current grep settings
+   *  // and run all tests
+   *  Cypress.grep()
+   * @see "Grep from DevTools console" https://github.com/bahmutov/cypress-grep#devtools-console
+   */
+  Cypress.grep = function grep(grep, tags, burn) {
+    Cypress.env('grep', grep)
     Cypress.env('grepTags', tags)
+    Cypress.env('grepBurn', burn)
+    // remove any aliased values
+    Cypress.env('grep-tags', null)
+    Cypress.env('grep-burn', null)
+    Cypress.env('burn', null)
 
-    debug('set new grep to "%s", tags to "%s", restarting tests', s, tags)
+    debug('set new grep to "%o" restarting tests', { grep, tags, burn })
     restartTests()
   }
 }
