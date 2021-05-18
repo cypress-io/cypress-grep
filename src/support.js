@@ -36,7 +36,7 @@ function cypressGrep() {
   const parsedGrep = parseGrep(grep, grepTags)
   debug('parsed grep %o', parsedGrep)
 
-  it = function (name, options, callback) {
+  it = function itGrep(name, options, callback) {
     if (typeof options === 'function') {
       // the test has format it('...', cb)
       callback = options
@@ -54,6 +54,10 @@ function cypressGrep() {
     }
     const shouldRun = shouldTestRun(parsedGrep, name, configTags)
 
+    const currentSuite = Cypress._.last(Cypress.mocha._mocha.suite.suites)
+    console.log('current suite', currentSuite)
+    debugger
+
     if (shouldRun) {
       if (grepBurn > 1) {
         // repeat the same test to make sure it is solid
@@ -69,7 +73,7 @@ function cypressGrep() {
     return _it.skip(name, options, callback)
   }
 
-  describe = function (name, options, callback) {
+  describe = function describeGrep(name, options, callback) {
     if (typeof options === 'function') {
       // the block has format describe('...', cb)
       callback = options
@@ -89,7 +93,8 @@ function cypressGrep() {
     if (!configTags || !configTags.length) {
       // if the describe suite does not have explicit tags
       // move on, since the tests inside can have their own tags
-      return _describe(name, options, callback)
+      _describe(name, options, callback)
+      return
     }
 
     // when looking at the suite of the tests, I found
@@ -98,11 +103,13 @@ function cypressGrep() {
     const shouldRun = shouldTestRun(parsedGrep, configTags)
 
     if (shouldRun) {
-      return _describe(name, options, callback)
+      _describe(name, options, callback)
+      return
     }
 
     // skip tests without grep string in their names
-    return _describe.skip(name, options, callback)
+    _describe.skip(name, options, callback)
+    return
   }
 
   // keep the "it.skip" the same as before

@@ -9,5 +9,6 @@
   },
   "block without any tags": {
     "test with tag smoke": "passed"
-  }
+  },
+  "is a test outside any suites": "pending"
 }

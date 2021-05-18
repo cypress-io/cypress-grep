@@ -21,3 +21,5 @@ describe('block without any tags', () => {
   // so this test should run when using --eng grepTags=@smoke
   it('test with tag smoke', { tags: '@smoke' }, () => {})
 })
+
+it('is a test outside any suites', () => {})
