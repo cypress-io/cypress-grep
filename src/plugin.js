@@ -1,13 +1,19 @@
 function cypressGrepPlugin(config) {
   if (config && config.env) {
-    if (config.env.grep) {
-      console.log(
-        'cypress-grep: tests with "%s" in their names',
-        config.env.grep,
-      )
+    const grep = config.env.grep
+    if (grep) {
+      console.log('cypress-grep: tests with "%s" in their names', grep)
     }
-    if (config.env.grepTags) {
-      console.log('cypress-grep: filtering using tag "%s"', config.env.grepTags)
+
+    const grepTags = config.env.grepTags || config.env['grep-tags']
+    if (grepTags) {
+      console.log('cypress-grep: filtering using tag "%s"', grepTags)
+    }
+
+    const grepBurn =
+      config.env.grepBurn || config.env['grep-burn'] || config.env.burn
+    if (grepBurn) {
+      console.log('cypress-grep: running filtered tests %d times', grepBurn)
     }
   }
 }
