@@ -53,10 +53,16 @@ function cypressGrep() {
       configTags = [configTags]
     }
     const shouldRun = shouldTestRun(parsedGrep, name, configTags)
-
-    const currentSuite = Cypress._.last(Cypress.mocha._mocha.suite.suites)
-    console.log('current suite', currentSuite)
-    debugger
+    if (configTags && configTags.length) {
+      debug(
+        'should test "%s" with tags %s run? %s',
+        name,
+        configTags.join(','),
+        shouldRun,
+      )
+    } else {
+      debug('should test "%s" run? %s', name, shouldRun)
+    }
 
     if (shouldRun) {
       if (grepBurn > 1) {
@@ -112,9 +118,11 @@ function cypressGrep() {
     return
   }
 
-  // keep the "it.skip" the same as before
+  // keep the ".skip", ".only" methods the same as before
   it.skip = _it.skip
+  it.only = _it.only
   describe.skip = _describe.skip
+  describe.only = _describe.only
 }
 
 function restartTests() {
