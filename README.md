@@ -21,7 +21,7 @@ If you have multiple spec files, all specs will be loaded, and every test will b
 
 Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=HS-Px-Sghd8)
 
-## Install and use
+## Install
 
 Assuming you have Cypress installed, add this module as a dev dependency
 
@@ -114,6 +114,14 @@ module.exports = (on, config) => {
 ```
 
 You can also set the grep and grepTags from the DevTools console while running Cypress in the interactive mode `cypress open`, see [DevTools Console section](#devtools-console).
+
+### Disable grep
+
+If you specify the `grep` parameters inside `cypress.json` file, you can disable it from the command line
+
+```
+$ npx cypress run --env grep=,grepTags=,burn=
+```
 
 ### grep by test title
 
@@ -251,6 +259,8 @@ $ npx cypress run --env grepTags=@smoke
 # run all tests except tagged @smoke
 $ npx cypress run --env grepTags=-@smoke
 ```
+
+I would run all tests by default, and grep tests from the command line. For example, I could run the smoke tests first using grep plugin, and if the smoke tests pass, then run all the tests. See the video [How I organize pull request workflows by running smoke tests first](https://www.youtube.com/watch?v=SFW7Ecj5TNE) and its [pull request workflow file](https://github.com/bahmutov/cypress-grep-example/blob/main/.github/workflows/pr.yml).
 
 ## DevTools console
 
