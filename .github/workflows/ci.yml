@@ -91,6 +91,12 @@ jobs:
             --env grepTags=-@tag1 \
             --expect ./expects/invert-tag1.json
 
+      - name: Run tests with @tag1 but without @tag2 🧪
+        run: |
+          npx cypress-expect \
+            --env grepTags=@tag1+-@tag2 \
+            --expect ./expects/tag1-without-tag2.json
+
       - name: Run tests with title and tag 🧪
         run: |
           npx cypress-expect \

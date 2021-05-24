@@ -213,6 +213,12 @@ You can skip running the tests with specific tag using the invert option: prefix
 --env grepTags=-@slow
 ```
 
+If you want to run all tests with tag `@slow` but without tag `@smoke`:
+
+```
+--env grepTags=@slow+-@smoke
+```
+
 ### OR tags
 
 You can run tests that match one tag or another using spaces. Make sure to quote the grep string!
@@ -258,6 +264,8 @@ $ npx cypress run --env grep="works quickly"
 $ npx cypress run --env grepTags=@smoke
 # run all tests except tagged @smoke
 $ npx cypress run --env grepTags=-@smoke
+# run all tests that have tag @fast but do not have tag @smoke
+$ npx cypress run --env grepTags=@fast+-@smoke
 ```
 
 I would run all tests by default, and grep tests from the command line. For example, I could run the smoke tests first using grep plugin, and if the smoke tests pass, then run all the tests. See the video [How I organize pull request workflows by running smoke tests first](https://www.youtube.com/watch?v=SFW7Ecj5TNE) and its [pull request workflow file](https://github.com/bahmutov/cypress-grep-example/blob/main/.github/workflows/pr.yml).
