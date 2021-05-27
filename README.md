@@ -68,6 +68,9 @@ Start grepping by title and tags:
 ```shell
 # run only the tests with "auth user" in the title
 $ npx cypress run --env grep="auth user"
+# run tests with "hello" or "auth user" in their titles
+# by separating them with ";" character
+$ npx cypress run --env grep="hello; auth user"
 # run tests tagged @fast
 $ npx cypress run --env grepTags=@fast
 # run only the tests tagged "smoke"
@@ -132,6 +135,13 @@ $ npx cypress run --env grep=hello
 $ npx cypress run --env grep="hello world"
 # run all tests WITHOUT "hello world" in their title
 $ npx cypress run --env grep="-hello world"
+```
+
+You can pass multiple title substrings to match separating them with `;` character. Each substring is trimmed.
+
+```shell
+# run all tests with "hello world" or "auth user" in their title
+$ npx cypress run --env grep="hello world; auth user"
 ```
 
 ## Filter with tags
