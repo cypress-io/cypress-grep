@@ -61,6 +61,19 @@ jobs:
             --env grep="works 2" \
             --expect ./expects/works-2.json
 
+      # trims the grep string
+      - name: Run tests with "works 2" 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep="  works 2    " \
+            --expect ./expects/works-2.json
+
+      - name: Run tests with "hello" or "works 2" 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep="hello; works 2" \
+            --expect ./expects/hello-or-works-2.json
+
       - name: Run tests with "@tag1" 🧪
         run: |
           npx cypress-expect run \

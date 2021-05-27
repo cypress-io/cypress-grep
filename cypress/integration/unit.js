@@ -3,6 +3,7 @@
 import {
   parseGrep,
   parseTitleGrep,
+  parseFullTitleGrep,
   parseTagsGrep,
   shouldTestRun,
   shouldTestRunTags,
@@ -19,8 +20,24 @@ describe('utils', () => {
       })
     })
 
+    it('trims the string', () => {
+      const parsed = parseTitleGrep('   hello w  ')
+      expect(parsed).to.deep.equal({
+        title: 'hello w',
+        invert: false,
+      })
+    })
+
     it('inverts the string', () => {
       const parsed = parseTitleGrep('-hello w')
+      expect(parsed).to.deep.equal({
+        title: 'hello w',
+        invert: true,
+      })
+    })
+
+    it('trims the inverted the string', () => {
+      const parsed = parseTitleGrep('  -hello w  ')
       expect(parsed).to.deep.equal({
         title: 'hello w',
         invert: true,
@@ -30,6 +47,17 @@ describe('utils', () => {
     it('returns null for undefined input', () => {
       const parsed = parseTitleGrep()
       expect(parsed).to.equal(null)
+    })
+  })
+
+  context('parseFullTitleGrep', () => {
+    it('returns list of title greps', () => {
+      const parsed = parseFullTitleGrep('hello; one; -two')
+      expect(parsed).to.deep.equal([
+        { title: 'hello', invert: false },
+        { title: 'one', invert: false },
+        { title: 'two', invert: true },
+      ])
     })
   })
 
@@ -92,10 +120,12 @@ describe('utils', () => {
     it('creates just the title grep', () => {
       const parsed = parseGrep('hello w')
       expect(parsed).to.deep.equal({
-        title: {
-          title: 'hello w',
-          invert: false,
-        },
+        title: [
+          {
+            title: 'hello w',
+            invert: false,
+          },
+        ],
         tags: [],
       })
     })
@@ -103,10 +133,12 @@ describe('utils', () => {
     it('creates object from the grep string only', () => {
       const parsed = parseGrep('hello w')
       expect(parsed).to.deep.equal({
-        title: {
-          title: 'hello w',
-          invert: false,
-        },
+        title: [
+          {
+            title: 'hello w',
+            invert: false,
+          },
+        ],
         tags: [],
       })
 
@@ -115,13 +147,39 @@ describe('utils', () => {
       expect(shouldTestRun(parsed, 'hello no')).to.equal(false)
     })
 
+    it('matches one of the titles', () => {
+      // also should trim each title
+      const parsed = parseGrep('  hello w; work 2  ')
+
+      expect(parsed).to.deep.equal({
+        title: [
+          {
+            title: 'hello w',
+            invert: false,
+          },
+          {
+            title: 'work 2',
+            invert: false,
+          },
+        ],
+        tags: [],
+      })
+
+      // check how the parsed grep works against specific tests
+      expect(shouldTestRun(parsed, 'hello w')).to.equal(true)
+      expect(shouldTestRun(parsed, 'this work 2 works')).to.equal(true)
+      expect(shouldTestRun(parsed, 'hello no')).to.equal(false)
+    })
+
     it('creates object from the grep string and tags', () => {
       const parsed = parseGrep('hello w', '@tag1+@tag2+@tag3')
       expect(parsed).to.deep.equal({
-        title: {
-          title: 'hello w',
-          invert: false,
-        },
+        title: [
+          {
+            title: 'hello w',
+            invert: false,
+          },
+        ],
         tags: [
           // single OR part
           [
@@ -262,9 +320,9 @@ describe('utils', () => {
     })
   })
 
-  context('shouldTestRunTitle', () => {
+  context('parseFullTitleGrep', () => {
     const shouldIt = (search, testName, expected) => {
-      const parsed = parseTitleGrep(search)
+      const parsed = parseFullTitleGrep(search)
       expect(
         shouldTestRunTitle(parsed, testName),
         `"${search}" against title "${testName}"`,
