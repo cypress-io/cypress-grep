@@ -14,7 +14,11 @@ const _describe = describe
  */
 function cypressGrep() {
   /** @type {string} Part of the test title go grep */
-  const grep = Cypress.env('grep')
+  let grep = Cypress.env('grep')
+  if (grep) {
+    grep = grep.trim()
+  }
+
   /** @type {string} Raw tags to grep string */
   const grepTags = Cypress.env('grepTags') || Cypress.env('grep-tags')
 
