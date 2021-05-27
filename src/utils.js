@@ -1,5 +1,7 @@
 // @ts-check
 
+// Universal code - should run in Node or in the browser
+
 /**
  * Parses test title grep string.
  * The string can have "-" in front of it to invert the match.
@@ -10,6 +12,7 @@ function parseTitleGrep(s) {
     return null
   }
 
+  s = s.trim()
   if (s.startsWith('-')) {
     return {
       title: s.substr(1),
@@ -20,6 +23,15 @@ function parseTitleGrep(s) {
     title: s,
     invert: false,
   }
+}
+
+function parseFullTitleGrep(s) {
+  if (!s || typeof s !== 'string') {
+    return []
+  }
+
+  // separate each title
+  return s.split(';').map(parseTitleGrep)
 }
 
 /**
@@ -120,6 +132,7 @@ function parseGrep(titlePart, tags) {
 module.exports = {
   parseGrep,
   parseTitleGrep,
+  parseFullTitleGrep,
   parseTagsGrep,
   shouldTestRun,
   shouldTestRunTags,

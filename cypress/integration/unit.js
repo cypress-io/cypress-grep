@@ -3,6 +3,7 @@
 import {
   parseGrep,
   parseTitleGrep,
+  parseFullTitleGrep,
   parseTagsGrep,
   shouldTestRun,
   shouldTestRunTags,
@@ -19,8 +20,24 @@ describe('utils', () => {
       })
     })
 
+    it('trims the string', () => {
+      const parsed = parseTitleGrep('   hello w  ')
+      expect(parsed).to.deep.equal({
+        title: 'hello w',
+        invert: false,
+      })
+    })
+
     it('inverts the string', () => {
       const parsed = parseTitleGrep('-hello w')
+      expect(parsed).to.deep.equal({
+        title: 'hello w',
+        invert: true,
+      })
+    })
+
+    it('trims the inverted the string', () => {
+      const parsed = parseTitleGrep('  -hello w  ')
       expect(parsed).to.deep.equal({
         title: 'hello w',
         invert: true,
@@ -30,6 +47,17 @@ describe('utils', () => {
     it('returns null for undefined input', () => {
       const parsed = parseTitleGrep()
       expect(parsed).to.equal(null)
+    })
+  })
+
+  context('parseFullTitleGrep', () => {
+    it('returns list of title greps', () => {
+      const parsed = parseFullTitleGrep('hello; one; -two')
+      expect(parsed).to.deep.equal([
+        { title: 'hello', invert: false },
+        { title: 'one', invert: false },
+        { title: 'two', invert: true },
+      ])
     })
   })
 
