@@ -37,6 +37,10 @@ jobs:
             --env grep=pending \
             --expect expects/pending.json
 
+      # grep tests using Cypress module API
+      - name: Grep tests using Cypress module API 🧩
+        run: node ./expects/test-npm-module.js
+
       # tests do not break the custom test config object as argument
       - name: Run e2e tests with config object with grep 🧪
         run: |
