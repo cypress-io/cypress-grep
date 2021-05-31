@@ -1,4 +1,6 @@
-/// <reference types="cypress" />
+/// <reference path="../../src/index.d.ts" />
+
+// @ts-check
 
 describe('block with no tags', () => {
   it('inside describe 1', () => {})

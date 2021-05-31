@@ -11,6 +11,6 @@ declare namespace Cypress {
      * @example multiple tags
      *  it('works', { tags: ['@smoke', '@slow'] }, () => { ... })
      */
-    tags: string | string[]
+    tags?: string | string[]
   }
 }
