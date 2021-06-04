@@ -137,6 +137,9 @@ function cypressGrep() {
     return
   }
 
+  // overwrite "context" which is an alias to describe
+  context = describe
+
   // keep the ".skip", ".only" methods the same as before
   it.skip = _it.skip
   it.only = _it.only

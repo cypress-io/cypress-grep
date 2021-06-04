@@ -2,7 +2,7 @@
 
 // @ts-check
 describe('grand', () => {
-  describe('outer', { tags: '@smoke' }, () => {
+  context('outer', { tags: '@smoke' }, () => {
     describe('inner', () => {
       it('runs', () => {})
     })
