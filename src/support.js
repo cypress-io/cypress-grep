@@ -56,19 +56,25 @@ function cypressGrep() {
     if (typeof configTags === 'string') {
       configTags = [configTags]
     }
+
+    const shouldRunBecauseOfParentSuite = suiteStack.includes(true)
     const shouldRun = shouldTestRun(parsedGrep, name, configTags)
     if (configTags && configTags.length) {
       debug(
         'should test "%s" with tags %s run? %s',
         name,
         configTags.join(','),
-        shouldRun,
+        shouldRunBecauseOfParentSuite || shouldRun,
       )
     } else {
-      debug('should test "%s" run? %s', name, shouldRun)
+      debug(
+        'should test "%s" run? %s',
+        name,
+        shouldRunBecauseOfParentSuite || shouldRun,
+      )
     }
 
-    if (shouldRun) {
+    if (shouldRunBecauseOfParentSuite || shouldRun) {
       if (grepBurn > 1) {
         // repeat the same test to make sure it is solid
         return Cypress._.times(grepBurn, (k) => {
@@ -82,6 +88,12 @@ function cypressGrep() {
     // skip tests without grep string in their names
     return _it.skip(name, options, callback)
   }
+
+  // list of "describe" suites for the current test
+  // when we encounter a new suite, we push it to the stack
+  // when the "describe" function exits, we pop it
+  // Thus a test can look up the tags from its parent suites
+  const suiteStack = []
 
   describe = function describeGrep(name, options, callback) {
     if (typeof options === 'function') {
@@ -113,12 +125,15 @@ function cypressGrep() {
     const shouldRun = shouldTestRun(parsedGrep, configTags)
 
     if (shouldRun) {
+      suiteStack.push(true)
       _describe(name, options, callback)
+      suiteStack.pop()
       return
     }
 
     // skip tests without grep string in their names
     _describe.skip(name, options, callback)
+
     return
   }
 

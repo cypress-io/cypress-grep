@@ -139,7 +139,6 @@ jobs:
             --expect expects/describe-tags-invert-spec.json
 
       # enable suite of tests using a tag
-      # DOES NOT WORK YET
       - name: Enable suite of tests with a tag 🧪
         run: |
           npx cypress-expect \
