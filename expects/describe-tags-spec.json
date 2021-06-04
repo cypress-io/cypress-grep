@@ -4,8 +4,8 @@
     "inside describe 2": "pending"
   },
   "block with tag smoke": {
-    "inside describe 3": "pending",
-    "inside describe 4": "pending"
+    "inside describe 3": "passed",
+    "inside describe 4": "passed"
   },
   "block without any tags": {
     "test with tag smoke": "passed"

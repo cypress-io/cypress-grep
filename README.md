@@ -193,16 +193,19 @@ This package comes with [src/index.d.ts](./src/index.d.ts) definition file that 
 
 ## Test suites
 
-The tags are also applied to the "describe" blocks with some limitations:
-
-- you can only use the config object tags
+The tags are also applied to the "describe" blocks. In that case, the tests look up if any of their outer suites are enabled.
 
 ```js
 describe('block with config tag', { tags: '@smoke' }, () => {
 })
 ```
 
-- currently only the invert tag to skip the blog has meaningful effect. For example you can skip the above suite of tests by using `--env grepTags=-@smoke` value. Keep an eye on issue [#22](https://github.com/bahmutov/cypress-grep/issues/22) for the full support implementation.
+```
+# run any tests in the blocks having "@smoke" tag
+--env grepTags=@smoke
+# skip any blocks with "@smoke" tag
+--env grepTags=-@smoke
+```
 
 See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
 
