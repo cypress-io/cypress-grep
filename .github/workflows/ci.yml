@@ -155,6 +155,22 @@ jobs:
             --env grepTags=@smoke \
             --expect expects/nested-describe-spec.json
 
+      - name: Nested describes inheriting tags with grep 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/nested-describe-spec.js \
+            --config testFiles="nested-describe-spec.js" \
+            --env grepTags="@smoke+fast" \
+            --expect expects/nested-describe-inheriting-tags-spec.json
+
+      - name: Nested describes inheriting grep name 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/nested-describe-spec.js \
+            --config testFiles="nested-describe-spec.js" \
+            --env grep="bottom runs too" \
+            --expect expects/nested-describe-inheriting-names-spec.json
+
       - name: Nested describes without grep 🧪
         run: |
           npx cypress-expect \
