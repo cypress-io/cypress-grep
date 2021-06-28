@@ -1,3 +1,4 @@
+// @ts-check
 /// <reference types="cypress" />
 
 const { parseGrep, shouldTestRun } = require('./utils')
@@ -58,11 +59,16 @@ function cypressGrep() {
     }
 
     const shouldRunBecauseOfParentSuite = suiteStack.includes(true)
-    const nameToGrep = suiteStack.map(item => item.name).concat(name).join(' ')
-    const tagsToGrep = suiteStack.flatMap(item => item.tags).concat(configTags)
-    
+    const nameToGrep = suiteStack
+      .map((item) => item.name)
+      .concat(name)
+      .join(' ')
+    const tagsToGrep = suiteStack
+      .flatMap((item) => item.tags)
+      .concat(configTags)
+
     const shouldRun = shouldTestRun(parsedGrep, nameToGrep, tagsToGrep)
-    
+
     if (tagsToGrep && tagsToGrep.length) {
       debug(
         'should test "%s" with tags %s run? %s',
@@ -71,11 +77,7 @@ function cypressGrep() {
         shouldRun,
       )
     } else {
-      debug(
-        'should test "%s" run? %s',
-        nameToGrep,
-        shouldRun,
-      )
+      debug('should test "%s" run? %s', nameToGrep, shouldRun)
     }
 
     if (shouldRun) {
@@ -105,14 +107,14 @@ function cypressGrep() {
       callback = options
       options = {}
     }
-    
-    const stackItem = { name };
-    suiteStack.push(stack)
+
+    const stackItem = { name }
+    suiteStack.push(stackItem)
 
     if (!callback) {
       // the pending suite by itself
       const result = _describe(name, options)
-      suiteStack.pop();
+      suiteStack.pop()
       return result
     }
 
@@ -132,7 +134,7 @@ function cypressGrep() {
     // when looking at the suite of the tests, I found
     // that using the name is quickly becoming very confusing
     // and thus we need to use the explicit tags
-    stackItem.tags = configTags;
+    stackItem.tags = configTags
     _describe(name, options, callback)
     suiteStack.pop()
 
