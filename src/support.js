@@ -58,23 +58,27 @@ function cypressGrep() {
     }
 
     const shouldRunBecauseOfParentSuite = suiteStack.includes(true)
-    const shouldRun = shouldTestRun(parsedGrep, name, configTags)
-    if (configTags && configTags.length) {
+    const nameToGrep = suiteStack.map(item => item.name).concat(name).join(' ')
+    const tagsToGrep = suiteStack.flatMap(item => item.tags).concat(configTags)
+    
+    const shouldRun = shouldTestRun(parsedGrep, nameToGrep, tagsToGrep)
+    
+    if (tagsToGrep && tagsToGrep.length) {
       debug(
         'should test "%s" with tags %s run? %s',
         name,
-        configTags.join(','),
-        shouldRunBecauseOfParentSuite || shouldRun,
+        tagsToGrep.join(','),
+        shouldRun,
       )
     } else {
       debug(
         'should test "%s" run? %s',
-        name,
-        shouldRunBecauseOfParentSuite || shouldRun,
+        nameToGrep,
+        shouldRun,
       )
     }
 
-    if (shouldRunBecauseOfParentSuite || shouldRun) {
+    if (shouldRun) {
       if (grepBurn > 1) {
         // repeat the same test to make sure it is solid
         return Cypress._.times(grepBurn, (k) => {
@@ -101,10 +105,15 @@ function cypressGrep() {
       callback = options
       options = {}
     }
+    
+    const stackItem = { name };
+    suiteStack.push(stack)
 
     if (!callback) {
       // the pending suite by itself
-      return _describe(name, options)
+      const result = _describe(name, options)
+      suiteStack.pop();
+      return result
     }
 
     let configTags = options && options.tags
@@ -116,23 +125,16 @@ function cypressGrep() {
       // if the describe suite does not have explicit tags
       // move on, since the tests inside can have their own tags
       _describe(name, options, callback)
+      suiteStack.pop()
       return
     }
 
     // when looking at the suite of the tests, I found
     // that using the name is quickly becoming very confusing
     // and thus we need to use the explicit tags
-    const shouldRun = shouldTestRun(parsedGrep, configTags)
-
-    if (shouldRun) {
-      suiteStack.push(true)
-      _describe(name, options, callback)
-      suiteStack.pop()
-      return
-    }
-
-    // skip tests without grep string in their names
-    _describe.skip(name, options, callback)
+    stackItem.tags = configTags;
+    _describe(name, options, callback)
+    suiteStack.pop()
 
     return
   }
