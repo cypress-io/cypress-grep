@@ -177,7 +177,7 @@ jobs:
             --spec cypress/integration/nested-describe-spec.js \
             --config testFiles="nested-describe-spec.js" \
             --env grepTags=@does-not-exist \
-            --pending 1
+            --pending 2
 
       # repeat the selected test 3 times
       - name: Burn grepped test 🧪
