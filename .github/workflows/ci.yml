@@ -1,5 +1,5 @@
 name: ci
-on: push
+on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -155,13 +155,29 @@ jobs:
             --env grepTags=@smoke \
             --expect expects/nested-describe-spec.json
 
+      - name: Nested describes inheriting tags with grep 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/nested-describe-spec.js \
+            --config testFiles="nested-describe-spec.js" \
+            --env grepTags="@smoke+@fast" \
+            --expect expects/nested-describe-inheriting-tags-spec.json
+
+      - name: Nested describes inheriting grep name 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/nested-describe-spec.js \
+            --config testFiles="nested-describe-spec.js" \
+            --env grep="bottom runs too" \
+            --expect expects/nested-describe-inheriting-names-spec.json
+
       - name: Nested describes without grep 🧪
         run: |
           npx cypress-expect \
             --spec cypress/integration/nested-describe-spec.js \
             --config testFiles="nested-describe-spec.js" \
             --env grepTags=@does-not-exist \
-            --pending 1
+            --pending 2
 
       # repeat the selected test 3 times
       - name: Burn grepped test 🧪

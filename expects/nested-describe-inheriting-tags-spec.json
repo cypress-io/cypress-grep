@@ -2,7 +2,7 @@
   "grand": {
     "outer": {
       "inner": {
-        "runs": "passing"
+        "runs": "pending"
       }
     }
   },

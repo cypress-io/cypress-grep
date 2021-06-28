@@ -8,3 +8,11 @@ describe('grand', () => {
     })
   })
 })
+
+describe('top', { tags: '@smoke' }, () => {
+  describe('middle', () => {
+    context('bottom', { tags: ['@integration', '@fast'] }, () => {
+      it('runs too', () => {});
+    })
+  })
+})
