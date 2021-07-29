@@ -186,6 +186,16 @@ jobs:
             --env grep="hello w",burn=3 \
             --expect expects/hello-burn.json
 
+      # prevent multiple plugin registrations
+      # https://github.com/cypress-io/cypress-grep/issues/59
+      - name: Multiple registrations test 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/multiple-registrations.js \
+            --config testFiles="multiple-registrations.js" \
+            --env grep="hello world",burn=3 \
+            --expect expects/multiple-registrations.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:
