@@ -41,6 +41,13 @@ function cypressGrep() {
   const parsedGrep = parseGrep(grep, grepTags)
   debug('parsed grep %o', parsedGrep)
 
+  // prevent multiple registrations
+  // https://github.com/cypress-io/cypress-grep/issues/59
+  if (it.name === 'itGrep') {
+    debug('already registered cypress-grep')
+    return
+  }
+
   it = function itGrep(name, options, callback) {
     if (typeof options === 'function') {
       // the test has format it('...', cb)
