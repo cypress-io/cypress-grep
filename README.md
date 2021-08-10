@@ -191,6 +191,19 @@ This package comes with [src/index.d.ts](./src/index.d.ts) definition file that 
 /// <reference types="cypress-grep" />
 ```
 
+If you have `tsconfig.json` file, add this library to the types list
+
+```json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": ["cypress", "cypress-grep"]
+  },
+  "include": ["**/*.ts"]
+}
+```
+
 ## Test suites
 
 The tags are also applied to the "describe" blocks. In that case, the tests look up if any of their outer suites are enabled.
