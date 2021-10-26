@@ -71,7 +71,6 @@ function cypressGrep() {
       configTags = [configTags]
     }
 
-    const shouldRunBecauseOfParentSuite = suiteStack.includes(true)
     const nameToGrep = suiteStack
       .map((item) => item.name)
       .concat(name)

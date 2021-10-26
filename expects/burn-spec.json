@@ -4,6 +4,11 @@
     "repeats: burning 2 of 5": "pass",
     "repeats: burning 3 of 5": "pass",
     "repeats: burning 4 of 5": "pass",
-    "repeats: burning 5 of 5": "pass"
+    "repeats: burning 5 of 5": "pass",
+    "second test: burning 1 of 5": "pass",
+    "second test: burning 2 of 5": "pass",
+    "second test: burning 3 of 5": "pass",
+    "second test: burning 4 of 5": "pass",
+    "second test: burning 5 of 5": "pass"
   }
 }
