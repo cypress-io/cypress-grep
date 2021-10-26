@@ -1,4 +1,4 @@
-/// <reference types="cypress" />
+import 'cypress'
 
 declare namespace Cypress {
   // specify additional properties in the TestConfig object
@@ -13,4 +13,13 @@ declare namespace Cypress {
      */
     tags?: string | string[]
   }
+
+  interface Cypress {
+    grep?: (grep?: string, tags?: string, burn?: string) => void
+  }
 }
+
+// this support file exports the default registration function
+declare const registerGrep: () => void
+
+export default registerGrep

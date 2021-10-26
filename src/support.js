@@ -1,5 +1,5 @@
 // @ts-check
-/// <reference types="cypress" />
+/// <reference path="./index.d.ts" />
 
 const { parseGrep, shouldTestRun } = require('./utils')
 const debug = require('debug')('cypress-grep')
