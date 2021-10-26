@@ -196,6 +196,14 @@ jobs:
             --env grep="hello world",burn=3 \
             --expect expects/multiple-registrations.json
 
+      - name: cypress-each test 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/each-spec.js \
+            --config testFiles="each-spec.js" \
+            --env grep="for 2" \
+            --expect expects/each-spec.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:
