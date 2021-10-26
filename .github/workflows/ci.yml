@@ -212,6 +212,14 @@ jobs:
             --env burn=5 \
             --expect expects/burn-spec.json
 
+      - name: preserves the test context 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/this-spec.js \
+            --config testFiles="this-spec.js" \
+            --env burn=3 \
+            --expect expects/this-spec.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:
