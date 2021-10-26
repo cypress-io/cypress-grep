@@ -23,7 +23,10 @@ function cypressGrep() {
   /** @type {string} Raw tags to grep string */
   const grepTags = Cypress.env('grepTags') || Cypress.env('grep-tags')
 
-  if (!grep && !grepTags) {
+  const burnSpecified =
+    Cypress.env('grepBurn') || Cypress.env('grep-burn') || Cypress.env('burn')
+
+  if (!grep && !grepTags && !burnSpecified) {
     // nothing to do, the user has no specified the "grep" string
     debug('Nothing to grep')
     return

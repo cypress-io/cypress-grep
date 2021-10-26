@@ -204,6 +204,14 @@ jobs:
             --env grep="for 2" \
             --expect expects/each-spec.json
 
+      - name: burning without grep 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/burn-spec.js \
+            --config testFiles="burn-spec.js" \
+            --env burn=5 \
+            --expect expects/burn-spec.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:

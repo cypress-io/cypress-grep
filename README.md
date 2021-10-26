@@ -264,6 +264,8 @@ npx cypress run --env grep="hello world",burn=5
 
 You can pass the number of times to run the tests via environment name `burn` or `grepBurn` or `grep-burn`. Note, if a lot of tests match the grep and grep tags, a lot of tests will be burnt!
 
+If you do not specify the "grep" or "grep tags" option, the "burn" will repeat _every_ test.
+
 ## General advice
 
 - keep it simple.
