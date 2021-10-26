@@ -154,8 +154,17 @@ function cypressGrep() {
   // keep the ".skip", ".only" methods the same as before
   it.skip = _it.skip
   it.only = _it.only
+  // preserve "it.each" method if found
+  // https://github.com/cypress-io/cypress-grep/issues/72
+  if (typeof _it.each === 'function') {
+    it.each = _it.each
+  }
+
   describe.skip = _describe.skip
   describe.only = _describe.only
+  if (typeof _describe.each === 'function') {
+    describe.each = _describe.each
+  }
 }
 
 function restartTests() {
