@@ -37,7 +37,10 @@ function cypressGrep() {
     1
 
   debug('grep %o', { grep, grepTags, grepBurn })
-  // TODO validate grepBurn value
+  if (!Cypress._.isInteger(grepBurn) || grepBurn < 1) {
+    throw new Error(`Invalid grep burn value: ${grepBurn}`)
+  }
+
   const parsedGrep = parseGrep(grep, grepTags)
   debug('parsed grep %o', parsedGrep)
 
