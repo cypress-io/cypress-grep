@@ -83,6 +83,8 @@ $ npx cypress run --env grepTags=@fast
 $ npx cypress run --env grep=login,grepTags=smoke
 # only run the specs that have any tests with "user" in their titles
 $ npx cypress run --env grep=user,grepFilterSpecs=true
+# only run the specs that have any tests tagged "@smoke"
+$ npx cypress run --env grepTags=@smoke,grepFilterSpecs=true
 # run only tests that do not have any tags
 # and are not inside suites that have any tags
 $ npx cypress run --env grepUntagged=true
@@ -191,11 +193,13 @@ By default, when using `grep` and `grepTags` all specs are executed, and inside 
 # filter all specs first, and only run the ones with
 # suite or test titles containing the string "it loads"
 $ npx cypress run --env grep="it loads",grepFilterSpecs=true
+# filter all specs files, only run the specs with a tag "@smoke"
+$ npx cypress run --env grepTags=@smoke,grepFilterSpecs=true
 ```
 
 Note: this requires installing this plugin in your project's plugin file, see the [Install](#install).
 
-Note 2: the `grepFilterSpecs` option is only compatible with the `grep` option, and not with `grepTags` option.
+Note 2: the `grepFilterSpecs` option is only compatible with the positive `grep` and `grepTags` options, not with the negative "!..." filter.
 
 ### grep untagged tests
 

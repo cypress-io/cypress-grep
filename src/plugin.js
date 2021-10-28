@@ -36,46 +36,89 @@ function cypressGrepPlugin(config) {
   }
 
   const grepFilterSpecs = config.env.grepFilterSpecs === true
-  if (grepFilterSpecs && grep) {
-    console.log('cypress-grep: filtering specs using "%s" in the title', grep)
+  if (grepFilterSpecs) {
+    if (grep) {
+      console.log('cypress-grep: filtering specs using "%s" in the title', grep)
 
-    debug({
-      integrationFolder: config.integrationFolder,
-      testFiles: config.testFiles,
-      ignoreTestFiles: config.ignoreTestFiles,
-    })
+      debug({
+        integrationFolder: config.integrationFolder,
+        testFiles: config.testFiles,
+        ignoreTestFiles: config.ignoreTestFiles,
+      })
 
-    const specFiles = globby.sync(config.testFiles, {
-      cwd: config.integrationFolder,
-      ignore: config.ignoreTestFiles,
-      absolute: false,
-    })
-    debug('found %d spec files', specFiles.length)
-    debug('%o', specFiles)
+      const specFiles = globby.sync(config.testFiles, {
+        cwd: config.integrationFolder,
+        ignore: config.ignoreTestFiles,
+        absolute: false,
+      })
+      debug('found %d spec files', specFiles.length)
+      debug('%o', specFiles)
 
-    const specsWithText = specFiles.filter((specFile) => {
-      const text = fs.readFileSync(
-        path.join(config.integrationFolder, specFile),
-        'utf8',
-      )
-      try {
-        const names = getTestNames(text)
-        const testAndSuiteNames = names.suiteNames.concat(names.testNames)
-        debug('spec file %s', specFile)
-        debug('suite and test names: %o', testAndSuiteNames)
+      const specsWithText = specFiles.filter((specFile) => {
+        const text = fs.readFileSync(
+          path.join(config.integrationFolder, specFile),
+          'utf8',
+        )
+        try {
+          const names = getTestNames(text)
+          const testAndSuiteNames = names.suiteNames.concat(names.testNames)
+          debug('spec file %s', specFile)
+          debug('suite and test names: %o', testAndSuiteNames)
 
-        return testAndSuiteNames.some((name) => name.includes(grep))
-      } catch (err) {
-        console.error('Could not determine test names in file: %s', specFile)
-        console.error('Will run it to let the grep filter the tests')
-        return true
-      }
-    })
+          return testAndSuiteNames.some((name) => name.includes(grep))
+        } catch (err) {
+          console.error('Could not determine test names in file: %s', specFile)
+          console.error('Will run it to let the grep filter the tests')
+          return true
+        }
+      })
 
-    debug('found "%s" in %d specs', grep, specsWithText.length)
-    debug('%o', specsWithText)
+      debug('found "%s" in %d specs', grep, specsWithText.length)
+      debug('%o', specsWithText)
 
-    config.testFiles = specsWithText
+      config.testFiles = specsWithText
+    } else if (grepTags) {
+      console.log('cypress-grep: filtering specs using tag "%s"', grepTags)
+
+      debug({
+        integrationFolder: config.integrationFolder,
+        testFiles: config.testFiles,
+        ignoreTestFiles: config.ignoreTestFiles,
+      })
+
+      const specFiles = globby.sync(config.testFiles, {
+        cwd: config.integrationFolder,
+        ignore: config.ignoreTestFiles,
+        absolute: false,
+      })
+      debug('found %d spec files', specFiles.length)
+      debug('%o', specFiles)
+
+      const specsWithText = specFiles.filter((specFile) => {
+        const text = fs.readFileSync(
+          path.join(config.integrationFolder, specFile),
+          'utf8',
+        )
+        try {
+          const testInfo = getTestNames(text)
+          debug('spec file %s', specFile)
+          debug('test info: %o', testInfo.tests)
+
+          return testInfo.tests.some((info) => {
+            return info.tags && info.tags.includes(grepTags)
+          })
+        } catch (err) {
+          console.error('Could not determine test names in file: %s', specFile)
+          console.error('Will run it to let the grep filter the tests')
+          return true
+        }
+      })
+
+      debug('found "%s" in %d specs', grep, specsWithText.length)
+      debug('%o', specsWithText)
+
+      config.testFiles = specsWithText
+    }
   }
 
   return config

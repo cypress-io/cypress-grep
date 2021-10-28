@@ -227,6 +227,13 @@ jobs:
             --env grep="outside any suites",grepFilterSpecs=true \
             --expect-exactly expects/grep-filter-specs.json
 
+      - name: filter the specs first by tag 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/*.js" \
+            --env grepTags=@smoke,grepFilterSpecs=true \
+            --expect-exactly expects/grep-filter-specs-tag.json
+
       - name: run untagged tests 🧪
         run: |
           npx cypress-expect \
