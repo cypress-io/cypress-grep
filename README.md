@@ -98,6 +98,8 @@ You can also watch [How I organize pull request workflows](https://youtu.be/SFW7
 
 Read the blog post [Burning Tests with cypress-grep](https://glebbahmutov.com/blog/burning-tests/) that shows how to run the selected test multiple times in a row.
 
+Watch the video [Filter Specs First When Using cypress-grep Plugin](https://youtu.be/adL7KzO5dR0)
+
 ## Filters
 
 You can filter tests to run using part of their title via `grep`, and via explicit tags via `grepTags` Cypress environment variables.
