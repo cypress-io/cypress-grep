@@ -1,4 +1,8 @@
 const debug = require('debug')('cypress-grep')
+const globby = require('globby')
+const { getTestNames } = require('find-test-names')
+const fs = require('fs')
+const path = require('path')
 
 /**
  * Prints the cypress-grep environment values if any.
@@ -49,16 +53,22 @@ function cypressGrepPlugin(config) {
         path.join(config.integrationFolder, specFile),
         'utf8',
       )
-      const names = getTestNames(text)
-      const testAndSuiteNames = names.suiteNames.concat(names.testNames)
-      debug('spec file %s', specFile)
-      debug('suite and test names: %o', testAndSuiteNames)
+      try {
+        const names = getTestNames(text)
+        const testAndSuiteNames = names.suiteNames.concat(names.testNames)
+        debug('spec file %s', specFile)
+        debug('suite and test names: %o', testAndSuiteNames)
 
-      return testAndSuiteNames.some((name) => name.includes(grep))
+        return testAndSuiteNames.some((name) => name.includes(grep))
+      } catch (err) {
+        console.error('Could not determine test names in file: %s', specFile)
+        console.error('Will run it to let the grep filter the tests')
+        return true
+      }
     })
 
     debug('found "%s" in %d specs', grep, specsWithText.length)
-    debug('&', specsWithText)
+    debug('%o', specsWithText)
 
     config.testFiles = specsWithText
   }

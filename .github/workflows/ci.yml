@@ -220,6 +220,13 @@ jobs:
             --env burn=3 \
             --expect expects/this-spec.json
 
+      - name: filter the specs first 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/*.js" \
+            --env grep="outside any suites",grepFilterSpecs=true \
+            --expect expects/grep-filter-specs.json
+
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:
