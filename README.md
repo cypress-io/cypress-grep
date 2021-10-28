@@ -81,6 +81,11 @@ $ npx cypress run --env grepTags=@fast
 # run only the tests tagged "smoke"
 # that have "login" in their titles
 $ npx cypress run --env grep=login,grepTags=smoke
+# only run the specs that have any tests with "user" in their titles
+$ npx cypress run --env grep=user,grepFilterSpecs=true
+# run only tests that do not have any tags
+# and are not inside suites that have any tags
+$ npx cypress run --env grepUntagged=true
 ```
 
 ## Videos
@@ -191,6 +196,14 @@ $ npx cypress run --env grep="it loads",grepFilterSpecs=true
 Note: this requires installing this plugin in your project's plugin file, see the [Install](#install).
 
 Note 2: the `grepFilterSpecs` option is only compatible with the `grep` option, and not with `grepTags` option.
+
+### grep untagged tests
+
+Sometimes you want to run only the tests without any tags, and these tests are inside the describe blocks without any tags.
+
+```
+$ npx cypress run --env grepUntagged=true
+```
 
 ### TypeScript users
 

@@ -125,7 +125,11 @@ function shouldTestRunTitle(parsedGrep, testName) {
 }
 
 // note: tags take precedence over the test name
-function shouldTestRun(parsedGrep, testName, tags = []) {
+function shouldTestRun(parsedGrep, testName, tags = [], grepUntagged = false) {
+  if (grepUntagged) {
+    return !tags.length
+  }
+
   if (Array.isArray(testName)) {
     // the caller passed tags only, no test name
     tags = testName

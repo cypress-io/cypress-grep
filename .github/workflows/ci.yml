@@ -225,7 +225,21 @@ jobs:
           npx cypress-expect \
             --config testFiles="**/*.js" \
             --env grep="outside any suites",grepFilterSpecs=true \
-            --expect expects/grep-filter-specs.json
+            --expect-exactly expects/grep-filter-specs.json
+
+      - name: run untagged tests 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/spec.js" \
+            --env grepUntagged=true \
+            --expect-exactly expects/grep-untagged.json
+
+      - name: run untagged tests in blocks 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/describe-tags-spec.js" \
+            --env grepUntagged=true \
+            --expect-exactly expects/describe-tags-spec-untagged.json
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2

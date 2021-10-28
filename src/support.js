@@ -26,7 +26,10 @@ function cypressGrep() {
   const burnSpecified =
     Cypress.env('grepBurn') || Cypress.env('grep-burn') || Cypress.env('burn')
 
-  if (!grep && !grepTags && !burnSpecified) {
+  const grepUntagged =
+    Cypress.env('grepUntagged') || Cypress.env('grep-untagged')
+
+  if (!grep && !grepTags && !burnSpecified && !grepUntagged) {
     // nothing to do, the user has no specified the "grep" string
     debug('Nothing to grep')
     return
@@ -78,8 +81,14 @@ function cypressGrep() {
     const tagsToGrep = suiteStack
       .flatMap((item) => item.tags)
       .concat(configTags)
+      .filter(Boolean)
 
-    const shouldRun = shouldTestRun(parsedGrep, nameToGrep, tagsToGrep)
+    const shouldRun = shouldTestRun(
+      parsedGrep,
+      nameToGrep,
+      tagsToGrep,
+      grepUntagged,
+    )
 
     if (tagsToGrep && tagsToGrep.length) {
       debug(
