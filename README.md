@@ -100,6 +100,8 @@ Read the blog post [Burning Tests with cypress-grep](https://glebbahmutov.com/bl
 
 Watch the video [Filter Specs First When Using cypress-grep Plugin](https://youtu.be/adL7KzO5dR0)
 
+Watch the video [Run All Tests That Have No Tags Using cypress-grep Plugin](https://youtu.be/CtU43GzaicI)
+
 ## Filters
 
 You can filter tests to run using part of their title via `grep`, and via explicit tags via `grepTags` Cypress environment variables.
@@ -367,6 +369,7 @@ This module uses [debug](https://github.com/visionmedia/debug#readme) to log ver
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
+- [todo-graphql-example](https://github.com/bahmutov/todo-graphql-example)
 
 ## See also
 
