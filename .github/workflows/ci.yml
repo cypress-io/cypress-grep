@@ -248,6 +248,17 @@ jobs:
             --env grepUntagged=true \
             --expect-exactly expects/describe-tags-spec-untagged.json
 
+  release:
+    needs: test
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out code 🛎
+        uses: actions/checkout@v2
+      - name: Install dependencies 📦
+        uses: cypress-io/github-action@v2
+        with:
+          # just perform install
+          runTests: false
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
         with:
