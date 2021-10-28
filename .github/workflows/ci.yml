@@ -12,7 +12,7 @@ jobs:
           # just perform install
           runTests: false
 
-  test:
+  tests1:
     runs-on: ubuntu-20.04
     needs: install
     steps:
@@ -93,6 +93,21 @@ jobs:
             --env grep="hello; works 2" \
             --expect ./expects/hello-or-works-2.json
 
+  tests2:
+    runs-on: ubuntu-20.04
+    needs: install
+    steps:
+      - name: Check out code 🛎
+        uses: actions/checkout@v2
+      # we re-install the dependencies
+      # in practice, this should pull the cached
+      # dependencies from the previous install job
+      - name: Install dependencies 📦
+        uses: cypress-io/github-action@v2
+        with:
+          # just perform install
+          runTests: false
+
       - name: Run tests with "@tag1" 🧪
         run: |
           npx cypress-expect run \
@@ -161,6 +176,21 @@ jobs:
             --config testFiles="describe-tags-spec.js" \
             --env grepTags=@smoke \
             --expect expects/describe-tags-spec.json
+
+  tests3:
+    runs-on: ubuntu-20.04
+    needs: install
+    steps:
+      - name: Check out code 🛎
+        uses: actions/checkout@v2
+      # we re-install the dependencies
+      # in practice, this should pull the cached
+      # dependencies from the previous install job
+      - name: Install dependencies 📦
+        uses: cypress-io/github-action@v2
+        with:
+          # just perform install
+          runTests: false
 
       - name: Nested describes with grep 🧪
         run: |
@@ -264,7 +294,7 @@ jobs:
             --expect-exactly expects/describe-tags-spec-untagged.json
 
   release:
-    needs: test
+    needs: [tests1, tests2, tests3]
     runs-on: ubuntu-20.04
     steps:
       - name: Check out code 🛎
