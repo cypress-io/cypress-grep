@@ -78,10 +78,7 @@ function cypressGrepPlugin(config) {
 
       config.testFiles = specsWithText
     } else if (grepTags) {
-      console.log(
-        'cypress-grep: filtering specs using tag "%s" in the title',
-        grepTags,
-      )
+      console.log('cypress-grep: filtering specs using tag "%s"', grepTags)
 
       debug({
         integrationFolder: config.integrationFolder,

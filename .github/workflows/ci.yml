@@ -232,7 +232,7 @@ jobs:
           npx cypress-expect \
             --config testFiles="**/*.js" \
             --env grepTags=@smoke,grepFilterSpecs=true \
-            --expect-exactly expects/grep-filter-specs.json
+            --expect-exactly expects/grep-filter-specs-tag.json
 
       - name: run untagged tests 🧪
         run: |
