@@ -81,8 +81,14 @@ function cypressGrep() {
     const tagsToGrep = suiteStack
       .flatMap((item) => item.tags)
       .concat(configTags)
+      .filter(Boolean)
 
-    const shouldRun = shouldTestRun(parsedGrep, nameToGrep, tagsToGrep)
+    const shouldRun = shouldTestRun(
+      parsedGrep,
+      nameToGrep,
+      tagsToGrep,
+      grepUntagged,
+    )
 
     if (tagsToGrep && tagsToGrep.length) {
       debug(

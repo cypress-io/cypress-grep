@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 declare namespace Cypress {
   // specify additional properties in the TestConfig object
   // in our case we will add "tags" property

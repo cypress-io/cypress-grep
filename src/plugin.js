@@ -30,6 +30,11 @@ function cypressGrepPlugin(config) {
     console.log('cypress-grep: running filtered tests %d times', grepBurn)
   }
 
+  const grepUntagged = config.env.grepUntagged || config.env['grep-untagged']
+  if (grepUntagged) {
+    console.log('cypress-grep: running untagged tests')
+  }
+
   const grepFilterSpecs = config.env.grepFilterSpecs === true
   if (grepFilterSpecs && grep) {
     console.log('cypress-grep: filtering specs using "%s" in the title', grep)
