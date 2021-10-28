@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 describe('tests that use .skip', () => {
-  it('works', () => {})
+  // use a template literal
+  it(`works`, () => {})
 
   it.skip('is pending', () => {})
 
