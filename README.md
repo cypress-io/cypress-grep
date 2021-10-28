@@ -51,6 +51,9 @@ module.exports = (on, config) => {
   // optional: register cypress-grep plugin code
   // https://github.com/bahmutov/cypress-grep
   require('cypress-grep/src/plugin')(config)
+  // make sure to return the config object
+  // as it might have been modified by the plugin
+  return config
 }
 ```
 
@@ -60,6 +63,8 @@ By loading this module from the plugin file, it allows the `cypress-grep` to pri
 $ npx cypress run --env grep=hello
 cypress-grep: tests with "hello" in their names
 ```
+
+Installing the plugin in the project's plugin file is also required to enable the [grepFilterSpecs](#grepfilterspecs) feature.
 
 ## Use
 
@@ -172,6 +177,20 @@ it('works as a string', { tags: 'config' }, () => {
 ```
 
 You can run both of these tests using `--env grepTags=config` string.
+
+### grepFilterSpecs
+
+By default, when using `grep` and `grepTags` all specs are executed, and inside each the filters are applied. This can be very wasteful, if only a few specs contain the `grep` in the test titles. Thus when doing the positive `grep`, you can pre-filter specs using the `grepFilterSpecs=true` parameter.
+
+```
+# filter all specs first, and only run the ones with
+# suite or test titles containing the string "it loads"
+$ npx cypress run --env grep="it loads",grepFilterSpecs=true
+```
+
+Note: this requires installing this plugin in your project's plugin file, see the [Install](#install).
+
+Note 2: the `grepFilterSpecs` option is only compatible with the `grep` option, and not with `grepTags` option.
 
 ### TypeScript users
 
