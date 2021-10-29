@@ -205,6 +205,16 @@ Note: this requires installing this plugin in your project's plugin file, see th
 
 Note 2: the `grepFilterSpecs` option is only compatible with the positive `grep` and `grepTags` options, not with the negative "!..." filter.
 
+**Tip:** you can set this environment variable in the `cypress.json` file to enable it by default and skip using the environment variable:
+
+```json
+{
+  "env": {
+    "grepFilterSpecs": true
+  }
+}
+```
+
 ### grep untagged tests
 
 Sometimes you want to run only the tests without any tags, and these tests are inside the describe blocks without any tags.
