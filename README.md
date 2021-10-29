@@ -205,6 +205,8 @@ Note: this requires installing this plugin in your project's plugin file, see th
 
 Note 2: the `grepFilterSpecs` option is only compatible with the positive `grep` and `grepTags` options, not with the negative "!..." filter.
 
+Note 3: if there are no files remaining after filtering, the plugin prints a warning and leaves all files unchanged to avoid the test runner erroring with "No specs found".
+
 **Tip:** you can set this environment variable in the `cypress.json` file to enable it by default and skip using the environment variable:
 
 ```json

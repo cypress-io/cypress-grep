@@ -117,7 +117,13 @@ function cypressGrepPlugin(config) {
       debug('found "%s" in %d specs', grep, specsWithText.length)
       debug('%o', specsWithText)
 
-      config.testFiles = specsWithText
+      if (specsWithText.length) {
+        config.testFiles = specsWithText
+      } else {
+        // hmm, we filtered out all specs, probably something is wrong
+        console.warn('Grep "%s" has eliminated all specs', grep)
+        console.warn('Will leave all specs to run to filter at run-time')
+      }
     }
   }
 
