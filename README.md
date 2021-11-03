@@ -96,11 +96,14 @@ Watch the video [intro to cypress-grep](https://www.youtube.com/watch?v=HS-Px-Sg
 
 You can also watch [How I organize pull request workflows](https://youtu.be/SFW7Ecj5TNE) where I show how the GitHub workflows in [.github/workflows](./.github/workflows) are organized to run the smoke tests first on pull request.
 
-Read the blog post [Burning Tests with cypress-grep](https://glebbahmutov.com/blog/burning-tests/) that shows how to run the selected test multiple times in a row.
-
 Watch the video [Filter Specs First When Using cypress-grep Plugin](https://youtu.be/adL7KzO5dR0)
 
 Watch the video [Run All Tests That Have No Tags Using cypress-grep Plugin](https://youtu.be/CtU43GzaicI)
+
+## Blog posts
+
+- [Burning Tests with cypress-grep](https://glebbahmutov.com/blog/burning-tests/)
+- [Faster test execution with cypress-grep](https://glebbahmutov.com/blog/cypress-grep-filters/)
 
 ## Filters
 
