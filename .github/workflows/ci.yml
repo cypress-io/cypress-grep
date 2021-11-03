@@ -177,6 +177,14 @@ jobs:
             --env grepTags=@smoke \
             --expect expects/describe-tags-spec.json
 
+      - name: Specify is an alias to it 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/specify-spec.js \
+            --config testFiles="specify-spec.js" \
+            --env grep="works 2" \
+            --expect-exactly expects/specify.json
+
   tests3:
     runs-on: ubuntu-20.04
     needs: install

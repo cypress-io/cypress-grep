@@ -162,8 +162,11 @@ function cypressGrep() {
     return
   }
 
-  // overwrite "context" which is an alias to describe
+  // overwrite "context" which is an alias to "describe"
   context = describe
+
+  // overwrite "specify" which is an alias to "it"
+  specify = it
 
   // keep the ".skip", ".only" methods the same as before
   it.skip = _it.skip
