@@ -42,7 +42,11 @@ function cypressGrep() {
     Cypress.env('burn') ||
     1
 
-  debug('grep %o', { grep, grepTags, grepBurn })
+  /** @type {boolean} Omit filtered tests completely */
+  const omitFiltered =
+    Cypress.env('grepOmitFiltered') || Cypress.env('grep-omit-filtered')
+
+  debug('grep %o', { grep, grepTags, grepBurn, omitFiltered })
   if (!Cypress._.isInteger(grepBurn) || grepBurn < 1) {
     throw new Error(`Invalid grep burn value: ${grepBurn}`)
   }
@@ -112,8 +116,13 @@ function cypressGrep() {
       return _it(name, options, callback)
     }
 
-    // skip tests without grep string in their names
-    return _it.skip(name, options, callback)
+    if (omitFiltered) {
+      // omit the filtered tests completely
+      return
+    } else {
+      // skip tests without grep string in their names
+      return _it.skip(name, options, callback)
+    }
   }
 
   // list of "describe" suites for the current test

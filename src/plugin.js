@@ -35,6 +35,12 @@ function cypressGrepPlugin(config) {
     console.log('cypress-grep: running untagged tests')
   }
 
+  const omitFiltered =
+    config.env.grepOmitFiltered || config.env['grep-omit-filtered']
+  if (omitFiltered) {
+    console.log('cypress-grep: will omit filtered tests')
+  }
+
   const grepFilterSpecs = config.env.grepFilterSpecs === true
   if (grepFilterSpecs) {
     if (grep) {

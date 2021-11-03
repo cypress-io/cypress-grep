@@ -185,6 +185,15 @@ jobs:
             --env grep="works 2" \
             --expect-exactly expects/specify.json
 
+      # instead of making filtered tests pending
+      # with it.skip, completely omit them
+      - name: Omit filtered tests 🧪
+        run: |
+          npx cypress-expect \
+            --spec cypress/integration/spec.js \
+            --env grep="works 2",grepOmitFiltered=true \
+            --expect-exactly expects/omit-filtered.json
+
   tests3:
     runs-on: ubuntu-20.04
     needs: install
