@@ -217,6 +217,36 @@ Note 3: if there are no files remaining after filtering, the plugin prints a war
 }
 ```
 
+### omit filtered tests
+
+By default, all filtered tests are made _pending_ using `it.skip` method. If you want to completely omit them, pass the environment variable `grepOmitFiltered=true`.
+
+Pending filtered tests
+
+```
+cypress run --env grep="works 2"
+```
+
+![Pending tests](./images/includes-pending.png)
+
+Omit filtered tests
+
+```
+cypress run --env grep="works 2",grepOmitFiltered=true
+```
+
+![Only running tests remaining](./images/omit-pending.png)
+
+**Tip:** you can set this environment variable in the `cypress.json` file to enable it by default and skip using the environment variable:
+
+```json
+{
+  "env": {
+    "grepOmitFiltered": true
+  }
+}
+```
+
 ### grep untagged tests
 
 Sometimes you want to run only the tests without any tags, and these tests are inside the describe blocks without any tags.

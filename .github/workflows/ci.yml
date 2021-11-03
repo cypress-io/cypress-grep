@@ -191,7 +191,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/spec.js \
-            --env grep="works 2" \
+            --env grep="works 2",grepOmitFiltered=true \
             --expect-exactly expects/omit-filtered.json
 
   tests3:
