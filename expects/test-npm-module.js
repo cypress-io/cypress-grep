@@ -1,4 +1,4 @@
-// https://github.com/bahmutov/cypress-grep/issues/41
+// https://github.com/cypress-io/cypress-grep/issues/41
 // shows how to pass grep parameters using Cypress NPM Module API
 // https://on.cypress.io/module-api
 const cypress = require('cypress')

@@ -3,5 +3,5 @@
 
 import cypressGrep from '../..'
 // register the grep feature
-// https://github.com/bahmutov/cypress-grep
+// https://github.com/cypress-io/cypress-grep
 cypressGrep()

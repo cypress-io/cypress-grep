@@ -11,7 +11,7 @@ const _describe = describe
 
 /**
  * Wraps the "it" and "describe" functions that support tags.
- * @see https://github.com/bahmutov/cypress-grep
+ * @see https://github.com/cypress-io/cypress-grep
  */
 function cypressGrep() {
   /** @type {string} Part of the test title go grep */
@@ -213,7 +213,7 @@ if (!Cypress.grep) {
    *  // remove all current grep settings
    *  // and run all tests
    *  Cypress.grep()
-   * @see "Grep from DevTools console" https://github.com/bahmutov/cypress-grep#devtools-console
+   * @see "Grep from DevTools console" https://github.com/cypress-io/cypress-grep#devtools-console
    */
   Cypress.grep = function grep(grep, tags, burn) {
     Cypress.env('grep', grep)

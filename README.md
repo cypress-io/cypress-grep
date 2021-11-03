@@ -37,7 +37,7 @@ yarn add -D cypress-grep
 ```js
 // cypress/support/index.js
 // load and register the grep feature
-// https://github.com/bahmutov/cypress-grep
+// https://github.com/cypress-io/cypress-grep
 require('cypress-grep')()
 ```
 
@@ -49,7 +49,7 @@ require('cypress-grep')()
 // cypress/plugins/index.js
 module.exports = (on, config) => {
   // optional: register cypress-grep plugin code
-  // https://github.com/bahmutov/cypress-grep
+  // https://github.com/cypress-io/cypress-grep
   require('cypress-grep/src/plugin')(config)
   // make sure to return the config object
   // as it might have been modified by the plugin
@@ -92,7 +92,7 @@ $ npx cypress run --env grepUntagged=true
 
 ## Videos
 
-Watch the video [intro to cypress-grep](https://www.youtube.com/watch?v=HS-Px-Sghd8) which shows how this repository tags tests, uses [cypress-grep](https://github.com/bahmutov/cypress-grep) plugin, and sets up the TypeScript intelligent code completion.
+Watch the video [intro to cypress-grep](https://www.youtube.com/watch?v=HS-Px-Sghd8) which shows how this repository tags tests, uses [cypress-grep](https://github.com/cypress-io/cypress-grep) plugin, and sets up the TypeScript intelligent code completion.
 
 You can also watch [How I organize pull request workflows](https://youtu.be/SFW7Ecj5TNE) where I show how the GitHub workflows in [.github/workflows](./.github/workflows) are organized to run the smoke tests first on pull request.
 
@@ -459,7 +459,7 @@ Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2021
 License: MIT - do anything with the code, but don't blame me if it does not work.
 
 Support: if you find any problems with this module, email / tweet /
-[open issue](https://github.com/bahmutov/cypress-grep/issues) on Github
+[open issue](https://github.com/cypress-io/cypress-grep/issues) on Github
 
 ## MIT License
 
@@ -486,9 +486,9 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-[ci image]: https://github.com/bahmutov/cypress-grep/workflows/ci/badge.svg?branch=main
-[ci url]: https://github.com/bahmutov/cypress-grep/actions
-[badges image]: https://github.com/bahmutov/cypress-grep/workflows/badges/badge.svg?branch=main
-[badges url]: https://github.com/bahmutov/cypress-grep/actions
+[ci image]: https://github.com/cypress-io/cypress-grep/workflows/ci/badge.svg?branch=main
+[ci url]: https://github.com/cypress-io/cypress-grep/actions
+[badges image]: https://github.com/cypress-io/cypress-grep/workflows/badges/badge.svg?branch=main
+[badges url]: https://github.com/cypress-io/cypress-grep/actions
 [renovate-badge]: https://img.shields.io/badge/renovate-app-blue.svg
 [renovate-app]: https://renovateapp.com/
