@@ -407,6 +407,18 @@ Cypress.grep('hello', '@smoke', 10)
 
 ## Debugging
 
+When debugging a problem, first make sure you are passing the values to the plugin correctly by inspecting the "Settings" tab in the Cypress Desktop GUI screen. You should see the values you have passed in the "Config" object under the `env` property. For example, if I start the Test Runner with
+
+```text
+$ npx cypress open --env grep=works,grepFilterTests=true
+```
+
+Then I expect to see the grep string and the "filter tests" flag in the `env` object.
+
+![Values in the env object](./images/config.png)
+
+### Log messages
+
 This module uses [debug](https://github.com/visionmedia/debug#readme) to log verbose messages. You can enable the debug messages in the plugin file (runs when discovering specs to filter), and inside the browser to see how it determines which tests to run and to skip.
 
 ### Debugging in the plugin
