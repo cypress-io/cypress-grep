@@ -407,7 +407,30 @@ Cypress.grep('hello', '@smoke', 10)
 
 ## Debugging
 
-This module uses [debug](https://github.com/visionmedia/debug#readme) to log verbose messages. To enable debug console messages, from the DevTools console set `localStorage.debug='cypress-grep'` and run the tests again.
+This module uses [debug](https://github.com/visionmedia/debug#readme) to log verbose messages. You can enable the debug messages in the plugin file (runs when discovering specs to filter), and inside the browser to see how it determines which tests to run and to skip.
+
+### Debugging in the plugin
+
+Start Cypress with the environment variable `DEBUG=cypress-grep`. You will see a few messages from this plugin in the terminal output:
+
+```
+$ DEBUG=cypress-grep npx cypress run --env grep=works,grepFilterSpecs=true
+cypress-grep: tests with "works" in their names
+cypress-grep: filtering specs using "works" in the title
+  cypress-grep Cypress config env object: { grep: 'works', grepFilterSpecs: true }
+  ...
+  cypress-grep found 1 spec files +5ms
+  cypress-grep [ 'spec.js' ] +0ms
+  cypress-grep spec file spec.js +5ms
+  cypress-grep suite and test names: [ 'hello world', 'works', 'works 2 @tag1',
+    'works 2 @tag1 @tag2', 'works @tag2' ] +0ms
+  cypress-grep found "works" in 1 specs +0ms
+  cypress-grep [ 'spec.js' ] +0ms
+```
+
+### Debugging in the browser
+
+To enable debug console messages in the browser, from the DevTools console set `localStorage.debug='cypress-grep'` and run the tests again.
 
 ![Debug messages](./images/debug.png)
 
