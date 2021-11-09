@@ -446,6 +446,8 @@ To enable debug console messages in the browser, from the DevTools console set `
 
 ![Debug messages](./images/debug.png)
 
+To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](https://youtu.be/4YMAERddHYA).
+
 ## Examples
 
 - [cypress-grep-example](https://github.com/bahmutov/cypress-grep-example)
