@@ -2,6 +2,7 @@
 /// <reference path="./index.d.ts" />
 
 const { parseGrep, shouldTestRun } = require('./utils')
+const { version } = require('../package.json')
 const debug = require('debug')('cypress-grep')
 debug.log = console.info.bind(console)
 
@@ -31,7 +32,7 @@ function cypressGrep() {
 
   if (!grep && !grepTags && !burnSpecified && !grepUntagged) {
     // nothing to do, the user has no specified the "grep" string
-    debug('Nothing to grep')
+    debug('Nothing to grep, version %s', version)
     return
   }
 
@@ -46,7 +47,7 @@ function cypressGrep() {
   const omitFiltered =
     Cypress.env('grepOmitFiltered') || Cypress.env('grep-omit-filtered')
 
-  debug('grep %o', { grep, grepTags, grepBurn, omitFiltered })
+  debug('grep %o', { grep, grepTags, grepBurn, omitFiltered, version })
   if (!Cypress._.isInteger(grepBurn) || grepBurn < 1) {
     throw new Error(`Invalid grep burn value: ${grepBurn}`)
   }

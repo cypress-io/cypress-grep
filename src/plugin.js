@@ -3,6 +3,7 @@ const globby = require('globby')
 const { getTestNames } = require('find-test-names')
 const fs = require('fs')
 const path = require('path')
+const { version } = require('../package.json')
 
 /**
  * Prints the cypress-grep environment values if any.
@@ -14,6 +15,7 @@ function cypressGrepPlugin(config) {
   }
 
   debug('Cypress config env object: %o', config.env)
+  debug('plugin version %s', version)
   const grep = config.env.grep
   if (grep) {
     console.log('cypress-grep: tests with "%s" in their names', grep.trim())
