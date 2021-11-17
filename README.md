@@ -307,6 +307,8 @@ describe('block with config tag', { tags: '@smoke' }, () => {
 
 See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
 
+**Note:** global function `describe` and `context` are aliases and both supported by this plugin.
+
 ### AND tags
 
 Use `+` to require both tags to be present
