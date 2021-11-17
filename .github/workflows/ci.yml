@@ -201,6 +201,14 @@ jobs:
             --env grepTags="@tag1",grepOmitFiltered=true \
             --expect-exactly expects/omit-filtered.json
 
+      # https://github.com/cypress-io/cypress-grep/issues/88
+      - name: Omit and skip combination 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="omit-and-skip-spec.js" \
+            --env grepTags="@us1",grepOmitFiltered=true \
+            --expect-exactly expects/omit-and-skip.json
+
   tests3:
     runs-on: ubuntu-20.04
     needs: install
