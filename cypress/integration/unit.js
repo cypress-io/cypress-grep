@@ -318,6 +318,18 @@ describe('utils', () => {
         ]),
       ).to.be.true
     })
+
+    it("Multiple invert strings", () => {
+      const t = checkName("-name;-hey;number")
+      expect(t("number should only be matches without a n-a-m-e")).to.be.true
+      expect(t("number can't be name")).to.be.false
+      expect(t("The man needs a name")).to.be.false
+      expect(t("number hey name")).to.be.false
+      expect(t("numbers hey name")).to.be.false
+      expect(t("number hsey nsame")).to.be.true
+      expect(t("This wont match")).to.be.false
+    })
+
   })
 
   context('parseFullTitleGrep', () => {
