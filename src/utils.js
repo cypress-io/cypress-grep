@@ -114,17 +114,9 @@ function shouldTestRunTitle(parsedGrep, testName) {
   const inverted = parsedGrep.filter(g => g.invert)
   const straight = parsedGrep.filter(g => !g.invert)
 
-  if (inverted.length) {
-    if (straight.length) {
-      return !inverted
-        .some(titleGrep => testName.includes(titleGrep.title))
-        && straight
-          .some(titleGrep => testName.includes(titleGrep.title))
-    }
-    return inverted.every(titleGrep => !testName.includes(titleGrep.title))
-  }
-  else
-    return straight.some(titleGrep => testName.includes(titleGrep.title))
+  return inverted.every(titleGrep => !testName.includes(titleGrep.title))
+    && (!straight.length || straight
+      .some(titleGrep => testName.includes(titleGrep.title)))
 }
 
 // note: tags take precedence over the test name
