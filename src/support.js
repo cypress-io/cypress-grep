@@ -18,7 +18,7 @@ function cypressGrep() {
   /** @type {string} Part of the test title go grep */
   let grep = Cypress.env('grep')
   if (grep) {
-    grep = grep.trim()
+    grep = String(grep).trim()
   }
 
   /** @type {string} Raw tags to grep string */

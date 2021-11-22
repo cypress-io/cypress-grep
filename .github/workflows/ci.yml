@@ -114,6 +114,12 @@ jobs:
             --env grep=@tag1 \
             --expect ./expects/tag1.json
 
+      - name: Run tests with number 1 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep=1 \
+            --expect ./expects/number1.json
+
       - name: Run tests with "@tag2" 🧪
         run: |
           npx cypress-expect \

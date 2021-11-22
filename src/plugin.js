@@ -16,7 +16,7 @@ function cypressGrepPlugin(config) {
 
   debug('Cypress config env object: %o', config.env)
   debug('plugin version %s', version)
-  const grep = config.env.grep
+  const grep = config.env.grep ? String(config.env.grep) : undefined
   if (grep) {
     console.log('cypress-grep: tests with "%s" in their names', grep.trim())
   }
