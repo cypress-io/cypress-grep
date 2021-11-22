@@ -183,6 +183,22 @@ jobs:
             --env grepTags=@smoke \
             --expect expects/describe-tags-spec.json
 
+      # several specs with tags using OR condition
+      # https://github.com/cypress-io/cypress-grep/issues/92
+      - name: Tags OR specs 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="tags/*.spec.js" \
+            --env grepTags="high smoke" \
+            --expect-exactly expects/tags-or.json
+
+      - name: Tags AND specs 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="tags/*.spec.js" \
+            --env grepTags="high+smoke" \
+            --expect-exactly expects/tags-and.json
+
       - name: Specify is an alias to it 🧪
         run: |
           npx cypress-expect \
