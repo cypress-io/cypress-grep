@@ -79,6 +79,18 @@ jobs:
             --env grep=-hello \
             --expect-exactly ./expects/no-hello.json
 
+      - name: Run tests without "hello" or "works 2" 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep="-hello; -works 2" \
+            --expect-exactly ./expects/no-hello-no-works2.json
+
+      - name: Run tests with "works" or "hello" but without "2" 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep="works; hello; -2" \
+            --expect-exactly ./expects/works-hello-no-2.json
+
       # check space character
       - name: Run tests with "works 2" 🧪
         run: |
