@@ -152,8 +152,6 @@ $ npx cypress run --env grep=,grepTags=,burn=
 $ npx cypress run --env grep=hello
 # run all tests with "hello world" in their title
 $ npx cypress run --env grep="hello world"
-# run all tests WITHOUT "hello world" in their title
-$ npx cypress run --env grep="-hello world"
 ```
 
 You can pass multiple title substrings to match separating them with `;` character. Each substring is trimmed.
@@ -161,6 +159,15 @@ You can pass multiple title substrings to match separating them with `;` charact
 ```shell
 # run all tests with "hello world" or "auth user" in their title
 $ npx cypress run --env grep="hello world; auth user"
+```
+
+### negative filter
+
+```shell
+# run all tests WITHOUT "hello world" in their title
+$ npx cypress run --env grep="-hello world"
+# run tests with "hello", but without "word" in the titles
+$ npx cypress run --env grep="hello; -world"
 ```
 
 ## Filter with tags
