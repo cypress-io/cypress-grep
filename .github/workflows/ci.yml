@@ -73,6 +73,12 @@ jobs:
             --env grep=hello \
             --expect ./expects/hello.json
 
+      - name: Run tests without "hello" 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep=-hello \
+            --expect-exactly ./expects/no-hello.json
+
       # check space character
       - name: Run tests with "works 2" 🧪
         run: |
