@@ -111,17 +111,12 @@ function shouldTestRunTitle(parsedGrep, testName) {
     return true
   }
 
-  // TODO if some titles greps are "invert: true" we should
-  // use AND instead of OR, otherwise it does the
-  // opposite of what we probably want to do
+  const inverted = parsedGrep.filter(g => g.invert)
+  const straight = parsedGrep.filter(g => !g.invert)
 
-  return parsedGrep.some((titleGrep) => {
-    if (titleGrep.invert) {
-      return !testName.includes(titleGrep.title)
-    }
-
-    return testName.includes(titleGrep.title)
-  })
+  return inverted.every(titleGrep => !testName.includes(titleGrep.title))
+    && (!straight.length || straight
+      .some(titleGrep => testName.includes(titleGrep.title)))
 }
 
 // note: tags take precedence over the test name
