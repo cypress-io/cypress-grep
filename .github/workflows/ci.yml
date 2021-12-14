@@ -369,7 +369,7 @@ jobs:
         run: |
           npx cypress-expect \
             --config testFiles="**/ts-spec.ts" \
-            --env grep=loads,grepOmitFiltered=true \
+            --env grep=loads,grepOmitFiltered=true,grepFilterSpecs=true \
             --expect-exactly expects/ts-spec.json
 
   release:

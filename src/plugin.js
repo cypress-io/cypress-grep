@@ -75,6 +75,8 @@ function cypressGrepPlugin(config) {
 
           return testAndSuiteNames.some((name) => name.includes(grep))
         } catch (err) {
+          debug(err.message)
+          debug(err.stack)
           console.error('Could not determine test names in file: %s', specFile)
           console.error('Will run it to let the grep filter the tests')
           return true

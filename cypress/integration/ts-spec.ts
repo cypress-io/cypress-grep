@@ -1,6 +1,6 @@
 describe('TypeScript spec', () => {
   it('works', () => {
-    interface Person {
+    type Person = {
       name: string
     }
 
