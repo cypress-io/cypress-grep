@@ -4,6 +4,7 @@ const { getTestNames } = require('find-test-names')
 const fs = require('fs')
 const path = require('path')
 const { version } = require('../package.json')
+const { parseGrep, shouldTestRun } = require('./utils')
 
 /**
  * Prints the cypress-grep environment values if any.
@@ -62,6 +63,9 @@ function cypressGrepPlugin(config) {
       debug('found %d spec files', specFiles.length)
       debug('%o', specFiles)
 
+      const parsedGrep = parseGrep(grep)
+      debug('parsed grep %o', parsedGrep)
+
       const specsWithText = specFiles.filter((specFile) => {
         const text = fs.readFileSync(
           path.join(config.integrationFolder, specFile),
@@ -73,7 +77,10 @@ function cypressGrepPlugin(config) {
           debug('spec file %s', specFile)
           debug('suite and test names: %o', testAndSuiteNames)
 
-          return testAndSuiteNames.some((name) => name.includes(grep))
+          return testAndSuiteNames.some((name) => {
+            const shouldRun = shouldTestRun(parsedGrep, name)
+            return shouldRun
+          })
         } catch (err) {
           console.error('Could not determine test names in file: %s', specFile)
           console.error('Will run it to let the grep filter the tests')
@@ -113,6 +120,7 @@ function cypressGrepPlugin(config) {
           debug('test info: %o', testInfo.tests)
 
           return testInfo.tests.some((info) => {
+            // TODO: switch to using "shouldTestRun"
             return info.tags && info.tags.includes(grepTags)
           })
         } catch (err) {
