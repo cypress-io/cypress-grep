@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "types": ["cypress"]
+  },
+  "files": [
+    "./integration/**/*.ts"
+  ],
+}

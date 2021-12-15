@@ -372,6 +372,13 @@ jobs:
             --env grepUntagged=true \
             --expect-exactly expects/describe-tags-spec-untagged.json
 
+      - name: filter TypeScript spec 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/ts-spec.ts" \
+            --env grep=loads,grepOmitFiltered=true,grepFilterSpecs=true \
+            --expect-exactly expects/ts-spec.json
+
   release:
     needs: [tests1, tests2, tests3]
     runs-on: ubuntu-20.04
