@@ -111,6 +111,13 @@ jobs:
             --env grep="hello; works 2" \
             --expect ./expects/hello-or-works-2.json
 
+      # https://github.com/cypress-io/cypress-grep/issues/96
+      - name: Run tests with "hello" or "works 2" with spec filtering 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep="hello; works 2",grepFilterSpecs=true \
+            --expect ./expects/hello-or-works-2.json
+
   tests2:
     runs-on: ubuntu-20.04
     needs: install
