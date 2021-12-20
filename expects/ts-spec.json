@@ -1,5 +1,6 @@
 {
   "TypeScript spec": {
-    "loads": "passing"
+    "loads": "passing",
+    "loads interfaces": "passing"
   }
 }

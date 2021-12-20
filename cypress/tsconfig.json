@@ -2,7 +2,5 @@
   "compilerOptions": {
     "types": ["cypress"]
   },
-  "files": [
-    "./integration/**/*.ts"
-  ],
+  "include": ["./integration/**/*.ts"]
 }
