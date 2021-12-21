@@ -90,7 +90,7 @@ function cypressGrepPlugin(config) {
         }
       })
 
-      debug('found "%s" in %d specs', grep, specsWithText.length)
+      debug('found grep "%s" in %d specs', grep, specsWithText.length)
       debug('%o', specsWithText)
 
       config.testFiles = specsWithText
@@ -111,6 +111,9 @@ function cypressGrepPlugin(config) {
       debug('found %d spec files', specFiles.length)
       debug('%o', specFiles)
 
+      const parsedGrep = parseGrep(null, grepTags)
+      debug('parsed grep tags %o', parsedGrep)
+
       const specsWithText = specFiles.filter((specFile) => {
         const text = fs.readFileSync(
           path.join(config.integrationFolder, specFile),
@@ -122,8 +125,8 @@ function cypressGrepPlugin(config) {
           debug('test info: %o', testInfo.tests)
 
           return testInfo.tests.some((info) => {
-            // TODO: switch to using "shouldTestRun"
-            return info.tags && info.tags.includes(grepTags)
+            const shouldRun = shouldTestRun(parsedGrep, null, info.tags)
+            return shouldRun
           })
         } catch (err) {
           console.error('Could not determine test names in file: %s', specFile)
@@ -132,7 +135,7 @@ function cypressGrepPlugin(config) {
         }
       })
 
-      debug('found "%s" in %d specs', grep, specsWithText.length)
+      debug('found grep tags "%s" in %d specs', grepTags, specsWithText.length)
       debug('%o', specsWithText)
 
       if (specsWithText.length) {

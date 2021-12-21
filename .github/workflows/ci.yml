@@ -224,6 +224,14 @@ jobs:
             --env grepTags="high+smoke" \
             --expect-exactly expects/tags-and.json
 
+      # https://github.com/cypress-io/cypress-grep/issues/98
+      - name: Tags OR specs with grepFilterSpecs=true 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="tags/*.spec.js" \
+            --env grepTags="high regression",grepFilterSpecs=true \
+            --expect-exactly expects/tags-or-filter.json
+
       - name: Specify is an alias to it 🧪
         run: |
           npx cypress-expect \
