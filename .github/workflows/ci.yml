@@ -387,6 +387,14 @@ jobs:
             --env grep=loads,grepOmitFiltered=true,grepFilterSpecs=true \
             --expect-exactly expects/ts-spec.json
 
+      - name: run before and beforeEach fn when the first test is filtered 🧪
+        run: |
+          npx cypress-expect \
+            --env grepTags=@staging \
+            --spec cypress/integration/before-spec.js \
+            --config testFiles="before-spec.js" \
+            --expect ./expects/before.json
+
   release:
     needs: [tests1, tests2, tests3]
     runs-on: ubuntu-20.04
