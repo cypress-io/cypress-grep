@@ -1,5 +1,7 @@
 # cypress-grep
+
 [![ci status][ci image]][ci url] [![badges status][badges image]][badges url] [![renovate-app badge][renovate-badge]][renovate-app] ![cypress version](https://img.shields.io/badge/cypress-8.7.0-brightgreen)
+
 > Filter tests using substring
 
 ```shell
@@ -183,6 +185,13 @@ You can select tests to run or skip using tags by passing `--env grepTags=...` v
 --env grep=hello,grepTags=smoke
 ```
 
+If you can pass commas in the environment variable `grepTags`, you can use `,` to separate the tags
+
+```
+# enable the tests with tag "one" or "two"
+CYPRESS_grepTags=one,two npx cypress run
+```
+
 ### Tags in the test config object
 
 Cypress tests can have their own [test config object](https://on.cypress.io/configuration#Test-Configuration), and when using this plugin you can put the test tags there, either as a single tag string or as an array of tags.
@@ -301,8 +310,7 @@ If you have `tsconfig.json` file, add this library to the types list
 The tags are also applied to the "describe" blocks. In that case, the tests look up if any of their outer suites are enabled.
 
 ```js
-describe('block with config tag', { tags: '@smoke' }, () => {
-})
+describe('block with config tag', { tags: '@smoke' }, () => {})
 ```
 
 ```

@@ -24,7 +24,7 @@ function cypressGrepPlugin(config) {
 
   const grepTags = config.env.grepTags || config.env['grep-tags']
   if (grepTags) {
-    console.log('cypress-grep: filtering using tag "%s"', grepTags)
+    console.log('cypress-grep: filtering using tag(s) "%s"', grepTags)
   }
 
   const grepBurn =
