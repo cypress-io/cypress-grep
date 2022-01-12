@@ -109,8 +109,24 @@ describe('utils', () => {
       ])
     })
 
+    it('forgives extra spaces', () => {
+      const parsed = parseTagsGrep('  @tag1   -@tag2 ')
+      expect(parsed).to.deep.equal([
+        [{ tag: '@tag1', invert: false }],
+        [{ tag: '@tag2', invert: true }],
+      ])
+    })
+
     it('parses tag1 but not tag2 with comma', () => {
       const parsed = parseTagsGrep('@tag1,-@tag2')
+      expect(parsed).to.deep.equal([
+        [{ tag: '@tag1', invert: false }],
+        [{ tag: '@tag2', invert: true }],
+      ])
+    })
+
+    it('filters out empty tags', () => {
+      const parsed = parseTagsGrep(',, @tag1,-@tag2,, ,, ,')
       expect(parsed).to.deep.equal([
         [{ tag: '@tag1', invert: false }],
         [{ tag: '@tag2', invert: true }],

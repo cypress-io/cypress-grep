@@ -44,24 +44,28 @@ function parseTagsGrep(s) {
   }
 
   // top level split - using space or comma, each part is OR
-  const ORS = s.split(/[ ,]/).map((part) => {
-    // now every part is an AND
-    const parsed = part.split('+').map((tag) => {
-      if (tag.startsWith('-')) {
-        return {
-          tag: tag.slice(1),
-          invert: true,
+  const ORS = s
+    .split(/[ ,]/)
+    // remove any empty tags
+    .filter(Boolean)
+    .map((part) => {
+      // now every part is an AND
+      const parsed = part.split('+').map((tag) => {
+        if (tag.startsWith('-')) {
+          return {
+            tag: tag.slice(1),
+            invert: true,
+          }
         }
-      }
 
-      return {
-        tag,
-        invert: false,
-      }
+        return {
+          tag,
+          invert: false,
+        }
+      })
+
+      return parsed
     })
-
-    return parsed
-  })
 
   return ORS
 }
