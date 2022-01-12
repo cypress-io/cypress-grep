@@ -401,7 +401,7 @@ jobs:
         run: |
           npx cypress-expect \
             --config testFiles="**/inherits-tag-spec.js" \
-            --env grepTags="@smoke+@screen-b" \
+            --env grepTags="@sanity+@screen-b" \
             --expect-exactly expects/inherits-tag-spec.json
 
   release:
