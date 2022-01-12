@@ -76,6 +76,16 @@ describe('utils', () => {
       ])
     })
 
+    it('handles dashes in the tag', () => {
+      const parsed = parseTagsGrep('@smoke+@screen-b')
+      expect(parsed).to.deep.equal([
+        [
+          { tag: '@smoke', invert: false },
+          { tag: '@screen-b', invert: false },
+        ],
+      ])
+    })
+
     it('parses OR tags spaces', () => {
       // run tests with tag1 OR tag2 or tag3
       const parsed = parseTagsGrep('@tag1 @tag2 @tag3')
@@ -252,7 +262,6 @@ describe('utils', () => {
     // our parsing and decision logic computes the expected result
     const shouldIt = (used, tags, expected) => {
       const parsedTags = parseTagsGrep(used)
-      console.log(parsedTags)
       expect(
         shouldTestRunTags(parsedTags, tags),
         `"${used}" against "${tags}"`,

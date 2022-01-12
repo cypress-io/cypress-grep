@@ -397,6 +397,13 @@ jobs:
             --env grep=loads,grepOmitFiltered=true,grepFilterSpecs=true \
             --expect-exactly expects/ts-spec.json
 
+      - name: inherits parent tags 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/inherits-tag-spec.js" \
+            --env grepTags="@smoke+@screen-b" \
+            --expect-exactly expects/inherits-tag-spec.json
+
   release:
     needs: [tests1, tests2, tests3]
     runs-on: ubuntu-20.04
