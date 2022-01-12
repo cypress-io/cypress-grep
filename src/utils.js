@@ -43,8 +43,8 @@ function parseTagsGrep(s) {
     return []
   }
 
-  // top level split - using space, each part is OR
-  const ORS = s.split(' ').map((part) => {
+  // top level split - using space or comma, each part is OR
+  const ORS = s.split(/[ ,]/).map((part) => {
     // now every part is an AND
     const parsed = part.split('+').map((tag) => {
       if (tag.startsWith('-')) {
@@ -111,12 +111,14 @@ function shouldTestRunTitle(parsedGrep, testName) {
     return true
   }
 
-  const inverted = parsedGrep.filter(g => g.invert)
-  const straight = parsedGrep.filter(g => !g.invert)
+  const inverted = parsedGrep.filter((g) => g.invert)
+  const straight = parsedGrep.filter((g) => !g.invert)
 
-  return inverted.every(titleGrep => !testName.includes(titleGrep.title))
-    && (!straight.length || straight
-      .some(titleGrep => testName.includes(titleGrep.title)))
+  return (
+    inverted.every((titleGrep) => !testName.includes(titleGrep.title)) &&
+    (!straight.length ||
+      straight.some((titleGrep) => testName.includes(titleGrep.title)))
+  )
 }
 
 // note: tags take precedence over the test name

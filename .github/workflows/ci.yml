@@ -217,6 +217,16 @@ jobs:
             --env grepTags="high smoke" \
             --expect-exactly expects/tags-or.json
 
+      - name: Tags OR specs using commas 🧪
+        env:
+          # Cypress CLI has problems parsing --env values with commas
+          # so pass the value using an environment variable
+          CYPRESS_grepTags: 'high,smoke'
+        run: |
+          npx cypress-expect \
+            --config testFiles="tags/*.spec.js" \
+            --expect-exactly expects/tags-or.json
+
       - name: Tags AND specs 🧪
         run: |
           npx cypress-expect \
