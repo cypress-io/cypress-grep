@@ -168,7 +168,7 @@ $ npx cypress run --env grep="hello world; auth user"
 ```shell
 # run all tests WITHOUT "hello world" in their title
 $ npx cypress run --env grep="-hello world"
-# run tests with "hello", but without "word" in the titles
+# run tests with "hello", but without "world" in the titles
 $ npx cypress run --env grep="hello; -world"
 ```
 
