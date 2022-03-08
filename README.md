@@ -204,7 +204,7 @@ $ npx cypress run --env grep="-hello world"
 $ npx cypress run --env grep="hello; -world"
 ```
 
-**Note:** An inverted name filter that matches a suite name does not exclude its tests.
+**Note:** Inverted title filter is not compativle with the `grepFilterSpecs` option
 
 ## Filter with tags
 
@@ -293,6 +293,8 @@ If you want to run all tests with tag `@slow` but without tag `@smoke`:
 --env grepTags=@slow+-@smoke
 ```
 
+**Note:** Inverted tag filter is not compativle with the `grepFilterSpecs` option
+
 ### Grep untagged tests
 
 Sometimes you want to run only the tests without any tags, and these tests are inside the describe blocks without any tags.
@@ -315,7 +317,7 @@ $ npx cypress run --env grepTags=@smoke,grepFilterSpecs=true
 
 **Note 1:** this requires installing this plugin in your project's plugin file, see the [Install](#install).
 
-**Note 2:** the `grepFilterSpecs` option is only compatible with the positive `grep` and `grepTags` options, not with the negative "!..." filter.
+**Note 2:** the `grepFilterSpecs` option is only compatible with the positive `grep` and `grepTags` options, not with the negative (inverted) "-..." filter.
 
 **Note 3:** if there are no files remaining after filtering, the plugin prints a warning and leaves all files unchanged to avoid the test runner erroring with "No specs found".
 
