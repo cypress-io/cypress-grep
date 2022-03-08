@@ -23,6 +23,46 @@ If you have multiple spec files, all specs will be loaded, and every test will b
 
 Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=HS-Px-Sghd8)
 
+Table of Contents
+
+<!-- MarkdownTOC autolink="true" -->
+
+- [Install](#install)
+  - [Plugin file](#plugin-file)
+- [Usage Overview](#usage-overview)
+- [Filter by test title](#filter-by-test-title)
+  - [OR substring matching](#or-substring-matching)
+  - [Test suites](#test-suites)
+  - [Invert filter](#invert-filter)
+- [Filter with tags](#filter-with-tags)
+  - [Tags in the test config object](#tags-in-the-test-config-object)
+  - [AND tags](#and-tags)
+  - [OR tags](#or-tags)
+  - [Test suites](#test-suites-1)
+  - [Invert tag](#invert-tag)
+  - [Grep untagged tests](#grep-untagged-tests)
+- [Pre-filter specs \(grepFilterSpecs\)](#pre-filter-specs-grepfilterspecs)
+- [Omit filtered tests \(grepOmitFiltered\)](#omit-filtered-tests-grepomitfiltered)
+- [Disable grep](#disable-grep)
+- [Burn \(repeat\) tests](#burn-repeat-tests)
+- [TypeScript support](#typescript-support)
+- [General advice](#general-advice)
+- [DevTools console](#devtools-console)
+- [Debugging](#debugging)
+  - [Log messages](#log-messages)
+  - [Debugging in the plugin](#debugging-in-the-plugin)
+  - [Debugging in the browser](#debugging-in-the-browser)
+- [Examples](#examples)
+- [See also](#see-also)
+- [Migration guide](#migration-guide)
+  - [from v1 to v2](#from-v1-to-v2)
+- [Videos & Blog Posts](#videos--blog-posts)
+- [Blog posts](#blog-posts)
+- [Small print](#small-print)
+- [MIT License](#mit-license)
+
+<!-- /MarkdownTOC -->
+
 ## Install
 
 Assuming you have Cypress installed, add this module as a dev dependency
@@ -68,9 +108,13 @@ registerCypressGrep()
 
 Installing the plugin via `setupNodeEvents()` is required to enable the [grepFilterSpecs](#grepfilterspecs) feature.
 
-## Use
+## Usage Overview
 
-Start grepping by title and tags:
+You can filter tests to run using part of their title via `grep`, and via explicit tags via `grepTags` Cypress environment variables.
+
+Most likely you will pass these environment variables from the command line. For example, to only run tests with "login" in their title and tagged "smoke", you would run:
+
+Here are a few examples:
 
 ```shell
 # run only the tests with "auth user" in the title
@@ -92,32 +136,7 @@ $ npx cypress run --env grepTags=@smoke,grepFilterSpecs=true
 $ npx cypress run --env grepUntagged=true
 ```
 
-## Videos
-
-Watch the video [intro to cypress-grep](https://www.youtube.com/watch?v=HS-Px-Sghd8) which shows how this repository tags tests, uses [cypress-grep](https://github.com/cypress-io/cypress-grep) plugin, and sets up the TypeScript intelligent code completion.
-
-You can also watch [How I organize pull request workflows](https://youtu.be/SFW7Ecj5TNE) where I show how the GitHub workflows in [.github/workflows](./.github/workflows) are organized to run the smoke tests first on pull request.
-
-Watch the video [Filter Specs First When Using cypress-grep Plugin](https://youtu.be/adL7KzO5dR0)
-
-Watch the video [Run All Tests That Have No Tags Using cypress-grep Plugin](https://youtu.be/CtU43GzaicI)
-
-## Blog posts
-
-- [Burning Tests with cypress-grep](https://glebbahmutov.com/blog/burning-tests/)
-- [Faster test execution with cypress-grep](https://glebbahmutov.com/blog/cypress-grep-filters/)
-
-## Filters
-
-You can filter tests to run using part of their title via `grep`, and via explicit tags via `grepTags` Cypress environment variables.
-
-Most likely you will pass these environment variables from the command line. For example, to only run tests with "login" in their title and tagged "smoke", you would run:
-
-```shell
-$ npx cypress run --env grep=login,grepTags=smoke
-```
-
-You can use any way to modify the environment values `grep` and `grepTags`, except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the [config file](https://docs.cypress.io/guides/references/configuration) to run only tests with the substring `viewport` in their names
+You can use any way to modify the environment values `grep` and `grepTags`, except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the `cypress.json` file to run only tests with the substring `viewport` in their names
 
 ```json
 {
@@ -139,15 +158,7 @@ module.exports = (on, config) => {
 
 You can also set the grep and grepTags from the DevTools console while running Cypress in the interactive mode `cypress open`, see [DevTools Console section](#devtools-console).
 
-### Disable grep
-
-If you specify the `grep` parameters inside the [config file](https://docs.cypress.io/guides/references/configuration), you can disable it from the command line
-
-```
-$ npx cypress run --env grep=,grepTags=,burn=
-```
-
-### grep by test title
+## Filter by test title
 
 ```shell
 # run all tests with "hello" in their title
@@ -156,6 +167,8 @@ $ npx cypress run --env grep=hello
 $ npx cypress run --env grep="hello world"
 ```
 
+### OR substring matching
+
 You can pass multiple title substrings to match separating them with `;` character. Each substring is trimmed.
 
 ```shell
@@ -163,7 +176,26 @@ You can pass multiple title substrings to match separating them with `;` charact
 $ npx cypress run --env grep="hello world; auth user"
 ```
 
-### negative filter
+### Test suites
+
+The filter is also applied to the "describe" blocks. In that case, the tests look up if any of their outer suites are enabled.
+
+```js
+describe('block for config', () => {
+  it('should run', () => {})
+
+  it('should also work', () => {})
+})
+```
+
+```
+# run any tests in the blocks including "config"
+--env grep=config
+```
+
+**Note:** global function `describe` and `context` are aliases and both supported by this plugin.
+
+### Invert filter
 
 ```shell
 # run all tests WITHOUT "hello world" in their title
@@ -171,6 +203,8 @@ $ npx cypress run --env grep="-hello world"
 # run tests with "hello", but without "world" in the titles
 $ npx cypress run --env grep="hello; -world"
 ```
+
+**Note:** An inverted name filter that matches a suite name does not exclude its tests.
 
 ## Filter with tags
 
@@ -208,7 +242,66 @@ it('works as a string', { tags: 'config' }, () => {
 
 You can run both of these tests using `--env grepTags=config` string.
 
-### grepFilterSpecs
+### AND tags
+
+Use `+` to require both tags to be present
+
+```
+--env grepTags=@smoke+@fast
+```
+
+### OR tags
+
+You can run tests that match one tag or another using spaces. Make sure to quote the grep string!
+
+```
+# run tests with tags "@slow" or "@critical" in their names
+--env grepTags='@slow @critical'
+```
+
+### Test suites
+
+The tags are also applied to the "describe" blocks. In that case, the tests look up if any of their outer suites are enabled.
+
+```js
+describe('block with config tag', { tags: '@smoke' }, () => {})
+```
+
+```
+# run any tests in the blocks having "@smoke" tag
+--env grepTags=@smoke
+# skip any blocks with "@smoke" tag
+--env grepTags=-@smoke
+```
+
+See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
+
+**Note:** global function `describe` and `context` are aliases and both supported by this plugin.
+
+### Invert tag
+
+You can skip running the tests with specific tag using the invert option: prefix the tag with the character `-`.
+
+```
+# do not run any tests with tag "@slow"
+--env grepTags=-@slow
+```
+
+If you want to run all tests with tag `@slow` but without tag `@smoke`:
+
+```
+--env grepTags=@slow+-@smoke
+```
+
+### Grep untagged tests
+
+Sometimes you want to run only the tests without any tags, and these tests are inside the describe blocks without any tags.
+
+```
+$ npx cypress run --env grepUntagged=true
+```
+
+## Pre-filter specs (grepFilterSpecs)
 
 By default, when using `grep` and `grepTags` all specs are executed, and inside each the filters are applied. This can be very wasteful, if only a few specs contain the `grep` in the test titles. Thus when doing the positive `grep`, you can pre-filter specs using the `grepFilterSpecs=true` parameter.
 
@@ -220,11 +313,11 @@ $ npx cypress run --env grep="it loads",grepFilterSpecs=true
 $ npx cypress run --env grepTags=@smoke,grepFilterSpecs=true
 ```
 
-Note: this requires installing this plugin in your project's plugin file, see the [Install](#install).
+**Note 1:** this requires installing this plugin in your project's plugin file, see the [Install](#install).
 
-Note 2: the `grepFilterSpecs` option is only compatible with the positive `grep` and `grepTags` options, not with the negative "!..." filter.
+**Note 2:** the `grepFilterSpecs` option is only compatible with the positive `grep` and `grepTags` options, not with the negative "!..." filter.
 
-Note 3: if there are no files remaining after filtering, the plugin prints a warning and leaves all files unchanged to avoid the test runner erroring with "No specs found".
+**Note 3:** if there are no files remaining after filtering, the plugin prints a warning and leaves all files unchanged to avoid the test runner erroring with "No specs found".
 
 **Tip:** you can set this environment variable in the [config file](https://docs.cypress.io/guides/references/configuration) file to enable it by default and skip using the environment variable:
 
@@ -236,7 +329,7 @@ Note 3: if there are no files remaining after filtering, the plugin prints a war
 }
 ```
 
-### omit filtered tests
+## Omit filtered tests (grepOmitFiltered)
 
 By default, all filtered tests are made _pending_ using `it.skip` method. If you want to completely omit them, pass the environment variable `grepOmitFiltered=true`.
 
@@ -266,15 +359,27 @@ cypress run --env grep="works 2",grepOmitFiltered=true
 }
 ```
 
-### grep untagged tests
+## Disable grep
 
-Sometimes you want to run only the tests without any tags, and these tests are inside the describe blocks without any tags.
+If you specify the `grep` parameters inside `cypress.json` file, you can disable it from the command line
 
 ```
-$ npx cypress run --env grepUntagged=true
+$ npx cypress run --env grep=,grepTags=,burn=
 ```
 
-### TypeScript users
+## Burn (repeat) tests
+
+You can burn the filtered tests to make sure they are flake-free
+
+```
+npx cypress run --env grep="hello world",burn=5
+```
+
+You can pass the number of times to run the tests via environment name `burn` or `grepBurn` or `grep-burn`. Note, if a lot of tests match the grep and grep tags, a lot of tests will be burnt!
+
+If you do not specify the "grep" or "grep tags" option, the "burn" will repeat _every_ test.
+
+## TypeScript support
 
 Because the Cypress test config object type definition does not have the `tags` property we are using above, the TypeScript linter will show an error. Just add an ignore comment above the test:
 
@@ -304,87 +409,6 @@ If you have `tsconfig.json` file, add this library to the types list
   "include": ["**/*.ts"]
 }
 ```
-
-## Test suites
-
-The tags are also applied to the "describe" blocks. In that case, the tests look up if any of their outer suites are enabled.
-
-```js
-describe('block with config tag', { tags: '@smoke' }, () => {})
-```
-
-```
-# run any tests in the blocks having "@smoke" tag
---env grepTags=@smoke
-# skip any blocks with "@smoke" tag
---env grepTags=-@smoke
-```
-
-See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
-
-**Note:** global function `describe` and `context` are aliases and both supported by this plugin.
-
-### AND tags
-
-Use `+` to require both tags to be present
-
-```
---env grepTags=@smoke+@fast
-```
-
-### Invert tag
-
-You can skip running the tests with specific tag using the invert option: prefix the tag with the character `-`.
-
-```
-# do not run any tests with tag "@slow"
---env grepTags=-@slow
-```
-
-If you want to run all tests with tag `@slow` but without tag `@smoke`:
-
-```
---env grepTags=@slow+-@smoke
-```
-
-### OR tags
-
-You can run tests that match one tag or another using spaces. Make sure to quote the grep string!
-
-```
-# run tests with tags "@slow" or "@critical" in their names
---env grepTags='@slow @critical'
-```
-
-### NOT tags
-
-You can skip running the tests with specific tag, even if they have a tag that should run, using the not option: prefix the tag with `--`.
-
-Note this is the same as appending `+-<tag to never run>` to each tag. May be useful with large number of tags.
-
-If you want to run tests with tags `@slow` or `@regression` but without tag `@smoke`
-
-```
---env grepTags='@slow @regression --@smoke'
-```
-
-which is equivalent to
-
-```
---env grepTags='@slow+-@smoke @regression+-@smoke'
-```
-
-## Burn
-
-You can repeat (burn) the filtered tests to make sure they are flake-free
-
-```
-npx cypress run --env grep="hello world",burn=5
-```
-
-You can pass the number of times to run the tests via environment name `burn` or `grepBurn` or `grep-burn`. Note, if a lot of tests match the grep and grep tags, a lot of tests will be burnt!
-
-If you do not specify the "grep" or "grep tags" option, the "burn" will repeat _every_ test.
 
 ## General advice
 
@@ -535,6 +559,21 @@ The above scenario was confusing - did you want to find all tests with title con
 # enable the tests with "hello" in the title and tag "smoke"
 --env grep=hello,grepTags=smoke
 ```
+
+## Videos & Blog Posts
+
+Watch the video [intro to cypress-grep](https://www.youtube.com/watch?v=HS-Px-Sghd8) which shows how this repository tags tests, uses [cypress-grep](https://github.com/cypress-io/cypress-grep) plugin, and sets up the TypeScript intelligent code completion.
+
+You can also watch [How I organize pull request workflows](https://youtu.be/SFW7Ecj5TNE) where I show how the GitHub workflows in [.github/workflows](./.github/workflows) are organized to run the smoke tests first on pull request.
+
+Watch the video [Filter Specs First When Using cypress-grep Plugin](https://youtu.be/adL7KzO5dR0)
+
+Watch the video [Run All Tests That Have No Tags Using cypress-grep Plugin](https://youtu.be/CtU43GzaicI)
+
+## Blog posts
+
+- [Burning Tests with cypress-grep](https://glebbahmutov.com/blog/burning-tests/)
+- [Faster test execution with cypress-grep](https://glebbahmutov.com/blog/cypress-grep-filters/)
 
 ## Small print
 
