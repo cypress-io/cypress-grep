@@ -412,6 +412,13 @@ jobs:
             --env grepTags="@sanity+@screen-b" \
             --expect-exactly expects/inherits-tag-spec.json
 
+      - name: filter specs when using dynamic names 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/dynamic/*.spec.js" \
+            --env grepTags="@smoke",grepFilterSpecs=true \
+            --expect-exactly expects/dynamic-spec.json
+
   release:
     needs: [tests1, tests2, tests3]
     runs-on: ubuntu-20.04
