@@ -153,6 +153,14 @@ describe('utils', () => {
         ],
       ])
     })
+
+    it('filters out explicit not tags', () => {
+      const parsed = parseTagsGrep('@tag1 --@tag2 -@tag3')
+      expect(parsed).to.deep.equal([
+        [{ tag: '@tag1', invert: false }, { tag: '@tag2', invert: true }],
+        [{ tag: '@tag3', invert: true }, { tag: '@tag2', invert: true }],
+      ])
+    })
   })
 
   context('parseGrep', () => {
