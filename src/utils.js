@@ -43,6 +43,8 @@ function parseTagsGrep(s) {
     return []
   }
 
+  const explicitNotTags = []
+
   // top level split - using space or comma, each part is OR
   const ORS = s
     .split(/[ ,]/)
@@ -50,6 +52,13 @@ function parseTagsGrep(s) {
     .filter(Boolean)
     .map((part) => {
       // now every part is an AND
+      if (part.startsWith('--')) {
+        explicitNotTags.push({
+          tag: part.slice(2),
+          invert: true,
+        })
+        return
+      }
       const parsed = part.split('+').map((tag) => {
         if (tag.startsWith('-')) {
           return {
@@ -67,7 +76,14 @@ function parseTagsGrep(s) {
       return parsed
     })
 
-  return ORS
+  // filter out undefined from explicit not tags
+  const ORS_filtered = ORS.filter(x => x !==undefined)
+  if(explicitNotTags.length > 0 ){
+    ORS_filtered.forEach((OR, index) => {
+      ORS_filtered[index] = OR.concat(explicitNotTags)
+    })
+  }
+  return ORS_filtered
 }
 
 function shouldTestRunTags(parsedGrepTags, tags = []) {
