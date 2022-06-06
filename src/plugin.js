@@ -4,7 +4,7 @@ const { getTestNames } = require('find-test-names')
 const fs = require('fs')
 const path = require('path')
 const { version } = require('../package.json')
-const { parseGrep, shouldTestRun } = require('./utils')
+const { resolveConfig, parseGrep, shouldTestRun } = require('./utils')
 
 /**
  * Prints the cypress-grep environment values if any.
@@ -15,64 +15,63 @@ function cypressGrepPlugin(config) {
     return config
   }
 
-  debug('Cypress config env object: %o', config.env)
-  debug('plugin version %s', version)
-  const grep = config.env.grep ? String(config.env.grep) : undefined
+  const { env } = config
+
+  debug(
+    'Config type: %s',
+    env.grepNewConfig
+      ? 'new (Cypress version >= v10.0.0)'
+      : 'legacy (Cypress version < v10.0.0)',
+  )
+  debug('cypress-grep plugin version %s', version)
+  debug('Cypress config env object: %o', env)
+
+  const grep = env.grep ? String(env.grep) : undefined
   if (grep) {
     console.log('cypress-grep: tests with "%s" in their names', grep.trim())
   }
 
-  const grepTags = config.env.grepTags || config.env['grep-tags']
+  const grepTags = env.grepTags || env['grep-tags']
   if (grepTags) {
     console.log('cypress-grep: filtering using tag(s) "%s"', grepTags)
     const parsedGrep = parseGrep(null, grepTags)
     debug('parsed grep tags %o', parsedGrep.tags)
   }
 
-  const grepBurn =
-    config.env.grepBurn || config.env['grep-burn'] || config.env.burn
+  const grepBurn = env.grepBurn || env['grep-burn'] || env.burn
   if (grepBurn) {
     console.log('cypress-grep: running filtered tests %d times', grepBurn)
   }
 
-  const grepUntagged = config.env.grepUntagged || config.env['grep-untagged']
+  const grepUntagged = env.grepUntagged || env['grep-untagged']
   if (grepUntagged) {
     console.log('cypress-grep: running untagged tests')
   }
 
-  const omitFiltered =
-    config.env.grepOmitFiltered || config.env['grep-omit-filtered']
+  const omitFiltered = env.grepOmitFiltered || env['grep-omit-filtered']
   if (omitFiltered) {
     console.log('cypress-grep: will omit filtered tests')
   }
 
-  const grepFilterSpecs = config.env.grepFilterSpecs === true
+  const { resolvedConfig } = resolveConfig(config)
+  const { specPattern, excludeSpecPattern, integrationFolder } = resolvedConfig
+
+  const grepFilterSpecs = env.grepFilterSpecs === true
   if (grepFilterSpecs) {
+    debug(resolvedConfig)
+    const specFiles = globby.sync(specPattern, {
+      ignore: excludeSpecPattern,
+      absolute: false,
+    })
+    debug('found %d spec files', specFiles.length)
+    debug('%o', specFiles)
+    let greppedSpecs = []
     if (grep) {
       console.log('cypress-grep: filtering specs using "%s" in the title', grep)
-
-      debug({
-        integrationFolder: config.integrationFolder,
-        testFiles: config.testFiles,
-        ignoreTestFiles: config.ignoreTestFiles,
-      })
-
-      const specFiles = globby.sync(config.testFiles, {
-        cwd: config.integrationFolder,
-        ignore: config.ignoreTestFiles,
-        absolute: false,
-      })
-      debug('found %d spec files', specFiles.length)
-      debug('%o', specFiles)
-
       const parsedGrep = parseGrep(grep)
       debug('parsed grep %o', parsedGrep)
-
-      const specsWithText = specFiles.filter((specFile) => {
-        const text = fs.readFileSync(
-          path.join(config.integrationFolder, specFile),
-          'utf8',
-        )
+      greppedSpecs = specFiles.filter((specFile) => {
+        const text = fs.readFileSync(specFile, { encoding: 'utf8' })
         try {
           const names = getTestNames(text)
           const testAndSuiteNames = names.suiteNames.concat(names.testNames)
@@ -91,36 +90,13 @@ function cypressGrepPlugin(config) {
           return true
         }
       })
-
-      debug('found grep "%s" in %d specs', grep, specsWithText.length)
-      debug('%o', specsWithText)
-
-      config.testFiles = specsWithText
+      debug('found grep "%s" in %d specs', grep, greppedSpecs.length)
+      debug('%o', greppedSpecs)
     } else if (grepTags) {
-      console.log('cypress-grep: filtering specs using tag "%s"', grepTags)
-
-      debug({
-        integrationFolder: config.integrationFolder,
-        testFiles: config.testFiles,
-        ignoreTestFiles: config.ignoreTestFiles,
-      })
-
-      const specFiles = globby.sync(config.testFiles, {
-        cwd: config.integrationFolder,
-        ignore: config.ignoreTestFiles,
-        absolute: false,
-      })
-      debug('found %d spec files', specFiles.length)
-      debug('%o', specFiles)
-
       const parsedGrep = parseGrep(null, grepTags)
       debug('parsed grep tags %o', parsedGrep)
-
-      const specsWithText = specFiles.filter((specFile) => {
-        const text = fs.readFileSync(
-          path.join(config.integrationFolder, specFile),
-          'utf8',
-        )
+      greppedSpecs = specFiles.filter((specFile) => {
+        const text = fs.readFileSync(specFile, { encoding: 'utf8' })
         try {
           const testInfo = getTestNames(text)
           debug('spec file %s', specFile)
@@ -136,17 +112,19 @@ function cypressGrepPlugin(config) {
           return true
         }
       })
-
-      debug('found grep tags "%s" in %d specs', grepTags, specsWithText.length)
-      debug('%o', specsWithText)
-
-      if (specsWithText.length) {
-        config.testFiles = specsWithText
-      } else {
-        // hmm, we filtered out all specs, probably something is wrong
-        console.warn('Grep "%s" has eliminated all specs', grep)
-        console.warn('Will leave all specs to run to filter at run-time')
-      }
+      debug('found grep tags "%s" in %d specs', grepTags, greppedSpecs.length)
+      debug('%o', greppedSpecs)
+    }
+    if (greppedSpecs.length) {
+      env.grepNewConfig
+        ? (config.specPattern = greppedSpecs)
+        : (config.testFiles = greppedSpecs)
+    } else {
+      // hmm, we filtered out all specs, probably something is wrong
+      console.warn('grep and/or grepTags has eliminated all specs')
+      grep ? console.warn('grep: %s', grep) : null
+      grepTags ? console.warn('grepTags: %s', grepTags) : null
+      console.warn('Will leave all specs to run to filter at run-time')
     }
   }
 

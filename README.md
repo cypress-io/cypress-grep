@@ -73,6 +73,23 @@ cypress-grep: tests with "hello" in their names
 
 Installing the plugin in the project's plugin file is also required to enable the [grepFilterSpecs](#grepfilterspecs) feature.
 
+### setupNodeEvents
+
+To use this module with [Cypress v10.0.0](https://docs.cypress.io/guides/references/migration-guide#Migrating-to-Cypress-version-10-0) and above, add the following to your [config file](https://docs.cypress.io/guides/references/configuration):
+
+```js
+{
+  env: { grepNewConfig: true },
+  e2e: {
+    setupNodeEvents(on, config) {
+      require('cypress-grep/src/plugin')(config);
+      
+      return config;
+  },
+  }
+}
+```
+
 ## Use
 
 Start grepping by title and tags:
