@@ -60,8 +60,9 @@ function cypressGrepPlugin(config) {
   if (grepFilterSpecs) {
     debug(resolvedConfig)
     const specFiles = globby.sync(specPattern, {
+      cwd: integrationFolder,
       ignore: excludeSpecPattern,
-      absolute: false,
+      absolute: true,
     })
     debug('found %d spec files', specFiles.length)
     debug('%o', specFiles)
