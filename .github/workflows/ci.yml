@@ -412,6 +412,20 @@ jobs:
             --env grepTags="@sanity+@screen-b" \
             --expect-exactly expects/inherits-tag-spec.json
 
+      - name : explicit not tags prevent test from running
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/explicit-spec.js" \
+            --env grepTags="@tag1 --@tag2" \
+            --expect-exactly expects/explicit-spec.json
+
+      - name : explicit not tags work with omitFiltered
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/explicit-spec.js" \
+            --env grepTags="@tag1 --@tag2",grepOmitFiltered=true \
+            --expect-exactly expects/explicit-omit-spec.json
+            
       - name: filter specs when using dynamic names 🧪
         run: |
           npx cypress-expect \

@@ -361,6 +361,24 @@ You can run tests that match one tag or another using spaces. Make sure to quote
 --env grepTags='@slow @critical'
 ```
 
+### NOT tags
+
+You can skip running the tests with specific tag, even if they have a tag that should run, using the not option: prefix the tag with `--`.
+
+Note this is the same as appending `+-<tag to never run>` to each tag. May be useful with large number of tags.
+
+If you want to run tests with tags `@slow` or `@regression` but without tag `@smoke`
+
+```
+--env grepTags='@slow @regression --@smoke'
+```
+
+which is equivalent to
+
+```
+--env grepTags='@slow+-@smoke @regression+-@smoke'
+```
+
 ## Burn
 
 You can repeat (burn) the filtered tests to make sure they are flake-free
