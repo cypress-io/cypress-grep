@@ -79,7 +79,6 @@ To use this module with [Cypress v10.0.0](https://docs.cypress.io/guides/referen
 
 ```js
 {
-  env: { grepNewConfig: true },
   e2e: {
     setupNodeEvents(on, config) {
       require('cypress-grep/src/plugin')(config);

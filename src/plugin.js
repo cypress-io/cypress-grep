@@ -17,9 +17,12 @@ function cypressGrepPlugin(config) {
 
   const { env } = config
 
+  // detecting which version is running using specPattern - specPattern is only present from v10.0.0+
+  const isAtLeastV10 = config.e2e.specPattern || config.component.specPattern
+
   debug(
     'Config type: %s',
-    env.grepNewConfig
+    isAtLeastV10
       ? 'new (Cypress version >= v10.0.0)'
       : 'legacy (Cypress version < v10.0.0)',
   )
@@ -117,7 +120,7 @@ function cypressGrepPlugin(config) {
       debug('%o', greppedSpecs)
     }
     if (greppedSpecs.length) {
-      env.grepNewConfig
+      isAtLeastV10
         ? (config.specPattern = greppedSpecs)
         : (config.testFiles = greppedSpecs)
     } else {

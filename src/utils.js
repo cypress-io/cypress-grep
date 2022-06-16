@@ -77,8 +77,8 @@ function parseTagsGrep(s) {
     })
 
   // filter out undefined from explicit not tags
-  const ORS_filtered = ORS.filter(x => x !==undefined)
-  if(explicitNotTags.length > 0 ){
+  const ORS_filtered = ORS.filter((x) => x !== undefined)
+  if (explicitNotTags.length > 0) {
     ORS_filtered.forEach((OR, index) => {
       ORS_filtered[index] = OR.concat(explicitNotTags)
     })
