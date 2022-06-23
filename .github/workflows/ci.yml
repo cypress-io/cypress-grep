@@ -40,7 +40,7 @@ jobs:
           npx cypress-expect \
             --passing 1 --pending 2 \
             --spec cypress/integration/skip-spec.js \
-            --config testFiles="skip-spec.js"
+            --config specPattern="**/skip-spec.js"
 
       # all tests are pending
       # because the grep tag is only used in "it.skip" tests
@@ -48,7 +48,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/skip-spec.js \
-            --config testFiles="skip-spec.js" \
+            --config specPattern="**/skip-spec.js" \
             --env grep=pending \
             --expect expects/pending.json
 
@@ -61,7 +61,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/config-spec.js \
-            --config testFiles="config-spec.js" \
+            --config specPattern="**/config-spec.js" \
             --env grep=@config \
             --expect expects/config-spec.json
 
@@ -186,7 +186,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/config-tags-spec.js \
-            --config testFiles="config-tags-spec.js" \
+            --config specPattern="**/config-tags-spec.js" \
             --env grepTags=config \
             --expect expects/config-tags-spec.json
 
@@ -195,7 +195,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/describe-tags-spec.js \
-            --config testFiles="describe-tags-spec.js" \
+            --config specPattern="**/describe-tags-spec.js" \
             --env grepTags=-@smoke \
             --expect expects/describe-tags-invert-spec.json
 
@@ -204,7 +204,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/describe-tags-spec.js \
-            --config testFiles="describe-tags-spec.js" \
+            --config specPattern="**/describe-tags-spec.js" \
             --env grepTags=@smoke \
             --expect expects/describe-tags-spec.json
 
@@ -213,7 +213,7 @@ jobs:
       - name: Tags OR specs 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="tags/*.spec.js" \
+            --config specPattern="**/tags/*.spec.js" \
             --env grepTags="high smoke" \
             --expect-exactly expects/tags-or.json
 
@@ -224,13 +224,13 @@ jobs:
           CYPRESS_grepTags: 'high,smoke'
         run: |
           npx cypress-expect \
-            --config testFiles="tags/*.spec.js" \
+            --config specPattern="**/tags/*.spec.js" \
             --expect-exactly expects/tags-or.json
 
       - name: Tags AND specs 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="tags/*.spec.js" \
+            --config specPattern="**/tags/*.spec.js" \
             --env grepTags="high+smoke" \
             --expect-exactly expects/tags-and.json
 
@@ -238,7 +238,7 @@ jobs:
       - name: Tags OR specs with grepFilterSpecs=true 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="tags/*.spec.js" \
+            --config specPattern="**/tags/*.spec.js" \
             --env grepTags="high regression",grepFilterSpecs=true \
             --expect-exactly expects/tags-or-filter.json
 
@@ -246,7 +246,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/specify-spec.js \
-            --config testFiles="specify-spec.js" \
+            --config specPattern="**/specify-spec.js" \
             --env grep="works 2" \
             --expect-exactly expects/specify.json
 
@@ -270,7 +270,7 @@ jobs:
       - name: Omit and skip combination 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="omit-and-skip-spec.js" \
+            --config specPattern="**/omit-and-skip-spec.js" \
             --env grepTags="@us1",grepOmitFiltered=true \
             --expect-exactly expects/omit-and-skip.json
 
@@ -293,7 +293,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/nested-describe-spec.js \
-            --config testFiles="nested-describe-spec.js" \
+            --config specPattern="**/nested-describe-spec.js" \
             --env grepTags=@smoke \
             --expect expects/nested-describe-spec.json
 
@@ -301,7 +301,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/nested-describe-spec.js \
-            --config testFiles="nested-describe-spec.js" \
+            --config specPattern="**/nested-describe-spec.js" \
             --env grepTags="@smoke+@fast" \
             --expect expects/nested-describe-inheriting-tags-spec.json
 
@@ -309,7 +309,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/nested-describe-spec.js \
-            --config testFiles="nested-describe-spec.js" \
+            --config specPattern="**/nested-describe-spec.js" \
             --env grep="bottom runs too" \
             --expect expects/nested-describe-inheriting-names-spec.json
 
@@ -317,7 +317,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/nested-describe-spec.js \
-            --config testFiles="nested-describe-spec.js" \
+            --config specPattern="**/nested-describe-spec.js" \
             --env grepTags=@does-not-exist \
             --pending 2
 
@@ -334,7 +334,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/multiple-registrations.js \
-            --config testFiles="multiple-registrations.js" \
+            --config specPattern="**/multiple-registrations.js" \
             --env grep="hello world",burn=3 \
             --expect expects/multiple-registrations.json
 
@@ -342,7 +342,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/each-spec.js \
-            --config testFiles="each-spec.js" \
+            --config specPattern="**/each-spec.js" \
             --env grep="for 2" \
             --expect expects/each-spec.json
 
@@ -350,7 +350,7 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/burn-spec.js \
-            --config testFiles="burn-spec.js" \
+            --config specPattern="**/burn-spec.js" \
             --env burn=5 \
             --expect expects/burn-spec.json
 
@@ -358,42 +358,42 @@ jobs:
         run: |
           npx cypress-expect \
             --spec cypress/integration/this-spec.js \
-            --config testFiles="this-spec.js" \
+            --config specPattern="**/this-spec.js" \
             --env burn=3 \
             --expect expects/this-spec.json
 
       - name: filter the specs first 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="**/*.js" \
+            --config specPattern="**/*.js" \
             --env grep="outside any suites",grepFilterSpecs=true \
             --expect-exactly expects/grep-filter-specs.json
 
       - name: filter the specs first by tag 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="**/*.js" \
+            --config specPattern="**/*.js" \
             --env grepTags=@smoke,grepFilterSpecs=true \
             --expect-exactly expects/grep-filter-specs-tag.json
 
       - name: run untagged tests 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="**/spec.js" \
+            --config specPattern="**/spec.js" \
             --env grepUntagged=true \
             --expect-exactly expects/grep-untagged.json
 
       - name: run untagged tests in blocks 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="**/describe-tags-spec.js" \
+            --config specPattern="**/describe-tags-spec.js" \
             --env grepUntagged=true \
             --expect-exactly expects/describe-tags-spec-untagged.json
 
       - name: filter TypeScript spec 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="**/ts-spec.ts" \
+            --config specPattern="**/ts-spec.ts" \
             --env grep=loads,grepOmitFiltered=true,grepFilterSpecs=true \
             --expect-exactly expects/ts-spec.json
 
@@ -402,27 +402,27 @@ jobs:
           npx cypress-expect \
             --env grepTags=@staging \
             --spec cypress/integration/before-spec.js \
-            --config testFiles="before-spec.js" \
+            --config specPattern="**/before-spec.js" \
             --expect ./expects/before.json
 
       - name: inherits parent tags 🧪
         run: |
           npx cypress-expect \
-            --config testFiles="**/inherits-tag-spec.js" \
+            --config specPattern="**/inherits-tag-spec.js" \
             --env grepTags="@sanity+@screen-b" \
             --expect-exactly expects/inherits-tag-spec.json
 
       - name : explicit not tags prevent test from running
         run: |
           npx cypress-expect \
-            --config testFiles="**/explicit-spec.js" \
+            --config specPattern="**/explicit-spec.js" \
             --env grepTags="@tag1 --@tag2" \
             --expect-exactly expects/explicit-spec.json
 
       - name : explicit not tags work with omitFiltered
         run: |
           npx cypress-expect \
-            --config testFiles="**/explicit-spec.js" \
+            --config specPattern="**/explicit-spec.js" \
             --env grepTags="@tag1 --@tag2",grepOmitFiltered=true \
             --expect-exactly expects/explicit-omit-spec.json
 

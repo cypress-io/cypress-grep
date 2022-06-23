@@ -8,20 +8,23 @@
   ],
   "types": "src/index.d.ts",
   "scripts": {
-    "test": "cypress run --config testFiles='**/unit.js'",
-    "open:unit": "cypress open --config testFiles='**/unit.js'",
+    "test": "cypress run --config specPattern='**/unit.js'",
+    "open:unit": "cypress open --e2e -b electron --config specPattern='**/unit.js'",
     "semantic-release": "semantic-release"
   },
   "keywords": [],
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "cypress": "8.7.0",
+    "cypress": "10.2.0",
     "cypress-each": "^1.5.0",
     "cypress-expect": "2.5.0",
     "prettier": "2.3.1",
     "semantic-release": "17.4.3",
     "typescript": "^4.5.4"
+  },
+  "peerDependencies": {
+    "cypress": "^10.0.0"
   },
   "repository": {
     "type": "git",

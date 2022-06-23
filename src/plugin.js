@@ -2,13 +2,12 @@ const debug = require('debug')('cypress-grep')
 const globby = require('globby')
 const { getTestNames } = require('find-test-names')
 const fs = require('fs')
-const path = require('path')
 const { version } = require('../package.json')
-const { resolveConfig, parseGrep, shouldTestRun } = require('./utils')
+const { parseGrep, shouldTestRun } = require('./utils')
 
 /**
  * Prints the cypress-grep environment values if any.
- * @param {Cypress.PluginConfigOptions} config
+ * @param {Cypress.ConfigOptions} config
  */
 function cypressGrepPlugin(config) {
   if (!config || !config.env) {
@@ -16,16 +15,12 @@ function cypressGrepPlugin(config) {
   }
 
   const { env } = config
+  if (!config.specPattern) {
+    throw new Error(
+      'Incompatible versions detected, Cypress 10.0.0+ requires cypress-grep 2.0.0+',
+    )
+  }
 
-  // detecting which version is running using specPattern - specPattern is only present from v10.0.0+
-  const isAtLeastV10 = config.e2e.specPattern || config.component.specPattern
-
-  debug(
-    'Config type: %s',
-    isAtLeastV10
-      ? 'new (Cypress version >= v10.0.0)'
-      : 'legacy (Cypress version < v10.0.0)',
-  )
   debug('cypress-grep plugin version %s', version)
   debug('Cypress config env object: %o', env)
 
@@ -56,12 +51,14 @@ function cypressGrepPlugin(config) {
     console.log('cypress-grep: will omit filtered tests')
   }
 
-  const { resolvedConfig } = resolveConfig(config)
-  const { specPattern, excludeSpecPattern, integrationFolder } = resolvedConfig
+  const { specPattern, excludeSpecPattern } = config
+  const integrationFolder = env.grepIntegrationFolder || process.cwd()
 
   const grepFilterSpecs = env.grepFilterSpecs === true
   if (grepFilterSpecs) {
-    debug(resolvedConfig)
+    debug('specPattern', specPattern)
+    debug('excludeSpecPattern', excludeSpecPattern)
+    debug('integrationFolder', integrationFolder)
     const specFiles = globby.sync(specPattern, {
       cwd: integrationFolder,
       ignore: excludeSpecPattern,
@@ -120,9 +117,7 @@ function cypressGrepPlugin(config) {
       debug('%o', greppedSpecs)
     }
     if (greppedSpecs.length) {
-      isAtLeastV10
-        ? (config.specPattern = greppedSpecs)
-        : (config.testFiles = greppedSpecs)
+      config.specPattern = greppedSpecs
     } else {
       // hmm, we filtered out all specs, probably something is wrong
       console.warn('grep and/or grepTags has eliminated all specs')
