@@ -166,32 +166,11 @@ function parseGrep(titlePart, tags) {
   }
 }
 
-function resolveConfig(config) {
-  const specPattern = config.testFiles || config.specPattern || ''
-  let excludeSpecPattern =
-    config.ignoreTestFiles || config.excludeSpecPattern || ''
-  if (typeof excludeSpecPattern === 'string')
-    excludeSpecPattern = [excludeSpecPattern]
-  const integrationFolder =
-    config.integrationFolder ||
-    config.env.grepIntegrationFolder ||
-    process.cwd()
-
-  return {
-    resolvedConfig: {
-      specPattern,
-      excludeSpecPattern,
-      integrationFolder,
-    },
-  }
-}
-
 module.exports = {
   parseGrep,
   parseTitleGrep,
   parseFullTitleGrep,
   parseTagsGrep,
-  resolveConfig,
   shouldTestRun,
   shouldTestRunTags,
   shouldTestRunTitle,
