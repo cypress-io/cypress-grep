@@ -17,7 +17,7 @@ function cypressGrepPlugin(config) {
   const { env } = config
   if (!config.specPattern) {
     throw new Error(
-      'Incompatible versions detected, Cypress 10.0.0+ requires cypress-grep 2.0.0+',
+      'Incompatible versions detected, cypress-grep 2.0.0+ requires Cypress 10.0.0+ ',
     )
   }
 
