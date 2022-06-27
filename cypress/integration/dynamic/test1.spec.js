@@ -3,9 +3,7 @@
 const parameterized = 'parameterized'
 
 describe('should run these tests', () => {
-    it(`${parameterized} title`, { tags: '@smoke' }, () => {
-    })
+  it(`${parameterized} title`, { tags: '@smoke' }, () => {})
 
-    it('seperated' + ' title', { tags: '@smoke' }, () => {
-    })
-});
+  it('split' + ' title', { tags: '@smoke' }, () => {})
+})
