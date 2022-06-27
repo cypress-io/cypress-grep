@@ -425,6 +425,13 @@ jobs:
             --config specPattern="**/explicit-spec.js" \
             --env grepTags="@tag1 --@tag2",grepOmitFiltered=true \
             --expect-exactly expects/explicit-omit-spec.json
+            
+      - name: filter specs when using dynamic names 🧪
+        run: |
+          npx cypress-expect \
+            --config testFiles="**/dynamic/*.spec.js" \
+            --env grepTags="@smoke",grepFilterSpecs=true \
+            --expect-exactly expects/dynamic-spec.json
 
   release:
     needs: [tests1, tests2, tests3]

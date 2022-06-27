@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "debug": "4.3.1",
-    "find-test-names": "^1.3.2",
+    "find-test-names": "^1.15.0",
     "globby": "^11.0.4"
   }
 }
