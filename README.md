@@ -1,6 +1,6 @@
 # cypress-grep
 
-[![ci status][ci image]][ci url] [![badges status][badges image]][badges url] [![renovate-app badge][renovate-badge]][renovate-app] ![cypress version](https://img.shields.io/badge/cypress-8.7.0-brightgreen)
+[![ci status][ci image]][ci url] [![badges status][badges image]][badges url] [![renovate-app badge][renovate-badge]][renovate-app] ![cypress version](https://img.shields.io/badge/cypress-10.2.0-brightgreen)
 
 > Filter tests using substring
 
@@ -34,6 +34,7 @@ npm i -D cypress-grep
 yarn add -D cypress-grep
 ```
 
+### Support file
 **required:** load this module from the [support file](https://on.cypress.io/writing-and-organizing-tests#Support-file) or at the top of the spec file if not using the support file. You improve the registration function and then call it:
 
 ```js
@@ -48,30 +49,24 @@ import registerCypressGrep from 'cypress-grep'
 registerCypressGrep()
 ```
 
-### Plugin file
 
-**optional:** load and register this module from the [plugin file](https://on.cypress.io/writing-and-organizing-tests#Plugins-file)
+### Config file
+
+**optional:** load and register this module from the [config file](https://docs.cypress.io/guides/references/configuration#setupNodeEvents):
 
 ```js
-// cypress/plugins/index.js
-module.exports = (on, config) => {
-  // optional: register cypress-grep plugin code
-  // https://github.com/cypress-io/cypress-grep
-  require('cypress-grep/src/plugin')(config)
-  // make sure to return the config object
-  // as it might have been modified by the plugin
-  return config
+// cypress.config.js
+{
+  e2e: {
+    setupNodeEvents(on, config) {
+      require('cypress-grep/src/plugin')(config);
+      return config;
+  },
+  }
 }
 ```
 
-By loading this module from the plugin file, it allows the `cypress-grep` to print a little message on load, for example
-
-```shell
-$ npx cypress run --env grep=hello
-cypress-grep: tests with "hello" in their names
-```
-
-Installing the plugin in the project's plugin file is also required to enable the [grepFilterSpecs](#grepfilterspecs) feature.
+Installing the plugin via `setupNodeEvents()` is required to enable the [grepFilterSpecs](#grepfilterspecs) feature.
 
 ## Use
 
@@ -122,7 +117,7 @@ Most likely you will pass these environment variables from the command line. For
 $ npx cypress run --env grep=login,grepTags=smoke
 ```
 
-You can use any way to modify the environment values `grep` and `grepTags`, except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the `cypress.json` file to run only tests with the substring `viewport` in their names
+You can use any way to modify the environment values `grep` and `grepTags`, except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the [config file](https://docs.cypress.io/guides/references/configuration) to run only tests with the substring `viewport` in their names
 
 ```json
 {
@@ -146,7 +141,7 @@ You can also set the grep and grepTags from the DevTools console while running C
 
 ### Disable grep
 
-If you specify the `grep` parameters inside `cypress.json` file, you can disable it from the command line
+If you specify the `grep` parameters inside the [config file](https://docs.cypress.io/guides/references/configuration), you can disable it from the command line
 
 ```
 $ npx cypress run --env grep=,grepTags=,burn=
@@ -231,9 +226,9 @@ Note 2: the `grepFilterSpecs` option is only compatible with the positive `grep`
 
 Note 3: if there are no files remaining after filtering, the plugin prints a warning and leaves all files unchanged to avoid the test runner erroring with "No specs found".
 
-**Tip:** you can set this environment variable in the `cypress.json` file to enable it by default and skip using the environment variable:
+**Tip:** you can set this environment variable in the [config file](https://docs.cypress.io/guides/references/configuration) file to enable it by default and skip using the environment variable:
 
-```json
+```js
 {
   "env": {
     "grepFilterSpecs": true
@@ -261,7 +256,7 @@ cypress run --env grep="works 2",grepOmitFiltered=true
 
 ![Only running tests remaining](./images/omit-pending.png)
 
-**Tip:** you can set this environment variable in the `cypress.json` file to enable it by default and skip using the environment variable:
+**Tip:** you can set this environment variable in the config file (usually `cypress.config.js`) file to enable it by default and skip using the environment variable:
 
 ```json
 {
