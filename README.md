@@ -28,7 +28,8 @@ Table of Contents
 <!-- MarkdownTOC autolink="true" -->
 
 - [Install](#install)
-  - [Plugin file](#plugin-file)
+  - [Support file](#support-file)
+  - [Config file](#config-file)
 - [Usage Overview](#usage-overview)
 - [Filter by test title](#filter-by-test-title)
   - [OR substring matching](#or-substring-matching)
@@ -38,8 +39,9 @@ Table of Contents
   - [Tags in the test config object](#tags-in-the-test-config-object)
   - [AND tags](#and-tags)
   - [OR tags](#or-tags)
-  - [Test suites](#test-suites-1)
-  - [Invert tag](#invert-tag)
+  - [Inverted tags](#inverted-tags)
+  - [NOT tags](#not-tags)
+  - [Tags in test suites](#tags-in-test-suites)
   - [Grep untagged tests](#grep-untagged-tests)
 - [Pre-filter specs \(grepFilterSpecs\)](#pre-filter-specs-grepfilterspecs)
 - [Omit filtered tests \(grepOmitFiltered\)](#omit-filtered-tests-grepomitfiltered)
@@ -56,6 +58,7 @@ Table of Contents
 - [See also](#see-also)
 - [Migration guide](#migration-guide)
   - [from v1 to v2](#from-v1-to-v2)
+  - [from v2 to v3](#from-v2-to-v3)
 - [Videos & Blog Posts](#videos--blog-posts)
 - [Blog posts](#blog-posts)
 - [Small print](#small-print)
@@ -65,7 +68,7 @@ Table of Contents
 
 ## Install
 
-Assuming you have Cypress installed, add this module as a dev dependency
+Assuming you have Cypress installed, add this module as a dev dependency.
 
 ```shell
 # using NPM
@@ -74,7 +77,10 @@ npm i -D cypress-grep
 yarn add -D cypress-grep
 ```
 
+**Note**: cypress-grep only works with Cypress version >= 10.
+
 ### Support file
+
 **required:** load this module from the [support file](https://on.cypress.io/writing-and-organizing-tests#Support-file) or at the top of the spec file if not using the support file. You improve the registration function and then call it:
 
 ```js
@@ -88,7 +94,6 @@ registerCypressGrep()
 import registerCypressGrep from 'cypress-grep'
 registerCypressGrep()
 ```
-
 
 ### Config file
 
@@ -259,7 +264,42 @@ You can run tests that match one tag or another using spaces. Make sure to quote
 --env grepTags='@slow @critical'
 ```
 
-### Test suites
+### Inverted tags
+
+You can skip running the tests with specific tag using the invert option: prefix the tag with the character `-`.
+
+```
+# do not run any tests with tag "@slow"
+--env grepTags=-@slow
+```
+
+If you want to run all tests with tag `@slow` but without tag `@smoke`:
+
+```
+--env grepTags=@slow+-@smoke
+```
+
+**Note:** Inverted tag filter is not compativle with the `grepFilterSpecs` option
+
+### NOT tags
+
+You can skip running the tests with specific tag, even if they have a tag that should run, using the not option: prefix the tag with `--`.
+
+Note this is the same as appending `+-<tag to never run>` to each tag. May be useful with large number of tags.
+
+If you want to run tests with tags `@slow` or `@regression` but without tag `@smoke`
+
+```
+--env grepTags='@slow @regression --@smoke'
+```
+
+which is equivalent to
+
+```
+--env grepTags='@slow+-@smoke @regression+-@smoke'
+```
+
+### Tags in test suites
 
 The tags are also applied to the "describe" blocks. In that case, the tests look up if any of their outer suites are enabled.
 
@@ -277,23 +317,6 @@ describe('block with config tag', { tags: '@smoke' }, () => {})
 See the [cypress/integration/describe-tags-spec.js](./cypress/integration/describe-tags-spec.js) file.
 
 **Note:** global function `describe` and `context` are aliases and both supported by this plugin.
-
-### Invert tag
-
-You can skip running the tests with specific tag using the invert option: prefix the tag with the character `-`.
-
-```
-# do not run any tests with tag "@slow"
---env grepTags=-@slow
-```
-
-If you want to run all tests with tag `@slow` but without tag `@smoke`:
-
-```
---env grepTags=@slow+-@smoke
-```
-
-**Note:** Inverted tag filter is not compativle with the `grepFilterSpecs` option
 
 ### Grep untagged tests
 
@@ -363,7 +386,7 @@ cypress run --env grep="works 2",grepOmitFiltered=true
 
 ## Disable grep
 
-If you specify the `grep` parameters inside `cypress.json` file, you can disable it from the command line
+If you specify the `grep` parameters the [config file](https://docs.cypress.io/guides/references/configuration), you can disable it from the command line
 
 ```
 $ npx cypress run --env grep=,grepTags=,burn=
@@ -561,6 +584,10 @@ The above scenario was confusing - did you want to find all tests with title con
 # enable the tests with "hello" in the title and tag "smoke"
 --env grep=hello,grepTags=smoke
 ```
+
+### from v2 to v3
+
+Version >= 3 of cypress-grep _only_ supports Cypress >= 10.
 
 ## Videos & Blog Posts
 
