@@ -111,12 +111,43 @@ jobs:
             --env grep="hello; works 2" \
             --expect ./expects/hello-or-works-2.json
 
+      # grepFilterSpecs tests
+
+      - name: filter the specs first with grep 🧪
+        run: |
+          npx cypress-expect \
+            --config specPattern="**/*.js" \
+            --env grep="outside any suites",grepFilterSpecs=true \
+            --expect-exactly expects/grep-filter-specs.json
+
+      - name: filter the specs first with grepTags 🧪
+        run: |
+          npx cypress-expect \
+            --config specPattern="cypress/integration/**/*.js" \
+            --env grepTags=@smoke,grepFilterSpecs=true \
+            --expect-exactly expects/grep-filter-specs-tag.json
+
+      # https://github.com/cypress-io/cypress-grep/issues/98
+      - name: Tags OR specs with grepFilterSpecs=true 🧪
+        run: |
+          npx cypress-expect \
+            --config specPattern="**/tags/*.spec.js" \
+            --env grepTags="high regression",grepFilterSpecs=true \
+            --expect-exactly expects/tags-or-filter.json
+
       # https://github.com/cypress-io/cypress-grep/issues/96
       - name: Run tests with "hello" or "works 2" with spec filtering 🧪
         run: |
           npx cypress-expect run \
             --env grep="hello; works 2",grepFilterSpecs=true \
             --expect ./expects/hello-or-works-2.json
+
+      - name: filter multiple specs with negative grep and grepFilterSpecs=true 🧪
+        run: |
+          npx cypress-expect run \
+            --env grep=-hello,grepFilterSpecs=true \
+            --config specPattern="cypress/integration/{spec,negative-grep-spec}.js" \
+            --expect-exactly ./expects/no-hello.json
 
   tests2:
     runs-on: ubuntu-20.04
@@ -233,14 +264,6 @@ jobs:
             --config specPattern="**/tags/*.spec.js" \
             --env grepTags="high+smoke" \
             --expect-exactly expects/tags-and.json
-
-      # https://github.com/cypress-io/cypress-grep/issues/98
-      - name: Tags OR specs with grepFilterSpecs=true 🧪
-        run: |
-          npx cypress-expect \
-            --config specPattern="**/tags/*.spec.js" \
-            --env grepTags="high regression",grepFilterSpecs=true \
-            --expect-exactly expects/tags-or-filter.json
 
       - name: Specify is an alias to it 🧪
         run: |
@@ -361,20 +384,6 @@ jobs:
             --config specPattern="**/this-spec.js" \
             --env burn=3 \
             --expect expects/this-spec.json
-
-      - name: filter the specs first 🧪
-        run: |
-          npx cypress-expect \
-            --config specPattern="**/*.js" \
-            --env grep="outside any suites",grepFilterSpecs=true \
-            --expect-exactly expects/grep-filter-specs.json
-
-      - name: filter the specs first by tag 🧪
-        run: |
-          npx cypress-expect \
-            --config specPattern="cypress/integration/**/*.js" \
-            --env grepTags=@smoke,grepFilterSpecs=true \
-            --expect-exactly expects/grep-filter-specs-tag.json
 
       - name: run untagged tests 🧪
         run: |
